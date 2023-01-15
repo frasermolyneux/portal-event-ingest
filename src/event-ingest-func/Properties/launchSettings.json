@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "event_ingest_func": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7086",
+      "launchBrowser": false
+    }
+  }
+}

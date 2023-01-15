@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>XtremeIdiots.Portal.EventsIngestApi.Abstractions</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageId>XtremeIdiots.Portal.EventsIngestApi.Abstractions</PackageId>
+	<Authors>Fraser Molyneux</Authors>
+	<Company>XtremeIdiots</Company>
+	<Product>XtremeIdiots Portal</Product>
+	<Title>XtremeIdiots Portal Events Ingest API Abstractions</Title>
+	<Description>Abstractions for the XtremeIdiots Portal Events Ingest API.</Description>
+	<PackageProjectUrl>https://github.com/frasermolyneux/portal-event-ingest</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/frasermolyneux/portal-event-ingest</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+  </PropertyGroup>
+
+</Project>
