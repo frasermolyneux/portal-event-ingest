@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "event-ingest-func", "event-ingest-func\event-ingest-func.csproj", "{84747F87-3DD0-4BDE-BAAD-56AD6A07AA3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "event-ingest-func", "event-ingest-func\event-ingest-func.csproj", "{84747F87-3DD0-4BDE-BAAD-56AD6A07AA3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "events-ingest-abstractions", "events-ingest-abstractions\events-ingest-abstractions.csproj", "{0552A826-CEFA-4D86-9AB9-E6CE9793E3C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "event-ingest-abstractions", "event-ingest-abstractions\event-ingest-abstractions.csproj", "{3BB2BA71-55D1-4C75-BF1E-3CD5AA011945}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{84747F87-3DD0-4BDE-BAAD-56AD6A07AA3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84747F87-3DD0-4BDE-BAAD-56AD6A07AA3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84747F87-3DD0-4BDE-BAAD-56AD6A07AA3D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0552A826-CEFA-4D86-9AB9-E6CE9793E3C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0552A826-CEFA-4D86-9AB9-E6CE9793E3C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0552A826-CEFA-4D86-9AB9-E6CE9793E3C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0552A826-CEFA-4D86-9AB9-E6CE9793E3C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BB2BA71-55D1-4C75-BF1E-3CD5AA011945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BB2BA71-55D1-4C75-BF1E-3CD5AA011945}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BB2BA71-55D1-4C75-BF1E-3CD5AA011945}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BB2BA71-55D1-4C75-BF1E-3CD5AA011945}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

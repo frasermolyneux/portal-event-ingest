@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>XtremeIdiots.Portal.EventsIngestApi.Abstractions</RootNamespace>
+    <RootNamespace>XtremeIdiots.Portal.EventIngestApi.Abstractions</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageId>XtremeIdiots.Portal.EventsIngestApi.Abstractions</PackageId>
+	<PackageId>XtremeIdiots.Portal.EventIngestApi.Abstractions</PackageId>
 	<Authors>Fraser Molyneux</Authors>
 	<Company>XtremeIdiots</Company>
 	<Product>XtremeIdiots Portal</Product>

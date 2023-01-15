@@ -1,0 +1,5 @@
+subscription_id         = "32444f38-32f4-409f-889c-8e8aa2b5b4d1"
+resource_group_name     = "rg-portal-event-ingest-tf-prd-uksouth"
+storage_account_name    = "saptlevntintfprd"
+container_name          = "terraform"
+key                     = "terraform.tfstate"

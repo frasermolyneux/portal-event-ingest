@@ -20,7 +20,7 @@
 	<PackageReference Include="XtremeIdiots.Portal.RepositoryApiClient" Version="1.0.841" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\events-ingest-abstractions\events-ingest-abstractions.csproj" />
+    <ProjectReference Include="..\event-ingest-abstractions\event-ingest-abstractions.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
