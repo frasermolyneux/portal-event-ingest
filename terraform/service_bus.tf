@@ -1,8 +1,8 @@
 resource "azurerm_servicebus_namespace" "ingest" {
   name = local.service_bus_name
 
-  resource_group_name = data.azurerm_service_plan.plan.resource_group_name
-  location            = data.azurerm_service_plan.plan.location
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
   tags                = var.tags
 
   sku = "Basic"
