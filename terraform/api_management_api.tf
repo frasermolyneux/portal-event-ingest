@@ -27,7 +27,7 @@ resource "azurerm_api_management_named_value" "active_backend_named_value" {
   value        = azurerm_api_management_backend.api_management_backend.name
 }
 
-resource "azurerm_api_management_named_value" "webapi_audience_named_value" {
+resource "azurerm_api_management_named_value" "audience_named_value" {
   provider            = azurerm.api_management
   name                = "event-ingest-api-audience"
   resource_group_name = data.azurerm_api_management.platform.resource_group_name
@@ -103,8 +103,8 @@ resource "azurerm_api_management_api_policy" "example" {
 XML
 
   depends_on = [
-    azurerm_api_management_named_value.webapi_active_backend_named_value,
-    azurerm_api_management_named_value.webapi_audience_named_value
+    azurerm_api_management_named_value.active_backend_named_value,
+    azurerm_api_management_named_value.audience_named_value
   ]
 }
 
