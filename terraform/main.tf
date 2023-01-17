@@ -43,6 +43,26 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
+  alias           = "frontdoor"
+  subscription_id = var.frontdoor_subscription_id
+
+  # This is a workload repository so won't have permissions to register providers
+  skip_provider_registration = true
+
+  features {}
+}
+
+provider "azurerm" {
+  alias           = "dns"
+  subscription_id = var.dns_subscription_id
+
+  # This is a workload repository so won't have permissions to register providers
+  skip_provider_registration = true
+
+  features {}
+}
+
+provider "azurerm" {
   alias           = "log_analytics"
   subscription_id = var.log_analytics_subscription_id
 
