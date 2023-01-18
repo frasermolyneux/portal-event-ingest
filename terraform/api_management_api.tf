@@ -35,7 +35,7 @@ resource "azurerm_api_management_backend" "api_management_backend" {
 
   credentials {
     query = {
-      "code" = format("{{${azurerm_api_management_named_value.functionapp_host_key_named_value.name})}}")
+      "code" = format("{{${azurerm_api_management_named_value.functionapp_host_key_named_value.name}}}")
     }
   }
 }
