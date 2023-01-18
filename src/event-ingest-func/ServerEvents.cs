@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
@@ -9,25 +10,21 @@ namespace XtremeIdiots.Portal.EventsFunc;
 
 public class ServerEvents
 {
-    private readonly ILogger<ServerEvents> logger;
-
-    public ServerEvents(ILogger<ServerEvents> logger)
-    {
-        this.logger = logger;
-    }
-
     [Function("OnServerConnected")]
     [ServiceBusOutput("server_connected_queue", Connection = "service_bus_connection_string")]
-    public string OnServerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
+    public static async Task<string> OnServerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData req, FunctionContext executionContext)
     {
-        OnServerConnected onServerConnected;
+        var logger = executionContext.GetLogger(nameof(OnPlayerConnected));
+        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+
+        OnServerConnected? onServerConnected;
         try
         {
-            onServerConnected = JsonConvert.DeserializeObject<OnServerConnected>(input);
+            onServerConnected = JsonConvert.DeserializeObject<OnServerConnected>(requestBody);
         }
         catch (Exception ex)
         {
-            logger.LogError($"OnServerConnected Raw Input: '{input}'");
+            logger.LogError($"OnServerConnected Raw Input: '{requestBody}'");
             logger.LogError(ex, "OnServerConnected was not in expected format");
             throw;
         }
@@ -37,16 +34,19 @@ public class ServerEvents
 
     [Function("OnMapChange")]
     [ServiceBusOutput("map_change_queue", Connection = "service_bus_connection_string")]
-    public string OnMapChange([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
+    public static async Task<string> OnMapChange([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData req, FunctionContext executionContext)
     {
-        OnMapChange onMapChange;
+        var logger = executionContext.GetLogger(nameof(OnPlayerConnected));
+        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+
+        OnMapChange? onMapChange;
         try
         {
-            onMapChange = JsonConvert.DeserializeObject<OnMapChange>(input);
+            onMapChange = JsonConvert.DeserializeObject<OnMapChange>(requestBody);
         }
         catch (Exception ex)
         {
-            logger.LogError($"OnMapChange Raw Input: '{input}'");
+            logger.LogError($"OnMapChange Raw Input: '{requestBody}'");
             logger.LogError(ex, "OnMapChange was not in expected format");
             throw;
         }

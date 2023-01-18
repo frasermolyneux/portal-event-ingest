@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
@@ -9,25 +10,21 @@ namespace XtremeIdiots.Portal.EventsFunc;
 
 public class PlayerEvents
 {
-    private readonly ILogger<PlayerEvents> logger;
-
-    public PlayerEvents(ILogger<PlayerEvents> logger)
-    {
-        this.logger = logger;
-    }
-
-    [Function("OnPlayerConnected")]
+    [Function(nameof(OnPlayerConnected))]
     [ServiceBusOutput("player_connected_queue", Connection = "service_bus_connection_string")]
-    public string OnPlayerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
+    public static async Task<string> OnPlayerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData req, FunctionContext executionContext)
     {
-        OnPlayerConnected onPlayerConnected;
+        var logger = executionContext.GetLogger(nameof(OnPlayerConnected));
+        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+
+        OnPlayerConnected? onPlayerConnected;
         try
         {
-            onPlayerConnected = JsonConvert.DeserializeObject<OnPlayerConnected>(input);
+            onPlayerConnected = JsonConvert.DeserializeObject<OnPlayerConnected>(requestBody);
         }
         catch (Exception ex)
         {
-            logger.LogError($"OnPlayerConnected Raw Input: '{input}'");
+            logger.LogError($"OnPlayerConnected Raw Input: '{requestBody}'");
             logger.LogError(ex, "OnPlayerConnected was not in expected format");
             throw;
         }
@@ -35,18 +32,21 @@ public class PlayerEvents
         return JsonConvert.SerializeObject(onPlayerConnected);
     }
 
-    [Function("OnChatMessage")]
+    [Function(nameof(OnChatMessage))]
     [ServiceBusOutput("chat_message_queue", Connection = "service_bus_connection_string")]
-    public string OnChatMessage([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
+    public static async Task<string> OnChatMessage([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData req, FunctionContext executionContext)
     {
-        OnChatMessage onChatMessage;
+        var logger = executionContext.GetLogger(nameof(OnChatMessage));
+        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+
+        OnChatMessage? onChatMessage;
         try
         {
-            onChatMessage = JsonConvert.DeserializeObject<OnChatMessage>(input);
+            onChatMessage = JsonConvert.DeserializeObject<OnChatMessage>(requestBody);
         }
         catch (Exception ex)
         {
-            logger.LogError($"OnChatMessage Raw Input: '{input}'");
+            logger.LogError($"OnChatMessage Raw Input: '{requestBody}'");
             logger.LogError(ex, "OnChatMessage was not in expected format");
             throw;
         }
@@ -54,18 +54,21 @@ public class PlayerEvents
         return JsonConvert.SerializeObject(onChatMessage);
     }
 
-    [Function("OnMapVote")]
+    [Function(nameof(OnMapVote))]
     [ServiceBusOutput("map_vote_queue", Connection = "service_bus_connection_string")]
-    public string OnMapVote([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
+    public static async Task<string> OnMapVote([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData req, FunctionContext executionContext)
     {
-        OnMapVote onMapVote;
+        var logger = executionContext.GetLogger(nameof(OnMapVote));
+        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+
+        OnMapVote? onMapVote;
         try
         {
-            onMapVote = JsonConvert.DeserializeObject<OnMapVote>(input);
+            onMapVote = JsonConvert.DeserializeObject<OnMapVote>(requestBody);
         }
         catch (Exception ex)
         {
-            logger.LogError($"OnMapVote Raw Input: '{input}'");
+            logger.LogError($"OnMapVote Raw Input: '{requestBody}'");
             logger.LogError(ex, "OnMapVote was not in expected format");
             throw;
         }
