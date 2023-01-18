@@ -9,10 +9,16 @@ namespace XtremeIdiots.Portal.EventsFunc;
 
 public class ServerEvents
 {
+    private readonly ILogger<ServerEvents> logger;
+
+    public ServerEvents(ILogger<ServerEvents> logger)
+    {
+        this.logger = logger;
+    }
+
     [Function("OnServerConnected")]
     [ServiceBusOutput("server_connected_queue", Connection = "service_bus_connection_string")]
-    public string OnServerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input,
-        ILogger log)
+    public string OnServerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
     {
         OnServerConnected onServerConnected;
         try
@@ -21,8 +27,8 @@ public class ServerEvents
         }
         catch (Exception ex)
         {
-            log.LogError($"OnServerConnected Raw Input: '{input}'");
-            log.LogError(ex, "OnServerConnected was not in expected format");
+            logger.LogError($"OnServerConnected Raw Input: '{input}'");
+            logger.LogError(ex, "OnServerConnected was not in expected format");
             throw;
         }
 
@@ -31,8 +37,7 @@ public class ServerEvents
 
     [Function("OnMapChange")]
     [ServiceBusOutput("map_change_queue", Connection = "service_bus_connection_string")]
-    public static string OnMapChange([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input,
-        ILogger log)
+    public static string OnMapChange([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
     {
         OnMapChange onMapChange;
         try
@@ -41,8 +46,8 @@ public class ServerEvents
         }
         catch (Exception ex)
         {
-            log.LogError($"OnMapChange Raw Input: '{input}'");
-            log.LogError(ex, "OnMapChange was not in expected format");
+            logger.LogError($"OnMapChange Raw Input: '{input}'");
+            logger.LogError(ex, "OnMapChange was not in expected format");
             throw;
         }
 

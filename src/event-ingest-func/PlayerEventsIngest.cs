@@ -18,19 +18,19 @@ namespace XtremeIdiots.Portal.IngestFunc;
 
 public class PlayerEventsIngest
 {
-    private readonly ILogger<PlayerEventsIngest> _log;
-    private readonly IRepositoryApiClient _repositoryApiClient;
+    private readonly ILogger<PlayerEventsIngest> logger;
+    private readonly IRepositoryApiClient repositoryApiClient;
     private readonly IMemoryCache memoryCache;
     private readonly TelemetryClient telemetryClient;
 
     public PlayerEventsIngest(
-        ILogger<PlayerEventsIngest> log,
+        ILogger<PlayerEventsIngest> logger,
         IRepositoryApiClient repositoryApiClient,
         IMemoryCache memoryCache,
         TelemetryClient telemetryClient)
     {
-        _log = log;
-        _repositoryApiClient = repositoryApiClient;
+        this.logger = logger;
+        this.repositoryApiClient = repositoryApiClient;
         this.memoryCache = memoryCache;
         this.telemetryClient = telemetryClient;
     }
@@ -47,7 +47,7 @@ public class PlayerEventsIngest
         }
         catch (Exception ex)
         {
-            _log.LogError(ex, "OnPlayerConnected was not in expected format");
+            logger.LogError(ex, "OnPlayerConnected was not in expected format");
             throw;
         }
 
@@ -69,7 +69,7 @@ public class PlayerEventsIngest
         onPlayerConnectedTelemetry.Properties.Add("Guid", onPlayerConnected.Guid);
         telemetryClient.TrackEvent(onPlayerConnectedTelemetry);
 
-        var playerExistsApiResponse = await _repositoryApiClient.Players.HeadPlayerByGameType(gameType, onPlayerConnected.Guid);
+        var playerExistsApiResponse = await repositoryApiClient.Players.HeadPlayerByGameType(gameType, onPlayerConnected.Guid);
 
         if (playerExistsApiResponse.IsNotFound)
         {
@@ -78,7 +78,7 @@ public class PlayerEventsIngest
                 IpAddress = onPlayerConnected.IpAddress
             };
 
-            await _repositoryApiClient.Players.CreatePlayer(player);
+            await repositoryApiClient.Players.CreatePlayer(player);
         }
         else
         {
@@ -91,7 +91,7 @@ public class PlayerEventsIngest
                     IpAddress = onPlayerConnected.IpAddress
                 };
 
-                await _repositoryApiClient.Players.UpdatePlayer(editPlayerDto);
+                await repositoryApiClient.Players.UpdatePlayer(editPlayerDto);
             }
         }
     }
@@ -108,7 +108,7 @@ public class PlayerEventsIngest
         }
         catch (Exception ex)
         {
-            _log.LogError(ex, "OnChatMessage was not in expected format");
+            logger.LogError(ex, "OnChatMessage was not in expected format");
             throw;
         }
 
@@ -136,11 +136,11 @@ public class PlayerEventsIngest
         if (playerId != Guid.Empty)
         {
             var chatMessage = new CreateChatMessageDto(onChatMessage.ServerId, playerId, onChatMessage.Type.ToChatType(), onChatMessage.Username, onChatMessage.Message, onChatMessage.EventGeneratedUtc);
-            await _repositoryApiClient.ChatMessages.CreateChatMessage(chatMessage);
+            await repositoryApiClient.ChatMessages.CreateChatMessage(chatMessage);
         }
         else
         {
-            _log.LogError($"ProcessOnChatMessage :: NOPLAYER :: Username: '{onChatMessage.Username}', Guid: '{onChatMessage.Guid}', Message: '{onChatMessage.Message}', Timestamp: '{onChatMessage.EventGeneratedUtc}'");
+            logger.LogError($"ProcessOnChatMessage :: NOPLAYER :: Username: '{onChatMessage.Username}', Guid: '{onChatMessage.Guid}', Message: '{onChatMessage.Message}', Timestamp: '{onChatMessage.EventGeneratedUtc}'");
         }
     }
 
@@ -156,7 +156,7 @@ public class PlayerEventsIngest
         }
         catch (Exception ex)
         {
-            _log.LogError(ex, "OnMapVote was not in expected format");
+            logger.LogError(ex, "OnMapVote was not in expected format");
             throw;
         }
 
@@ -183,17 +183,17 @@ public class PlayerEventsIngest
 
         if (playerId != Guid.Empty)
         {
-            var mapApiResponse = await _repositoryApiClient.Maps.GetMap(gameType, onMapVote.MapName);
+            var mapApiResponse = await repositoryApiClient.Maps.GetMap(gameType, onMapVote.MapName);
 
             if (mapApiResponse.IsSuccess && mapApiResponse.Result != null)
             {
                 var upsertMapVoteDto = new UpsertMapVoteDto(mapApiResponse.Result.MapId, playerId, onMapVote.ServerId, onMapVote.Like);
-                await _repositoryApiClient.Maps.UpsertMapVote(upsertMapVoteDto);
+                await repositoryApiClient.Maps.UpsertMapVote(upsertMapVoteDto);
             }
         }
         else
         {
-            _log.LogError($"ProcessOnMapVote :: NOPLAYER :: Guid: '{onMapVote.Guid}', Map Name: '{onMapVote.MapName}', Like: '{onMapVote.Like}'");
+            logger.LogError($"ProcessOnMapVote :: NOPLAYER :: Guid: '{onMapVote.Guid}', Map Name: '{onMapVote.MapName}', Like: '{onMapVote.Like}'");
         }
     }
 
@@ -204,7 +204,7 @@ public class PlayerEventsIngest
         if (memoryCache.TryGetValue(cacheKey, out Guid playerId))
             return playerId;
 
-        var playerDtoApiResponse = await _repositoryApiClient.Players.GetPlayerByGameType(gameType, guid, PlayerEntityOptions.None);
+        var playerDtoApiResponse = await repositoryApiClient.Players.GetPlayerByGameType(gameType, guid, PlayerEntityOptions.None);
 
         if (playerDtoApiResponse.IsSuccess && playerDtoApiResponse.Result != null)
         {

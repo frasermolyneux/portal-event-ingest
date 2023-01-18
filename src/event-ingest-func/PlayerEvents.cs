@@ -9,10 +9,16 @@ namespace XtremeIdiots.Portal.EventsFunc;
 
 public class PlayerEvents
 {
+    private readonly ILogger<PlayerEvents> logger;
+
+    public PlayerEvents(ILogger<PlayerEvents> logger)
+    {
+        this.logger = logger;
+    }
+
     [Function("OnPlayerConnected")]
     [ServiceBusOutput("player_connected_queue", Connection = "service_bus_connection_string")]
-    public string OnPlayerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input,
-        ILogger log)
+    public string OnPlayerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
     {
         OnPlayerConnected onPlayerConnected;
         try
@@ -21,8 +27,8 @@ public class PlayerEvents
         }
         catch (Exception ex)
         {
-            log.LogError($"OnPlayerConnected Raw Input: '{input}'");
-            log.LogError(ex, "OnPlayerConnected was not in expected format");
+            logger.LogError($"OnPlayerConnected Raw Input: '{input}'");
+            logger.LogError(ex, "OnPlayerConnected was not in expected format");
             throw;
         }
 
@@ -31,8 +37,7 @@ public class PlayerEvents
 
     [Function("OnChatMessage")]
     [ServiceBusOutput("chat_message_queue", Connection = "service_bus_connection_string")]
-    public static string OnChatMessage([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input,
-        ILogger log)
+    public static string OnChatMessage([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
     {
         OnChatMessage onChatMessage;
         try
@@ -41,8 +46,8 @@ public class PlayerEvents
         }
         catch (Exception ex)
         {
-            log.LogError($"OnChatMessage Raw Input: '{input}'");
-            log.LogError(ex, "OnChatMessage was not in expected format");
+            logger.LogError($"OnChatMessage Raw Input: '{input}'");
+            logger.LogError(ex, "OnChatMessage was not in expected format");
             throw;
         }
 
@@ -51,8 +56,7 @@ public class PlayerEvents
 
     [Function("OnMapVote")]
     [ServiceBusOutput("map_vote_queue", Connection = "service_bus_connection_string")]
-    public static string OnMapVote([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input,
-    ILogger log)
+    public static string OnMapVote([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
     {
         OnMapVote onMapVote;
         try
@@ -61,8 +65,8 @@ public class PlayerEvents
         }
         catch (Exception ex)
         {
-            log.LogError($"OnMapVote Raw Input: '{input}'");
-            log.LogError(ex, "OnMapVote was not in expected format");
+            logger.LogError($"OnMapVote Raw Input: '{input}'");
+            logger.LogError(ex, "OnMapVote was not in expected format");
             throw;
         }
 

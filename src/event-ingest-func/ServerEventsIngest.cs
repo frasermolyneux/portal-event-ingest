@@ -11,15 +11,15 @@ namespace XtremeIdiots.Portal.IngestFunc;
 
 public class ServerEventsIngest
 {
-    private readonly ILogger<ServerEventsIngest> _log;
-    private readonly IRepositoryApiClient _repositoryApiClient;
+    private readonly ILogger<ServerEventsIngest> logger;
+    private readonly IRepositoryApiClient repositoryApiClient;
 
     public ServerEventsIngest(
-        ILogger<ServerEventsIngest> log,
+        ILogger<ServerEventsIngest> logger,
         IRepositoryApiClient repositoryApiClient)
     {
-        _log = log;
-        _repositoryApiClient = repositoryApiClient;
+        this.logger = logger;
+        this.repositoryApiClient = repositoryApiClient;
     }
 
     [Function("ProcessOnServerConnected")]
@@ -34,7 +34,7 @@ public class ServerEventsIngest
         }
         catch (Exception ex)
         {
-            _log.LogError(ex, "OnServerConnected was not in expected format");
+            logger.LogError(ex, "OnServerConnected was not in expected format");
             throw;
         }
 
@@ -44,11 +44,11 @@ public class ServerEventsIngest
         if (!Guid.TryParse(onServerConnected.Id, out Guid gameServerId))
             throw new Exception("OnServerConnected event contained null or empty 'onServerConnected'");
 
-        _log.LogInformation(
+        logger.LogInformation(
             $"OnServerConnected :: Id: '{onServerConnected.Id}', GameType: '{onServerConnected.GameType}'");
 
         var gameServerEvent = new CreateGameServerEventDto(gameServerId, "OnServerConnected", JsonConvert.SerializeObject(onServerConnected));
-        await _repositoryApiClient.GameServersEvents.CreateGameServerEvent(gameServerEvent);
+        await repositoryApiClient.GameServersEvents.CreateGameServerEvent(gameServerEvent);
     }
 
     [Function("ProcessOnMapChange")]
@@ -63,7 +63,7 @@ public class ServerEventsIngest
         }
         catch (Exception ex)
         {
-            _log.LogError(ex, "OnMapChange was not in expected format");
+            logger.LogError(ex, "OnMapChange was not in expected format");
             throw;
         }
 
@@ -73,10 +73,10 @@ public class ServerEventsIngest
         if (onMapChange.ServerId == null)
             throw new Exception("OnMapChange event contained null or empty 'ServerId'");
 
-        _log.LogInformation(
+        logger.LogInformation(
             $"ProcessOnMapChange :: GameName: '{onMapChange.GameName}', GameType: '{onMapChange.GameType}', MapName: '{onMapChange.MapName}'");
 
         var gameServerEvent = new CreateGameServerEventDto((Guid)onMapChange.ServerId, "MapChange", JsonConvert.SerializeObject(onMapChange));
-        await _repositoryApiClient.GameServersEvents.CreateGameServerEvent(gameServerEvent);
+        await repositoryApiClient.GameServersEvents.CreateGameServerEvent(gameServerEvent);
     }
 }
