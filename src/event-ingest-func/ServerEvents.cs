@@ -37,7 +37,7 @@ public class ServerEvents
 
     [Function("OnMapChange")]
     [ServiceBusOutput("map_change_queue", Connection = "service_bus_connection_string")]
-    public static string OnMapChange([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
+    public string OnMapChange([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
     {
         OnMapChange onMapChange;
         try

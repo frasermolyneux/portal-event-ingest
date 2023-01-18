@@ -37,7 +37,7 @@ public class PlayerEvents
 
     [Function("OnChatMessage")]
     [ServiceBusOutput("chat_message_queue", Connection = "service_bus_connection_string")]
-    public static string OnChatMessage([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
+    public string OnChatMessage([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
     {
         OnChatMessage onChatMessage;
         try
@@ -56,7 +56,7 @@ public class PlayerEvents
 
     [Function("OnMapVote")]
     [ServiceBusOutput("map_vote_queue", Connection = "service_bus_connection_string")]
-    public static string OnMapVote([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
+    public string OnMapVote([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] string input)
     {
         OnMapVote onMapVote;
         try
