@@ -42,3 +42,8 @@ resource "azurerm_linux_function_app" "app" {
     "repository_api_path_prefix"                 = "repository-v2"
   }
 }
+
+data "azurerm_function_app_host_keys" "app" {
+  name                = azurerm_linux_function_app.app.name
+  resource_group_name = data.azurerm_service_plan.plan.resource_group_name
+}

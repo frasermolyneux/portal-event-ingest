@@ -1,3 +1,22 @@
+resource "azurerm_api_management_named_value" "functionapp_host_key_named_value" {
+  provider            = azurerm.api_management
+  name                = azurerm_key_vault_secret.functionapp_host_key_secret.name
+  resource_group_name = data.azurerm_api_management.platform.resource_group_name
+  api_management_name = data.azurerm_api_management.platform.name
+
+  display_name = azurerm_key_vault_secret.functionapp_host_key_secret.name
+
+  secret = true
+
+  value_from_key_vault {
+    secret_id = azurerm_key_vault_secret.functionapp_host_key_secret.id
+  }
+
+  depends_on = [
+    azurerm_role_assignment.apim_kv_role_assignment
+  ]
+}
+
 resource "azurerm_api_management_backend" "api_management_backend" {
   provider            = azurerm.api_management
   name                = local.workload_name
@@ -7,11 +26,17 @@ resource "azurerm_api_management_backend" "api_management_backend" {
   protocol    = "http"
   title       = local.workload_name
   description = local.workload_name
-  url         = format("https://%s.%s", local.workload_name, var.dns_zone_name)
+  url         = format("https://%s.%s/api", local.workload_name, var.dns_zone_name)
 
   tls {
     validate_certificate_chain = true
     validate_certificate_name  = true
+  }
+
+  credentials {
+    query = {
+      "code" = format("{{${azurerm_api_management_named_value.functionapp_host_key_named_value.name})}}")
+    }
   }
 }
 
