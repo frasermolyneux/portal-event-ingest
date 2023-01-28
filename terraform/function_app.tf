@@ -38,8 +38,8 @@ resource "azurerm_linux_function_app" "app" {
     "service_bus_connection_string"              = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.kv.name, azurerm_key_vault_secret.service_bus_connection_string_secret.name)
     "apim_base_url"                              = data.azurerm_api_management.platform.gateway_url
     "portal_repository_apim_subscription_key"    = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.kv.name, azurerm_key_vault_secret.repository_api_subscription_secret.name)
-    "repository_api_application_audience"        = format("api://portal-repository-%s", var.environment)
-    "repository_api_path_prefix"                 = "repository-v2"
+    "repository_api_application_audience"        = var.repository_api.application_audience
+    "repository_api_path_prefix"                 = var.repository_api.apim_path_prefix
   }
 }
 
