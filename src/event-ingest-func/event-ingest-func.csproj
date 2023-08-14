@@ -11,7 +11,7 @@
 	<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.19.0" />
 	<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.1.0" />
 	<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.12.0" />
-	<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.13.1" OutputItemType="Analyzer" />
+	<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.14.0" OutputItemType="Analyzer" />
 	<PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
 	<PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.0.0-preview4" />
 	<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ApplicationInsights" Version="1.0.0-preview4" />
