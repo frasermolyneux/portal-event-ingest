@@ -18,7 +18,7 @@ resource "azuread_application" "event_ingest_api" {
 }
 
 resource "azuread_service_principal" "repository_api_service_principal" {
-  application_id               = azuread_application.event_ingest_api.application_id
+  client_id                    = azuread_application.event_ingest_api.client_id
   app_role_assignment_required = false
 
   owners = [

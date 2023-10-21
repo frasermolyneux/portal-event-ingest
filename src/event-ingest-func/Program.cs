@@ -1,22 +1,31 @@
+using System.Reflection;
+
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using XtremeIdiots.Portal.EventsFunc;
-
 using XtremeIdiots.Portal.RepositoryApiClient;
 
 var host = new HostBuilder()
-    .ConfigureFunctionsWorkerDefaults(builder =>
+    .ConfigureAppConfiguration(builder =>
     {
-        builder
-            .AddApplicationInsights()
-            .AddApplicationInsightsLogger();
+        builder.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
+    })
+    .ConfigureFunctionsWorkerDefaults(builder => { }, options =>
+    {
+        options.EnableUserCodeException = true;
     })
     .ConfigureServices((context, services) =>
     {
         var config = context.Configuration;
+
+        services.AddLogging();
+        services.AddSingleton<ITelemetryInitializer, TelemetryInitializer>();
+        services.AddApplicationInsightsTelemetryWorkerService();
+        services.ConfigureFunctionsApplicationInsights();
 
         services.AddRepositoryApiClient(options =>
         {
@@ -26,8 +35,6 @@ var host = new HostBuilder()
             options.ApiPathPrefix = config["repository_api_path_prefix"] ?? "repository";
         });
 
-        services.AddSingleton<ITelemetryInitializer, TelemetryInitializer>();
-        services.AddLogging();
         services.AddMemoryCache();
     })
     .Build();
