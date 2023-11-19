@@ -3,20 +3,20 @@
 {
     "name": "C# (.NET)",
     // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-    "image": "mcr.microsoft.com/devcontainers/dotnet:0-7.0",
+    "image": "mcr.microsoft.com/devcontainers/dotnet:0-8.0",
     "customizations": {
         "vscode": {
             "extensions": [
-				"ms-dotnettools.vscode-dotnet-runtime",
-				"ms-dotnettools.csharp",
-				"ms-dotnettools.csdevkit",
-				"ms-dotnettools.vscodeintellicode-csharp",
-				"GitHub.vscode-github-actions",
-				"aliasadidev.nugetpackagemanagergui",
-				"HashiCorp.terraform",
-				"ms-vscode.azurecli",
-				"ms-azuretools.vscode-azurefunctions"
-			]
+                "ms-dotnettools.vscode-dotnet-runtime",
+                "ms-dotnettools.csharp",
+                "ms-dotnettools.csdevkit",
+                "ms-dotnettools.vscodeintellicode-csharp",
+                "GitHub.vscode-github-actions",
+                "aliasadidev.nugetpackagemanagergui",
+                "HashiCorp.terraform",
+                "ms-vscode.azurecli",
+                "ms-azuretools.vscode-azurefunctions"
+            ]
         }
     },
     "features": {

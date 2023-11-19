@@ -1,5 +1,8 @@
-﻿using Microsoft.Azure.Functions.Worker;
+﻿using System.Net;
+using Azure.Messaging.ServiceBus;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
@@ -10,9 +13,15 @@ namespace XtremeIdiots.Portal.EventsFunc;
 
 public class ServerEvents
 {
-    [Function("OnServerConnected")]
-    [ServiceBusOutput("server_connected_queue", Connection = "service_bus_connection_string")]
-    public static async Task<string> OnServerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData req, FunctionContext executionContext)
+    private readonly IConfiguration configuration;
+
+    public ServerEvents(IConfiguration configuration)
+    {
+        this.configuration = configuration;
+    }
+
+    [Function(nameof(OnServerConnected))]
+    public async Task<HttpResponseData> OnServerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData req, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(OnPlayerConnected));
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -29,12 +38,17 @@ public class ServerEvents
             throw;
         }
 
-        return JsonConvert.SerializeObject(onServerConnected);
+        await using (var client = new ServiceBusClient(configuration["service_bus_connection_string"]))
+        {
+            var sender = client.CreateSender("server_connected_queue");
+            await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onServerConnected)));
+        };
+
+        return req.CreateResponse(HttpStatusCode.OK);
     }
 
-    [Function("OnMapChange")]
-    [ServiceBusOutput("map_change_queue", Connection = "service_bus_connection_string")]
-    public static async Task<string> OnMapChange([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData req, FunctionContext executionContext)
+    [Function(nameof(OnMapChange))]
+    public async Task<HttpResponseData> OnMapChange([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData req, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(OnPlayerConnected));
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -51,6 +65,12 @@ public class ServerEvents
             throw;
         }
 
-        return JsonConvert.SerializeObject(onMapChange);
+        await using (var client = new ServiceBusClient(configuration["service_bus_connection_string"]))
+        {
+            var sender = client.CreateSender("map_change_queue");
+            await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapChange)));
+        };
+
+        return req.CreateResponse(HttpStatusCode.OK);
     }
 }

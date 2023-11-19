@@ -70,7 +70,7 @@ public class ServerEventsIngest
         if (onMapChange == null)
             throw new Exception("OnMapChange event was null");
 
-        if (onMapChange.ServerId == null)
+        if (onMapChange.ServerId == Guid.Empty)
             throw new Exception("OnMapChange event contained null or empty 'ServerId'");
 
         logger.LogInformation(
