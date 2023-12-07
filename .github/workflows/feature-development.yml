@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - uses: frasermolyneux/actions/dotnet-func-ci@main
       with:
@@ -30,7 +30,7 @@ jobs:
     needs: [dotnet-func-ci]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - uses: frasermolyneux/actions/publish-nuget-packages@main
       with:
@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - uses: frasermolyneux/actions/terraform-plan-and-apply@main
       with:
@@ -73,7 +73,7 @@ jobs:
     needs: [dotnet-func-ci, terraform-plan-and-apply-dev]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - uses: frasermolyneux/actions/deploy-function-app@main
       with:
