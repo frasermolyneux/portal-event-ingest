@@ -16,6 +16,7 @@ jobs:
 
     concurrency: # This is required to prevent multiple GitHub Actions invocations against stateful resources. e.g. Terraform state file / Database / Deployed Apps
       group: ${{ github.repository }}-dev
+      cancel-in-progress: true
 
     steps:
     - uses: actions/checkout@v4
@@ -28,4 +29,4 @@ jobs:
         AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
         AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
         AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        resources: "[\"azurerm_management_lock.rg_lock\",\"azurerm_management_lock.kv_lock\",\"azurerm_linux_function_app.app\"]"
+        resources: "[\"azurerm_management_lock.rg_lock\",\"azurerm_management_lock.kv_lock\",\"azurerm_linux_function_app.app\",\"azurerm_storage_account.function_app_storage\"]"
