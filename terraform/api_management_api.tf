@@ -26,7 +26,7 @@ resource "azurerm_api_management_backend" "api_management_backend" {
   protocol    = "http"
   title       = local.workload_name
   description = local.workload_name
-  url         = format("https://%s.%s/api", local.workload_name, var.dns_zone_name)
+  url         = format("https://%s/api", azurerm_linux_function_app.app.default_hostname)
 
   tls {
     validate_certificate_chain = true
