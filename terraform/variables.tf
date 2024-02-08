@@ -16,6 +16,14 @@ variable "api_management_subscription_id" {}
 variable "api_management_resource_group_name" {}
 variable "api_management_name" {}
 
+variable "frontdoor_subscription_id" {}
+variable "frontdoor_resource_group_name" {}
+variable "frontdoor_name" {}
+
+variable "dns_subscription_id" {}
+variable "dns_resource_group_name" {}
+variable "dns_zone_name" {}
+
 variable "repository_api" {
   type = object({
     application_name     = string
