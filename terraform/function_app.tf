@@ -41,6 +41,9 @@ resource "azurerm_linux_function_app" "app" {
     "portal_repository_apim_subscription_key_secondary" = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.kv.name, azurerm_key_vault_secret.repository_api_subscription_secret_secondary.name)
     "repository_api_application_audience"               = var.repository_api.application_audience
     "repository_api_path_prefix"                        = var.repository_api.apim_path_prefix
+
+    "APPINSIGHTS_PROFILERFEATURE_VERSION"  = "1.0.0"
+    "DiagnosticServices_EXTENSION_VERSION" = "~3"
   }
 
   lifecycle {
