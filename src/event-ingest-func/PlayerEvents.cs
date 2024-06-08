@@ -1,5 +1,7 @@
 ﻿using System.Net;
+
 using Azure.Messaging.ServiceBus;
+
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
@@ -7,9 +9,9 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
-using XtremeIdiots.Portal.EventsApi.Abstractions.Models;
+using XtremeIdiots.Portal.EventIngestApi.Abstractions.Models;
 
-namespace XtremeIdiots.Portal.EventsFunc;
+namespace XtremeIdiots.Portal.EventIngestFunc;
 
 public class PlayerEvents
 {

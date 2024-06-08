@@ -2,12 +2,11 @@ using System.Reflection;
 
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using XtremeIdiots.Portal.EventsFunc;
+using XtremeIdiots.Portal.EventIngestFunc;
 using XtremeIdiots.Portal.RepositoryApiClient;
 
 var host = new HostBuilder()
@@ -38,6 +37,8 @@ var host = new HostBuilder()
         });
 
         services.AddMemoryCache();
+
+        services.AddHealthChecks();
     })
     .Build();
 

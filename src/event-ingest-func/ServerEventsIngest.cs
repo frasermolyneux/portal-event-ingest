@@ -3,11 +3,11 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
-using XtremeIdiots.Portal.EventsApi.Abstractions.Models;
+using XtremeIdiots.Portal.EventIngestApi.Abstractions.Models;
 using XtremeIdiots.Portal.RepositoryApi.Abstractions.Models.GameServers;
 using XtremeIdiots.Portal.RepositoryApiClient;
 
-namespace XtremeIdiots.Portal.IngestFunc;
+namespace XtremeIdiots.Portal.EventIngestFunc;
 
 public class ServerEventsIngest
 {
@@ -76,7 +76,7 @@ public class ServerEventsIngest
         logger.LogInformation(
             $"ProcessOnMapChange :: GameName: '{onMapChange.GameName}', GameType: '{onMapChange.GameType}', MapName: '{onMapChange.MapName}'");
 
-        var gameServerEvent = new CreateGameServerEventDto((Guid)onMapChange.ServerId, "MapChange", JsonConvert.SerializeObject(onMapChange));
+        var gameServerEvent = new CreateGameServerEventDto(onMapChange.ServerId, "MapChange", JsonConvert.SerializeObject(onMapChange));
         await repositoryApiClient.GameServersEvents.CreateGameServerEvent(gameServerEvent);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.Extensibility;
 
-namespace XtremeIdiots.Portal.EventsFunc
+namespace XtremeIdiots.Portal.EventIngestFunc
 {
     public class TelemetryInitializer : ITelemetryInitializer
     {
