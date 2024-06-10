@@ -26,6 +26,7 @@ var host = new HostBuilder()
         services.AddSingleton<ITelemetryInitializer, TelemetryInitializer>();
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
+        services.AddServiceProfiler();
 
         services.AddRepositoryApiClient(options =>
         {
