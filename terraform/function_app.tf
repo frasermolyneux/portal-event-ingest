@@ -44,6 +44,7 @@ resource "azurerm_linux_function_app" "app" {
     "repository_api_application_audience"               = var.repository_api.application_audience
     "repository_api_path_prefix"                        = var.repository_api.apim_path_prefix
 
+    // https://learn.microsoft.com/en-us/azure/azure-monitor/profiler/profiler-azure-functions#app-settings-for-enabling-profiler
     "APPINSIGHTS_PROFILERFEATURE_VERSION"  = "1.0.0"
     "DiagnosticServices_EXTENSION_VERSION" = "~3"
   }
@@ -58,4 +59,23 @@ resource "azurerm_linux_function_app" "app" {
 data "azurerm_function_app_host_keys" "app" {
   name                = azurerm_linux_function_app.app.name
   resource_group_name = azurerm_resource_group.rg.name
+}
+
+resource "azurerm_application_insights_standard_web_test" "app" {
+  name = "${azurerm_linux_function_app.app.name}-availability-test"
+
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+
+  application_insights_id = data.azurerm_application_insights.core.id
+
+  geo_locations = [
+    "emea-ru-msa-edge", // UK South
+    "emea-nl-ams-azr",  // West Europe
+    "us-va-ash-azr"     // East US
+  ]
+
+  request {
+    url = "${azurerm_linux_function_app.app.default_hostname}/api/health"
+  }
 }
