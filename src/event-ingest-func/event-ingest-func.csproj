@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
   <TargetFramework>net8.0</TargetFramework>
   <AzureFunctionsVersion>v4</AzureFunctionsVersion>
@@ -19,7 +19,7 @@
 	<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
 	<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.6" />
-	<PackageReference Include="XtremeIdiots.Portal.RepositoryApiClient" Version="1.1.186.1" />
+	<PackageReference Include="XtremeIdiots.Portal.RepositoryApiClient" Version="1.1.187.1" />
   <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
   </ItemGroup>
   <ItemGroup>
