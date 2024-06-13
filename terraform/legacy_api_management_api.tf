@@ -22,7 +22,12 @@ resource "azurerm_api_management_named_value" "legacy_functionapp_host_key_named
   ]
 }
 
-resource "azurerm_api_management_backend" "api_management_backend" {
+moved {
+  from = azurerm_api_management_backend.api_management_backend
+  to   = azurerm_api_management_backend.legacy_api_management_backend
+}
+
+resource "azurerm_api_management_backend" "legacy_api_management_backend" {
   provider            = azurerm.api_management
   name                = local.workload_name
   resource_group_name = data.azurerm_api_management.platform.resource_group_name
@@ -45,7 +50,12 @@ resource "azurerm_api_management_backend" "api_management_backend" {
   }
 }
 
-resource "azurerm_api_management_named_value" "active_backend_named_value" {
+moved {
+  from = azurerm_api_management_named_value.active_backend_named_value
+  to   = azurerm_api_management_named_value.legacy_active_backend_named_value
+}
+
+resource "azurerm_api_management_named_value" "legacy_active_backend_named_value" {
   provider            = azurerm.api_management
   name                = "event-ingest-api-active-backend"
   resource_group_name = data.azurerm_api_management.platform.resource_group_name
@@ -54,10 +64,15 @@ resource "azurerm_api_management_named_value" "active_backend_named_value" {
   secret = false
 
   display_name = "event-ingest-api-active-backend"
-  value        = azurerm_api_management_backend.api_management_backend.name
+  value        = azurerm_api_management_backend.legacy_api_management_backend.name
 }
 
-resource "azurerm_api_management_named_value" "audience_named_value" {
+moved {
+  from = azurerm_api_management_named_value.audience_named_value
+  to   = azurerm_api_management_named_value.legacy_audience_named_value
+}
+
+resource "azurerm_api_management_named_value" "legacy_audience_named_value" {
   provider            = azurerm.api_management
   name                = "event-ingest-api-audience"
   resource_group_name = data.azurerm_api_management.platform.resource_group_name
@@ -69,7 +84,12 @@ resource "azurerm_api_management_named_value" "audience_named_value" {
   value        = format("api://%s", local.app_registration_name)
 }
 
-resource "azurerm_api_management_api" "event_ingest_api" {
+moved {
+  from = azurerm_api_management_api.event_ingest_api
+  to   = azurerm_api_management_api.legacy_event_ingest_api
+}
+
+resource "azurerm_api_management_api" "legacy_event_ingest_api" {
   provider            = azurerm.api_management
   name                = "event-ingest-api"
   resource_group_name = data.azurerm_api_management.platform.resource_group_name
@@ -94,9 +114,14 @@ resource "azurerm_api_management_api" "event_ingest_api" {
   }
 }
 
-resource "azurerm_api_management_api_policy" "example" {
+moved {
+  from = azurerm_api_management_api_policy.example
+  to   = azurerm_api_management_api_policy.legacy_event_ingest_api_policy
+}
+
+resource "azurerm_api_management_api_policy" "legacy_event_ingest_api_policy" {
   provider            = azurerm.api_management
-  api_name            = azurerm_api_management_api.event_ingest_api.name
+  api_name            = azurerm_api_management_api.legacy_event_ingest_api.name
   resource_group_name = data.azurerm_api_management.platform.resource_group_name
   api_management_name = data.azurerm_api_management.platform.name
 
@@ -133,15 +158,20 @@ resource "azurerm_api_management_api_policy" "example" {
 XML
 
   depends_on = [
-    azurerm_api_management_named_value.active_backend_named_value,
-    azurerm_api_management_named_value.audience_named_value
+    azurerm_api_management_named_value.legacy_active_backend_named_value,
+    azurerm_api_management_named_value.legacy_audience_named_value
   ]
 }
 
-resource "azurerm_api_management_api_diagnostic" "example" {
+moved {
+  from = azurerm_api_management_api_diagnostic.example
+  to   = azurerm_api_management_api_diagnostic.legacy_event_ingest_api_diagnostic
+}
+
+resource "azurerm_api_management_api_diagnostic" "legacy_event_ingest_api_diagnostic" {
   provider                 = azurerm.api_management
   identifier               = "applicationinsights"
-  api_name                 = azurerm_api_management_api.event_ingest_api.name
+  api_name                 = azurerm_api_management_api.legacy_event_ingest_api.name
   resource_group_name      = data.azurerm_api_management.platform.resource_group_name
   api_management_name      = data.azurerm_api_management.platform.name
   api_management_logger_id = azurerm_api_management_logger.api_management_logger.id
