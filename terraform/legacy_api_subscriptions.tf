@@ -1,8 +1,3 @@
-moved {
-  from = azurerm_api_management_subscription.repository_api_subscription
-  to   = azurerm_api_management_subscription.legacy_repository_api_subscription
-}
-
 resource "azurerm_api_management_subscription" "legacy_repository_api_subscription" {
   provider = azurerm.api_management
 

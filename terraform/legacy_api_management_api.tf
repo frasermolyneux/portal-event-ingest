@@ -1,8 +1,3 @@
-moved {
-  from = azurerm_api_management_named_value.functionapp_host_key_named_value
-  to   = azurerm_api_management_named_value.legacy_functionapp_host_key_named_value
-}
-
 resource "azurerm_api_management_named_value" "legacy_functionapp_host_key_named_value" {
   provider            = azurerm.api_management
   name                = azurerm_key_vault_secret.functionapp_host_key_secret.name
@@ -20,11 +15,6 @@ resource "azurerm_api_management_named_value" "legacy_functionapp_host_key_named
   depends_on = [
     azurerm_role_assignment.legacy_apim_kv_role_assignment
   ]
-}
-
-moved {
-  from = azurerm_api_management_backend.api_management_backend
-  to   = azurerm_api_management_backend.legacy_api_management_backend
 }
 
 resource "azurerm_api_management_backend" "legacy_api_management_backend" {
@@ -50,11 +40,6 @@ resource "azurerm_api_management_backend" "legacy_api_management_backend" {
   }
 }
 
-moved {
-  from = azurerm_api_management_named_value.active_backend_named_value
-  to   = azurerm_api_management_named_value.legacy_active_backend_named_value
-}
-
 resource "azurerm_api_management_named_value" "legacy_active_backend_named_value" {
   provider            = azurerm.api_management
   name                = "event-ingest-api-active-backend"
@@ -67,11 +52,6 @@ resource "azurerm_api_management_named_value" "legacy_active_backend_named_value
   value        = azurerm_api_management_backend.legacy_api_management_backend.name
 }
 
-moved {
-  from = azurerm_api_management_named_value.audience_named_value
-  to   = azurerm_api_management_named_value.legacy_audience_named_value
-}
-
 resource "azurerm_api_management_named_value" "legacy_audience_named_value" {
   provider            = azurerm.api_management
   name                = "event-ingest-api-audience"
@@ -82,11 +62,6 @@ resource "azurerm_api_management_named_value" "legacy_audience_named_value" {
 
   display_name = "event-ingest-api-audience"
   value        = format("api://%s", local.app_registration_name)
-}
-
-moved {
-  from = azurerm_api_management_api.event_ingest_api
-  to   = azurerm_api_management_api.legacy_event_ingest_api
 }
 
 resource "azurerm_api_management_api" "legacy_event_ingest_api" {
@@ -112,11 +87,6 @@ resource "azurerm_api_management_api" "legacy_event_ingest_api" {
     content_format = "openapi+json"
     content_value  = file("../EventIngest.openapi+json.json")
   }
-}
-
-moved {
-  from = azurerm_api_management_api_policy.example
-  to   = azurerm_api_management_api_policy.legacy_event_ingest_api_policy
 }
 
 resource "azurerm_api_management_api_policy" "legacy_event_ingest_api_policy" {
@@ -161,11 +131,6 @@ XML
     azurerm_api_management_named_value.legacy_active_backend_named_value,
     azurerm_api_management_named_value.legacy_audience_named_value
   ]
-}
-
-moved {
-  from = azurerm_api_management_api_diagnostic.example
-  to   = azurerm_api_management_api_diagnostic.legacy_event_ingest_api_diagnostic
 }
 
 resource "azurerm_api_management_api_diagnostic" "legacy_event_ingest_api_diagnostic" {
