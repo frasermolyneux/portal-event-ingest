@@ -1,4 +1,9 @@
-resource "azurerm_api_management_named_value" "functionapp_host_key_named_value" {
+moved {
+  from = azurerm_api_management_named_value.functionapp_host_key_named_value
+  to   = azurerm_api_management_named_value.legacy_functionapp_host_key_named_value
+}
+
+resource "azurerm_api_management_named_value" "legacy_functionapp_host_key_named_value" {
   provider            = azurerm.api_management
   name                = azurerm_key_vault_secret.functionapp_host_key_secret.name
   resource_group_name = data.azurerm_api_management.platform.resource_group_name
@@ -35,7 +40,7 @@ resource "azurerm_api_management_backend" "api_management_backend" {
 
   credentials {
     query = {
-      "code" = format("{{${azurerm_api_management_named_value.functionapp_host_key_named_value.name}}}")
+      "code" = format("{{${azurerm_api_management_named_value.legacy_functionapp_host_key_named_value.name}}}")
     }
   }
 }
