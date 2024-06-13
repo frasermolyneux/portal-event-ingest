@@ -8,7 +8,7 @@ resource "azurerm_api_management_named_value" "app_insights_apim_instrumentation
   value = data.azurerm_application_insights.core.instrumentation_key
 
   depends_on = [
-    azurerm_role_assignment.pim_kv_role_assignment
+    azurerm_role_assignment.apim_kv_role_assignment
   ]
 }
 
