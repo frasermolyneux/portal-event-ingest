@@ -39,8 +39,8 @@ resource "azurerm_linux_function_app" "app" {
     "ApplicationInsightsAgent_EXTENSION_VERSION"        = "~3"
     "service_bus_connection_string"                     = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.kv.name, azurerm_key_vault_secret.service_bus_connection_string_secret.name)
     "apim_base_url"                                     = data.azurerm_api_management.legacy_platform.gateway_url
-    "portal_repository_apim_subscription_key_primary"   = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.kv.name, azurerm_key_vault_secret.repository_api_subscription_secret_primary.name)
-    "portal_repository_apim_subscription_key_secondary" = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.kv.name, azurerm_key_vault_secret.repository_api_subscription_secret_secondary.name)
+    "portal_repository_apim_subscription_key_primary"   = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.kv.name, azurerm_key_vault_secret.legacy_repository_api_subscription_secret_primary.name)
+    "portal_repository_apim_subscription_key_secondary" = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.kv.name, azurerm_key_vault_secret.legacy_repository_api_subscription_secret_secondary.name)
     "repository_api_application_audience"               = var.repository_api.application_audience
     "repository_api_path_prefix"                        = var.repository_api.apim_path_prefix
 
