@@ -62,8 +62,9 @@ data "azurerm_function_app_host_keys" "app" {
 }
 
 resource "azurerm_application_insights_standard_web_test" "app" {
-  name = "${azurerm_linux_function_app.app.name}-availability-test"
-  tags = var.tags
+  count = var.environment == "prd" ? 1 : 0
+  name  = "${azurerm_linux_function_app.app.name}-availability-test"
+  tags  = var.tags
 
   resource_group_name = data.azurerm_application_insights.core.resource_group_name
   location            = data.azurerm_application_insights.core.location
