@@ -1,64 +1,66 @@
 {
-    "lenses": {
+  "lenses": {
+    "0": {
+      "metadata": null,
+      "order": 0,
+      "parts": {
         "0": {
-            "order": 0,
-            "parts": {
-                "0": {
-                    "position": {
-                        "x": 0,
-                        "y": 0,
-                        "rowSpan": 2,
-                        "colSpan": 3
-                    },
-                    "metadata": {
-                        "inputs": [],
-                        "type": "Extension/HubsExtension/PartType/MarkdownPart",
-                        "settings": {
-                            "content": {
-                                "settings": {
-                                    "content": "Hello World!",
-                                    "subtitle": "",
-                                    "title": ""
-                                }
-                            }
-                        }
-                    }
+          "metadata": {
+            "inputs": [],
+            "settings": {
+              "content": {
+                "settings": {
+                  "content": "Hello World!",
+                  "subtitle": "",
+                  "title": ""
                 }
-            }
-        }
-    },
-    "metadata": {
-        "model": {
-            "timeRange": {
-                "value": {
-                    "relative": {
-                        "duration": 24,
-                        "timeUnit": 1
-                    }
-                },
-                "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+              }
             },
-            "filterLocale": {
-                "value": "en-us"
-            },
-            "filters": {
-                "value": {
-                    "MsPortalFx_TimeRange": {
-                        "model": {
-                            "format": "utc",
-                            "granularity": "auto",
-                            "relative": "24h"
-                        },
-                        "displayCache": {
-                            "name": "UTC Time",
-                            "value": "Past 24 hours"
-                        },
-                        "filteredPartIds": [
-                            "StartboardPart-UnboundPart-ae44fef5-76b8-46b0-86f0-2b3f47bad1c7"
-                        ]
-                    }
-                }
-            }
+            "type": "Extension/HubsExtension/PartType/MarkdownPart"
+          },
+          "position": {
+            "colSpan": 3,
+            "metadata": null,
+            "rowSpan": 2,
+            "x": 0,
+            "y": 0
+          }
         }
+      }
     }
+  },
+  "metadata": {
+    "model": {
+      "filterLocale": {
+        "value": "en-us"
+      },
+      "filters": {
+        "value": {
+          "MsPortalFx_TimeRange": {
+            "displayCache": {
+              "name": "UTC Time",
+              "value": "Past 24 hours"
+            },
+            "filteredPartIds": [
+              "StartboardPart-UnboundPart-ae44fef5-76b8-46b0-86f0-2b3f47bad1c7"
+            ],
+            "model": {
+              "format": "utc",
+              "granularity": "auto",
+              "relative": "24h"
+            }
+          }
+        }
+      },
+      "timeRange": {
+        "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange",
+        "value": {
+          "relative": {
+            "duration": 24,
+            "timeUnit": 1
+          }
+        }
+      }
+    }
+  }
 }
