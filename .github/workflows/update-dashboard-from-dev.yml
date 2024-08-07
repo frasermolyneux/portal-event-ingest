@@ -59,10 +59,16 @@ jobs:
 
         git config --global user.email "github@mx-mail.io"
         git config --global user.name "GitHub Actions"
+        git checkout -b ${{github.run_id}}-${{github.run_number}}
+
         git add .
         git commit -m "Update dashboard from dev"
-        git push origin HEAD:main
-          
+        git push origin ${{github.run_id}}-${{github.run_number}}
+        
+        gh pr create -B main -H ${{github.run_id}}-${{github.run_number}} --title 'Update dashboard from dev' --body 'Created by GitHub Actions'
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+
     - shell: bash
       run: |
         echo "dashboard_properties: ${{ steps.terraform-output.outputs.dashboard_properties }}"
