@@ -6,5 +6,5 @@ resource "azurerm_portal_dashboard" "app" {
 
   tags = var.tags
 
-  dashboard_properties = readfile("dashboards/dashboard.json")
+  dashboard_properties = file("dashboards/dashboard.json")
 }
