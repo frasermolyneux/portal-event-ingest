@@ -1,0 +1,43 @@
+name: Update Dashboard from Dev
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write # This is required for Az CLI Login
+  contents: read # This is required for actions/checkout
+
+jobs:
+  terraform-plan:
+    environment: Development
+    runs-on: ubuntu-latest
+
+    concurrency: # This is required to prevent multiple GitHub Actions invocations against stateful resources. e.g. Terraform state file / Database / Deployed Apps
+      group: ${{ github.repository }}-dev
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: frasermolyneux/actions/terraform-plan-and-apply@main
+      with:
+        terraform-folder: "terraform"
+        terraform-var-file: "tfvars/dev.tfvars"
+        terraform-backend-file: "backends/dev.backend.hcl"
+        AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - id: terraform-output
+      shell: bash
+      run: |
+        cd terraform
+        echo "dashboard_properties=$(terraform output -raw dashboard_properties)" >> $GITHUB_OUTPUT
+      env:
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_USE_OIDC: true
+
+    - shell: bash
+      run: |
+        echo "dashboard_properties: ${{ steps.terraform-output.outputs.dashboard_properties }}"
