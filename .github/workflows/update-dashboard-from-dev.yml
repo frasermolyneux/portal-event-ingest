@@ -55,8 +55,10 @@ jobs:
         $extract["lenses"] = $dashboard.lenses
         $extract["metadata"] = $dashboard.metadata
 
-        $extract | ConvertTo-Json | Set-Content -Path "terraform/dashboards/dashboard.json"
+        $extract | ConvertTo-Json -Depth 50 | Set-Content -Path "terraform/dashboards/dashboard.json"
 
+        git config --global user.email "github@mx-mail.io"
+        git config --global user.name "GitHub Actions"
         git add .
         git commit -m "Update dashboard from dev"
           
