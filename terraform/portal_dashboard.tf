@@ -1,21 +1,22 @@
 locals {
-  tokens = {
+  input = file("dashboards/dashboard.json")
+
+  map = {
     "app_insights_id"             = data.azurerm_application_insights.core.id
     "app_insights_resource_group" = data.azurerm_application_insights.core.resource_group_name
     "function_app_name"           = azurerm_linux_function_app.app.name
   }
 
-  template = file("dashboards/dashboard.json")
-
-  result = format(
-    # Replace any variable with a %s which will be filled by the format func
-    replace(local.template, "/{(${join("|", keys(local.tokens))})}/", "%s"),
-    [
-      # Replace each variable found in the given template with its value from the tokens map
-      for value in flatten(regexall("{(${join("|", keys(local.tokens))})}", local.template)) :
-      lookup(local.tokens, value)
-    ]
-  )
+  out = join("\n", [
+    for line in split("\n", local.input) :
+    format(
+      replace(line, "/{(${join("|", keys(local.map))})}/", "%s"),
+      [
+        for value in flatten(regexall("{(${join("|", keys(local.map))})}", line)) :
+        lookup(local.map, value)
+      ]...
+    )
+  ])
 }
 
 
@@ -27,5 +28,5 @@ resource "azurerm_portal_dashboard" "app" {
 
   tags = var.tags
 
-  dashboard_properties = local.result
+  dashboard_properties = local.out
 }
