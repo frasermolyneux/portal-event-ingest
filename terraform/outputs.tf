@@ -15,5 +15,5 @@ output "resource_group_name" {
 }
 
 output "staging_dashboard_name" {
-  value = var.environment == "dev" ? azurerm_portal_dashboard.staging_dashboard.name[0] : ""
+  value = var.environment == "dev" ? azurerm_portal_dashboard.staging_dashboard[0].name : ""
 }
