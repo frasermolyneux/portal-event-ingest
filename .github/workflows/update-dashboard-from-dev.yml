@@ -52,7 +52,7 @@ jobs:
 
     - shell: pwsh
       run: |
-        $dashboard = az portal dashboard show --name ${{ steps.terraform-output.outputs.dashboard_name }} --resource-group ${{ steps.terraform-output.outputs.resource_group_name }} | ConvertFrom-Json
+        $dashboardJson = az portal dashboard show --name ${{ steps.terraform-output.outputs.dashboard_name }} --resource-group ${{ steps.terraform-output.outputs.resource_group_name }}
 
         # Replace environment specific properties with placeholders
         $replacements = @{
@@ -63,8 +63,10 @@ jobs:
 
         foreach ($key in $replacements.Keys) {
             $value = $replacements[$key]
-            $dashboard = $dashboard -replace $key, $value
+            $dashboardJson = $dashboardJson -replace $key, $value
         }
+
+        $dashboard = $dashboardJson | ConvertFrom-Json
 
         $extract = @{}
         $extract["lenses"] = $dashboard.lenses
