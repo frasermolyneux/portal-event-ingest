@@ -9,21 +9,474 @@
             "inputs": [],
             "settings": {
               "content": {
-                "settings": {
-                  "content": "Hello World!",
-                  "subtitle": "",
-                  "title": ""
-                }
+                "content": "# Usage",
+                "subtitle": "",
+                "title": ""
               }
             },
             "type": "Extension/HubsExtension/PartType/MarkdownPart"
           },
           "position": {
-            "colSpan": 3,
+            "colSpan": 4,
             "metadata": null,
-            "rowSpan": 2,
+            "rowSpan": 1,
             "x": 0,
             "y": 0
+          }
+        },
+        "1": {
+          "metadata": {
+            "inputs": [],
+            "settings": {
+              "content": {
+                "content": "# Reliability",
+                "markdownSource": 1,
+                "markdownUri": "",
+                "subtitle": "",
+                "title": ""
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MarkdownPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 1,
+            "x": 4,
+            "y": 0
+          }
+        },
+        "2": {
+          "metadata": {
+            "filters": {
+              "cloud/roleName": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "fn-portal-event-ingest-dev-uksouth-01-fafcb30ca7e0"
+                  ]
+                }
+              }
+            },
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "cloud/roleName",
+                          "operator": 0,
+                          "values": [
+                            "fn-portal-event-ingest-dev-uksouth-01-fafcb30ca7e0"
+                          ]
+                        }
+                      ]
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "Server requests"
+                        },
+                        "name": "requests/count",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
+                        }
+                      },
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Server response time"
+                        },
+                        "name": "requests/duration",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "Server Requests + Avg Response Time",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "Server requests"
+                        },
+                        "name": "requests/count",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
+                        }
+                      }
+                    ],
+                    "title": "Function App - Requests",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 0,
+            "y": 1
+          }
+        },
+        "3": {
+          "metadata": {
+            "filters": {
+              "cloud/roleName": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "fn-portal-repo-func-dev-uksouth-01-be9e6fe6e9c7"
+                  ]
+                }
+              }
+            },
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "cloud/roleName",
+                          "operator": 0,
+                          "values": [
+                            "fn-portal-repo-func-dev-uksouth-01-be9e6fe6e9c7"
+                          ]
+                        }
+                      ]
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "Failed requests"
+                        },
+                        "name": "requests/failed",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 2592000000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "Failed requests",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 3,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "Failed requests"
+                        },
+                        "name": "requests/failed",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
+                        }
+                      }
+                    ],
+                    "title": "Function App - Failed requests",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 3,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 4,
+            "y": 1
+          }
+        },
+        "4": {
+          "metadata": {
+            "inputs": [],
+            "settings": {
+              "content": {
+                "content": "# Availability",
+                "markdownSource": 1,
+                "markdownUri": "",
+                "subtitle": "",
+                "title": ""
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MarkdownPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 1,
+            "x": 0,
+            "y": 4
+          }
+        },
+        "5": {
+          "metadata": {
+            "filters": {
+              "availabilityResult/name": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "fn-portal-event-ingest-dev-uksouth-01-fafcb30ca7e0"
+                  ]
+                }
+              }
+            },
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "availabilityResult/name",
+                          "operator": 0,
+                          "values": [
+                            "fn-portal-event-ingest-dev-uksouth-01-fafcb30ca7e0"
+                          ]
+                        }
+                      ]
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Availability"
+                        },
+                        "name": "availabilityResults/availabilityPercentage",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "Average availability",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 3,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Availability"
+                        },
+                        "name": "availabilityResults/availabilityPercentage",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
+                        }
+                      }
+                    ],
+                    "title": "Function App - Average availability",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 3,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 0,
+            "y": 5
           }
         }
       }
@@ -42,7 +495,9 @@
               "value": "Past 24 hours"
             },
             "filteredPartIds": [
-              "StartboardPart-UnboundPart-ae44fef5-76b8-46b0-86f0-2b3f47bad1c7"
+              "StartboardPart-MonitorChartPart-6a927b36-a54d-41b7-9b6c-6f76c1ad70a9",
+              "StartboardPart-MonitorChartPart-6a927b36-a54d-41b7-9b6c-6f76c1ad70ab",
+              "StartboardPart-MonitorChartPart-6a927b36-a54d-41b7-9b6c-6f76c1ad70af"
             ],
             "model": {
               "format": "utc",
