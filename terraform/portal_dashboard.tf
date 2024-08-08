@@ -8,3 +8,8 @@ resource "azurerm_portal_dashboard" "app" {
 
   dashboard_properties = file("dashboards/dashboard.json")
 }
+
+data "azurerm_portal_dashboard" "app" {
+  name                = azurerm_portal_dashboard.app.name
+  resource_group_name = azurerm_portal_dashboard.app.resource_group_name
+}
