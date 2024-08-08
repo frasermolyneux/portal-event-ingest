@@ -39,7 +39,9 @@ jobs:
       shell: bash
       run: |
         cd terraform
-        echo "app_insights_id=$(terraform output -raw app_insights_id)" >> $GITHUB_OUTPUT
+        echo "dashboard_replacements=$(terraform output -raw dashboard_replacements)" >> $GITHUB_OUTPUT
+        echo "subscription_id=$(terraform output -raw subscription_id)" >> $GITHUB_OUTPUT
+        echo "app_insights_name=$(terraform output -raw app_insights_name)" >> $GITHUB_OUTPUT
         echo "app_insights_resource_group=$(terraform output -raw app_insights_resource_group)" >> $GITHUB_OUTPUT
         echo "function_app_name=$(terraform output -raw function_app_name)" >> $GITHUB_OUTPUT
         echo "resource_group_name=$(terraform output -raw resource_group_name)" >> $GITHUB_OUTPUT
@@ -54,16 +56,12 @@ jobs:
       run: |
         $dashboardJson = az portal dashboard show --name ${{ steps.terraform-output.outputs.staging_dashboard_name }} --resource-group ${{ steps.terraform-output.outputs.resource_group_name }}
 
-        # Replace environment specific properties with placeholders
-        $replacements = [ordered]@{
-          "${{ steps.terraform-output.outputs.app_insights_id }}" = "{app_insights_id}"
-          "${{ steps.terraform-output.outputs.app_insights_resource_group }}" = "{app_insights_resource_group}"
-          "${{ steps.terraform-output.outputs.function_app_name }}" = "{function_app_name}"
-        }
+        $dashboardReplacementsJson = ${{ steps.terraform-output.outputs.dashboard_replacements }}
+        $dashboardReplacements = [ordered]($dashboardReplacementsJson | ConvertFrom-Json)
 
-        foreach ($key in $replacements.Keys) {
-            $value = $replacements[$key]
-            $dashboardJson = $dashboardJson -replace $key, $value
+        foreach ($key in $dashboardReplacements.Keys) {
+            $value = $dashboardReplacements[$key]
+            $dashboardJson = $dashboardJson -replace $value, $key
         }
 
         $dashboard = $dashboardJson | ConvertFrom-Json

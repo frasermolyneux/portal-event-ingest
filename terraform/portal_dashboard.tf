@@ -1,19 +1,25 @@
 locals {
   input = file("dashboards/dashboard.json")
 
-  map = {
-    "app_insights_id"             = data.azurerm_application_insights.core.id
-    "app_insights_resource_group" = data.azurerm_application_insights.core.resource_group_name
-    "function_app_name"           = azurerm_linux_function_app.app.name
+  dashboard_replacements = {
+    "subscription_id"                  = var.subscription_id
+    "api_management_name"              = data.azurerm_api_management.api_management.name
+    "function_app_name"                = azurerm_linux_function_app.app.name
+    "resource_group_name"              = azurerm_resource_group.rg.name
+    "app_insights_resource_group_name" = data.azurerm_application_insights.core.resource_group_name
+    "app_insights_name"                = data.azurerm_application_insights.core.name
+    "environment"                      = var.environment
+    "location"                         = var.location
+    "instance"                         = var.instance
   }
 
   out = join("\n", [
     for line in split("\n", local.input) :
     format(
-      replace(line, "/{(${join("|", keys(local.map))})}/", "%s"),
+      replace(line, "/{(${join("|", keys(local.dashboard_replacements))})}/", "%s"),
       [
-        for value in flatten(regexall("{(${join("|", keys(local.map))})}", line)) :
-        lookup(local.map, value)
+        for value in flatten(regexall("{(${join("|", keys(local.dashboard_replacements))})}", line)) :
+        lookup(local.dashboard_replacements, value)
       ]...
     )
   ])

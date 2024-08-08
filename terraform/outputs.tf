@@ -1,5 +1,9 @@
-output "app_insights_id" {
-  value = data.azurerm_application_insights.core.id
+output "subscription_id" {
+  value = var.subscription_id
+}
+
+output "app_insights_name" {
+  value = data.azurerm_application_insights.core.name
 }
 
 output "app_insights_resource_group" {
@@ -16,4 +20,8 @@ output "resource_group_name" {
 
 output "staging_dashboard_name" {
   value = var.environment == "dev" ? azurerm_portal_dashboard.staging_dashboard[0].name : ""
+}
+
+output "dashboard_replacements" {
+  value = local.dashboard_replacements
 }
