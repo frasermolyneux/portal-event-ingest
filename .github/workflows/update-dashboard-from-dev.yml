@@ -39,9 +39,11 @@ jobs:
       shell: bash
       run: |
         cd terraform
+        echo "app_insights_id=$(terraform output -raw app_insights_id)" >> $GITHUB_OUTPUT
+        echo "app_insights_resource_group=$(terraform output -raw app_insights_resource_group)" >> $GITHUB_OUTPUT
+        echo "function_app_name=$(terraform output -raw function_app_name)" >> $GITHUB_OUTPUT
         echo "resource_group_name=$(terraform output -raw resource_group_name)" >> $GITHUB_OUTPUT
         echo "dashboard_name=$(terraform output -raw dashboard_name)" >> $GITHUB_OUTPUT
-        echo "dashboard_properties=$(terraform output -raw dashboard_properties)" >> $GITHUB_OUTPUT
       env:
         ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -51,6 +53,18 @@ jobs:
     - shell: pwsh
       run: |
         $dashboard = az portal dashboard show --name ${{ steps.terraform-output.outputs.dashboard_name }} --resource-group ${{ steps.terraform-output.outputs.resource_group_name }} | ConvertFrom-Json
+
+        # Replace environment specific properties with placeholders
+        $replacements = @{
+          "${{ steps.terraform-output.outputs.app_insights_id }}" = "{app_insights_id}"
+          "${{ steps.terraform-output.outputs.app_insights_resource_group }}" = "{app_insights_resource_group}"
+          "${{ steps.terraform-output.outputs.function_app_name }}" = "{function_app_name}"
+        }
+
+        foreach ($key in $replacements.Keys) {
+            $value = $replacements[$key]
+            $dashboard = $dashboard -replace $key, $value
+        }
 
         $extract = @{}
         $extract["lenses"] = $dashboard.lenses
@@ -69,7 +83,3 @@ jobs:
         gh pr create -B main -H ${{github.run_id}}-${{github.run_number}} --title 'Update dashboard from dev' --body 'Created by GitHub Actions'
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
-
-    - shell: bash
-      run: |
-        echo "dashboard_properties: ${{ steps.terraform-output.outputs.dashboard_properties }}"
