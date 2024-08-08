@@ -39,7 +39,7 @@ resource "azurerm_portal_dashboard" "staging_dashboard" {
 
   tags = var.tags
 
-  dashboard_properties = "{\"lenses\": {}, \"metadata\": {}}"
+  dashboard_properties = local.out
 
   lifecycle {
     ignore_changes = [
