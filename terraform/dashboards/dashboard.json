@@ -261,7 +261,7 @@
                 "model": {
                   "operator": "equals",
                   "values": [
-                    "fn-portal-sync-dev-uksouth-01-f65d076b94fb"
+                    "{function_app_name}"
                   ]
                 }
               }
@@ -278,7 +278,7 @@
                           "key": "cloud/roleName",
                           "operator": 0,
                           "values": [
-                            "fn-portal-sync-dev-uksouth-01-f65d076b94fb"
+                            "{function_app_name}"
                           ]
                         }
                       ]
@@ -343,7 +343,7 @@
                           "key": "cloud/roleName",
                           "operator": 0,
                           "values": [
-                            "fn-portal-sync-dev-uksouth-01-f65d076b94fb"
+                            "{function_app_name}"
                           ]
                         }
                       ]
