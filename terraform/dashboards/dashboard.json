@@ -1,4 +1,41 @@
 {
+  "metadata": {
+    "model": {
+      "filterLocale": {
+        "value": "en-us"
+      },
+      "filters": {
+        "value": {
+          "MsPortalFx_TimeRange": {
+            "displayCache": {
+              "name": "UTC Time",
+              "value": "Past 24 hours"
+            },
+            "filteredPartIds": [
+              "StartboardPart-MonitorChartPart-87e03038-6ec9-4705-8ecd-cd42ab5310bc",
+              "StartboardPart-MonitorChartPart-87e03038-6ec9-4705-8ecd-cd42ab5310be",
+              "StartboardPart-MonitorChartPart-87e03038-6ec9-4705-8ecd-cd42ab5310b6",
+              "StartboardPart-MonitorChartPart-87e03038-6ec9-4705-8ecd-cd42ab5310ba"
+            ],
+            "model": {
+              "format": "utc",
+              "granularity": "auto",
+              "relative": "24h"
+            }
+          }
+        }
+      },
+      "timeRange": {
+        "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange",
+        "value": {
+          "relative": {
+            "duration": 24,
+            "timeUnit": 1
+          }
+        }
+      }
+    }
+  },
   "lenses": {
     "0": {
       "metadata": null,
@@ -10,6 +47,8 @@
             "settings": {
               "content": {
                 "content": "# Usage",
+                "markdownSource": 1,
+                "markdownUri": "",
                 "subtitle": "",
                 "title": ""
               }
@@ -48,12 +87,41 @@
         },
         "2": {
           "metadata": {
+            "inputs": [],
+            "settings": {
+              "content": {
+                "content": "# Responsiveness",
+                "markdownSource": 1,
+                "markdownUri": "",
+                "subtitle": "",
+                "title": ""
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MarkdownPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 1,
+            "x": 8,
+            "y": 0
+          }
+        },
+        "3": {
+          "metadata": {
             "filters": {
+              "MsPortalFx_TimeRange": {
+                "model": {
+                  "format": "local",
+                  "granularity": "auto",
+                  "relative": "1440m"
+                }
+              },
               "cloud/roleName": {
                 "model": {
                   "operator": "equals",
                   "values": [
-                    "fn-portal-event-ingest-dev-uksouth-01-fafcb30ca7e0"
+                    "{function_app_name}"
                   ]
                 }
               }
@@ -70,7 +138,7 @@
                           "key": "cloud/roleName",
                           "operator": 0,
                           "values": [
-                            "fn-portal-event-ingest-dev-uksouth-01-fafcb30ca7e0"
+                            "{function_app_name}"
                           ]
                         }
                       ]
@@ -84,20 +152,8 @@
                         "name": "requests/count",
                         "namespace": "microsoft.insights/components",
                         "resourceMetadata": {
-                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
-                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
-                        }
-                      },
-                      {
-                        "aggregationType": 4,
-                        "metricVisualization": {
-                          "displayName": "Server response time"
-                        },
-                        "name": "requests/duration",
-                        "namespace": "microsoft.insights/components",
-                        "resourceMetadata": {
-                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
-                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/{app_insights_resource_group}/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "{app_insights_resource_group}"
                         }
                       }
                     ],
@@ -108,8 +164,8 @@
                       },
                       "showUTCTime": false
                     },
-                    "title": "Server Requests + Avg Response Time",
-                    "titleKind": 2,
+                    "title": "Count Server requests for ai-portal-core-dev-uksouth-01 where Cloud role name = '{function_app_name}'",
+                    "titleKind": 1,
                     "visualization": {
                       "axisVisualization": {
                         "x": {
@@ -150,13 +206,13 @@
                         "name": "requests/count",
                         "namespace": "microsoft.insights/components",
                         "resourceMetadata": {
-                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
-                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/{app_insights_resource_group}/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "{app_insights_resource_group}"
                         }
                       }
                     ],
-                    "title": "Function App - Requests",
-                    "titleKind": 2,
+                    "title": "Count Server requests for ai-portal-core-dev-uksouth-01 where Cloud role name = '{function_app_name}'",
+                    "titleKind": 1,
                     "visualization": {
                       "axisVisualization": {
                         "x": {
@@ -191,14 +247,21 @@
             "y": 1
           }
         },
-        "3": {
+        "4": {
           "metadata": {
             "filters": {
+              "MsPortalFx_TimeRange": {
+                "model": {
+                  "format": "local",
+                  "granularity": "auto",
+                  "relative": "1440m"
+                }
+              },
               "cloud/roleName": {
                 "model": {
                   "operator": "equals",
                   "values": [
-                    "fn-portal-repo-func-dev-uksouth-01-be9e6fe6e9c7"
+                    "fn-portal-sync-dev-uksouth-01-f65d076b94fb"
                   ]
                 }
               }
@@ -215,7 +278,7 @@
                           "key": "cloud/roleName",
                           "operator": 0,
                           "values": [
-                            "fn-portal-repo-func-dev-uksouth-01-be9e6fe6e9c7"
+                            "fn-portal-sync-dev-uksouth-01-f65d076b94fb"
                           ]
                         }
                       ]
@@ -229,20 +292,20 @@
                         "name": "requests/failed",
                         "namespace": "microsoft.insights/components",
                         "resourceMetadata": {
-                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
-                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/{app_insights_resource_group}/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "{app_insights_resource_group}"
                         }
                       }
                     ],
                     "timespan": {
                       "grain": 1,
                       "relative": {
-                        "duration": 2592000000
+                        "duration": 86400000
                       },
                       "showUTCTime": false
                     },
-                    "title": "Failed requests",
-                    "titleKind": 2,
+                    "title": "Count Failed requests for ai-portal-core-dev-uksouth-01 where Cloud role name = 'fn-portal-sync-dev-uksouth-01-f65d076b94fb'",
+                    "titleKind": 1,
                     "visualization": {
                       "axisVisualization": {
                         "x": {
@@ -274,6 +337,17 @@
               "content": {
                 "options": {
                   "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "cloud/roleName",
+                          "operator": 0,
+                          "values": [
+                            "fn-portal-sync-dev-uksouth-01-f65d076b94fb"
+                          ]
+                        }
+                      ]
+                    },
                     "metrics": [
                       {
                         "aggregationType": 7,
@@ -283,13 +357,13 @@
                         "name": "requests/failed",
                         "namespace": "microsoft.insights/components",
                         "resourceMetadata": {
-                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
-                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/{app_insights_resource_group}/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "{app_insights_resource_group}"
                         }
                       }
                     ],
-                    "title": "Function App - Failed requests",
-                    "titleKind": 2,
+                    "title": "Count Failed requests for ai-portal-core-dev-uksouth-01 where Cloud role name = 'fn-portal-sync-dev-uksouth-01-f65d076b94fb'",
+                    "titleKind": 1,
                     "visualization": {
                       "axisVisualization": {
                         "x": {
@@ -324,7 +398,158 @@
             "y": 1
           }
         },
-        "4": {
+        "5": {
+          "metadata": {
+            "filters": {
+              "MsPortalFx_TimeRange": {
+                "model": {
+                  "format": "local",
+                  "granularity": "auto",
+                  "relative": "1440m"
+                }
+              },
+              "cloud/roleName": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "{function_app_name}"
+                  ]
+                }
+              }
+            },
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "cloud/roleName",
+                          "operator": 0,
+                          "values": [
+                            "{function_app_name}"
+                          ]
+                        }
+                      ]
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Server response time"
+                        },
+                        "name": "requests/duration",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/{app_insights_resource_group}/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "{app_insights_resource_group}"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "Avg Server response time for ai-portal-core-dev-uksouth-01 where Cloud role name = '{function_app_name}'",
+                    "titleKind": 1,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 3,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "cloud/roleName",
+                          "operator": 0,
+                          "values": [
+                            "{function_app_name}"
+                          ]
+                        }
+                      ]
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Server response time"
+                        },
+                        "name": "requests/duration",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/{app_insights_resource_group}/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "{app_insights_resource_group}"
+                        }
+                      }
+                    ],
+                    "title": "Avg Server response time for ai-portal-core-dev-uksouth-01 where Cloud role name = '{function_app_name}'",
+                    "titleKind": 1,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 3,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 8,
+            "y": 1
+          }
+        },
+        "6": {
           "metadata": {
             "inputs": [],
             "settings": {
@@ -346,14 +571,21 @@
             "y": 4
           }
         },
-        "5": {
+        "7": {
           "metadata": {
             "filters": {
+              "MsPortalFx_TimeRange": {
+                "model": {
+                  "format": "local",
+                  "granularity": "auto",
+                  "relative": "1440m"
+                }
+              },
               "availabilityResult/name": {
                 "model": {
                   "operator": "equals",
                   "values": [
-                    "fn-portal-event-ingest-dev-uksouth-01-fafcb30ca7e0"
+                    "{function_app_name}"
                   ]
                 }
               }
@@ -370,7 +602,7 @@
                           "key": "availabilityResult/name",
                           "operator": 0,
                           "values": [
-                            "fn-portal-event-ingest-dev-uksouth-01-fafcb30ca7e0"
+                            "{function_app_name}"
                           ]
                         }
                       ]
@@ -384,8 +616,8 @@
                         "name": "availabilityResults/availabilityPercentage",
                         "namespace": "microsoft.insights/components",
                         "resourceMetadata": {
-                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
-                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/{app_insights_resource_group}/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "{app_insights_resource_group}"
                         }
                       }
                     ],
@@ -396,8 +628,8 @@
                       },
                       "showUTCTime": false
                     },
-                    "title": "Average availability",
-                    "titleKind": 2,
+                    "title": "Avg Availability for ai-portal-core-dev-uksouth-01 where Test name = '{function_app_name}'",
+                    "titleKind": 1,
                     "visualization": {
                       "axisVisualization": {
                         "x": {
@@ -438,13 +670,13 @@
                         "name": "availabilityResults/availabilityPercentage",
                         "namespace": "microsoft.insights/components",
                         "resourceMetadata": {
-                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/rg-portal-core-dev-uksouth-01/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
-                          "resourceGroup": "rg-portal-core-dev-uksouth-01"
+                          "id": "/subscriptions/d68448b0-9947-46d7-8771-baa331a3063a/resourceGroups/{app_insights_resource_group}/providers/Microsoft.Insights/components/ai-portal-core-dev-uksouth-01",
+                          "resourceGroup": "{app_insights_resource_group}"
                         }
                       }
                     ],
-                    "title": "Function App - Average availability",
-                    "titleKind": 2,
+                    "title": "Avg Availability for ai-portal-core-dev-uksouth-01 where Test name = '{function_app_name}'",
+                    "titleKind": 1,
                     "visualization": {
                       "axisVisualization": {
                         "x": {
@@ -477,42 +709,6 @@
             "rowSpan": 3,
             "x": 0,
             "y": 5
-          }
-        }
-      }
-    }
-  },
-  "metadata": {
-    "model": {
-      "filterLocale": {
-        "value": "en-us"
-      },
-      "filters": {
-        "value": {
-          "MsPortalFx_TimeRange": {
-            "displayCache": {
-              "name": "UTC Time",
-              "value": "Past 24 hours"
-            },
-            "filteredPartIds": [
-              "StartboardPart-MonitorChartPart-6a927b36-a54d-41b7-9b6c-6f76c1ad70a9",
-              "StartboardPart-MonitorChartPart-6a927b36-a54d-41b7-9b6c-6f76c1ad70ab",
-              "StartboardPart-MonitorChartPart-6a927b36-a54d-41b7-9b6c-6f76c1ad70af"
-            ],
-            "model": {
-              "format": "utc",
-              "granularity": "auto",
-              "relative": "24h"
-            }
-          }
-        }
-      },
-      "timeRange": {
-        "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange",
-        "value": {
-          "relative": {
-            "duration": 24,
-            "timeUnit": 1
           }
         }
       }
