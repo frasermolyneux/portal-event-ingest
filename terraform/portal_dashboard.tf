@@ -33,14 +33,14 @@ resource "azurerm_portal_dashboard" "app" {
 
 resource "azurerm_portal_dashboard" "staging_dashboard" {
   count = var.environment == "dev" ? 1 : 0
-  name  = local.dashboard_name
+  name  = local.dashboard_name + "-staging"
 
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
 
   tags = var.tags
 
-  dashboard_properties = "{}"
+  dashboard_properties = "{\"lenses\": {}, \"metadata\": {}}"
 
   lifecycle {
     ignore_changes = [
