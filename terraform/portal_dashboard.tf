@@ -19,7 +19,6 @@ locals {
   ])
 }
 
-
 resource "azurerm_portal_dashboard" "app" {
   name = local.dashboard_name
 
@@ -33,7 +32,7 @@ resource "azurerm_portal_dashboard" "app" {
 
 resource "azurerm_portal_dashboard" "staging_dashboard" {
   count = var.environment == "dev" ? 1 : 0
-  name  = local.dashboard_name + "-staging"
+  name  = "${local.dashboard_name}-staging"
 
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
