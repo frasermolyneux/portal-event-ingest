@@ -55,7 +55,7 @@ jobs:
         $dashboardJson = az portal dashboard show --name ${{ steps.terraform-output.outputs.staging_dashboard_name }} --resource-group ${{ steps.terraform-output.outputs.resource_group_name }}
 
         # Replace environment specific properties with placeholders
-        $replacements = @{
+        $replacements = [ordered]@{
           "${{ steps.terraform-output.outputs.app_insights_id }}" = "{app_insights_id}"
           "${{ steps.terraform-output.outputs.app_insights_resource_group }}" = "{app_insights_resource_group}"
           "${{ steps.terraform-output.outputs.function_app_name }}" = "{function_app_name}"
