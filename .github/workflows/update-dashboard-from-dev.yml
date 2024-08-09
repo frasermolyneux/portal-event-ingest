@@ -57,10 +57,11 @@ jobs:
         $dashboardJson = az portal dashboard show --name ${{ steps.terraform-output.outputs.staging_dashboard_name }} --resource-group ${{ steps.terraform-output.outputs.resource_group_name }}
 
         $dashboardReplacementsJson = '${{ steps.terraform-output.outputs.dashboard_replacements }}'
-        $dashboardReplacements = [ordered]($dashboardReplacementsJson | ConvertFrom-Json)
+        $dashboardReplacements = ($dashboardReplacementsJson | ConvertFrom-Json)
 
         foreach ($key in $dashboardReplacements.Keys) {
             $value = $dashboardReplacements[$key]
+            Write-Host "Replacing $value with $key"
             $dashboardJson = $dashboardJson -replace $value, $key
         }
 
