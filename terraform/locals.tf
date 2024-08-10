@@ -5,5 +5,5 @@ locals {
   function_app_storage_name = "safn${random_id.environment_id.hex}"
   service_bus_name          = "sb-portal-event-ingest-${var.environment}-${var.location}-${var.instance}-${random_id.environment_id.hex}"
   app_registration_name     = "portal-event-ingest-${var.environment}-${var.instance}"
-  dashboard_name            = "Portal - Event Ingest (${var.environment}-${var.instance})"
+  dashboard_name            = "ortal-event-ingest-${var.environment}-${var.instance}"
 }
