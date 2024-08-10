@@ -1,4 +1,1879 @@
 {
-  "metadata": {},
-  "lenses": {}
+  "lenses": {
+    "0": {
+      "metadata": null,
+      "order": 0,
+      "parts": {
+        "0": {
+          "metadata": {
+            "inputs": [],
+            "settings": {
+              "content": {
+                "content": "# Frontend",
+                "markdownSource": 1,
+                "markdownUri": "",
+                "subtitle": "",
+                "title": ""
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MarkdownPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 1,
+            "x": 0,
+            "y": 0
+          }
+        },
+        "1": {
+          "metadata": {
+            "inputs": [],
+            "settings": {
+              "content": {
+                "content": "# OnEvent\n",
+                "markdownSource": 1,
+                "markdownUri": "",
+                "subtitle": "",
+                "title": ""
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MarkdownPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 1,
+            "x": 4,
+            "y": 0
+          }
+        },
+        "10": {
+          "metadata": {
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "grouping": {
+                      "dimension": "EntityName",
+                      "sort": 2,
+                      "top": 10
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Count of dead-lettered messages in a Queue/Topic."
+                        },
+                        "name": "DeadletteredMessages",
+                        "namespace": "microsoft.servicebus/namespaces",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ServiceBus/namespaces/{service_bus_name}",
+                          "resourceGroup": "{resource_group_name}"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "Dead Letter Queues",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      },
+                      "sortIndex": 1,
+                      "sortOrder": 2
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "grouping": {
+                      "dimension": "EntityName",
+                      "sort": 2,
+                      "top": 10
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Count of dead-lettered messages in a Queue/Topic."
+                        },
+                        "name": "DeadletteredMessages",
+                        "namespace": "microsoft.servicebus/namespaces",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ServiceBus/namespaces/{service_bus_name}",
+                          "resourceGroup": "{resource_group_name}"
+                        }
+                      }
+                    ],
+                    "title": "Dead Letter Queues",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      },
+                      "sortIndex": 1,
+                      "sortOrder": 2
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 8,
+            "y": 4
+          }
+        },
+        "11": {
+          "metadata": {
+            "filters": {
+              "cloud/roleName": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "{function_app_name}"
+                  ]
+                }
+              }
+            },
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "cloud/roleName",
+                          "operator": 0,
+                          "values": [
+                            "{function_app_name}"
+                          ]
+                        }
+                      ]
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "ProcessOnChatMessage Failures"
+                        },
+                        "name": "customMetrics/ProcessOnChatMessage Failures",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "ProcessOnPlayerConnected Failures"
+                        },
+                        "name": "customMetrics/ProcessOnPlayerConnected Failures",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "ProcessOnServerConnected Failures"
+                        },
+                        "name": "customMetrics/ProcessOnServerConnected Failures",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "ProcessOnEvent Failures",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "color": "#127160",
+                          "displayName": "ProcessOnChatMessage SuccessRate"
+                        },
+                        "name": "customMetrics/ProcessOnChatMessage SuccessRate",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "color": "#466297",
+                          "displayName": "ProcessOnPlayerConnected SuccessRate"
+                        },
+                        "name": "customMetrics/ProcessOnPlayerConnected SuccessRate",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "title": "ProcessOnEvent Success Rate",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 12,
+            "y": 4
+          }
+        },
+        "12": {
+          "metadata": {
+            "inputs": [],
+            "settings": {
+              "content": {
+                "content": "# Function App",
+                "markdownSource": 1,
+                "markdownUri": "",
+                "subtitle": "",
+                "title": ""
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MarkdownPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 1,
+            "x": 0,
+            "y": 8
+          }
+        },
+        "13": {
+          "metadata": {
+            "filters": {
+              "cloud/roleName": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "{function_app_name}"
+                  ]
+                }
+              }
+            },
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "color": "#fa0004",
+                          "displayName": "Failed requests"
+                        },
+                        "name": "requests/failed",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "Backend Failed Requests",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 3,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "cloud/roleName",
+                          "operator": 0,
+                          "values": [
+                            "{function_app_name}"
+                          ]
+                        }
+                      ]
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "color": "#fa0004",
+                          "displayName": "Failed requests"
+                        },
+                        "name": "requests/failed",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "title": "Backend Failed Requests",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 3,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 0,
+            "y": 9
+          }
+        },
+        "14": {
+          "metadata": {
+            "filters": {
+              "cloud/roleName": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "{function_app_name}"
+                  ]
+                }
+              }
+            },
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "cloud/roleName",
+                          "operator": 0,
+                          "values": [
+                            "{function_app_name}"
+                          ]
+                        }
+                      ]
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Server response time"
+                        },
+                        "name": "requests/duration",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "Backend response time",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Server response time"
+                        },
+                        "name": "requests/duration",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "title": "Backend response time",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 4,
+            "y": 9
+          }
+        },
+        "15": {
+          "metadata": {
+            "filters": {
+              "cloud/roleName": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "{function_app_name}"
+                  ]
+                }
+              }
+            },
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "cloud/roleName",
+                          "operator": 0,
+                          "values": [
+                            "{function_app_name}"
+                          ]
+                        }
+                      ]
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "color": "#ff3700",
+                          "displayName": "Server exceptions"
+                        },
+                        "name": "exceptions/server",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "color": "#e36600",
+                          "displayName": "Dependency call failures"
+                        },
+                        "name": "dependencies/failed",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "Server exceptions and Dependency failures",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "color": "#ff3700",
+                          "displayName": "Server exceptions"
+                        },
+                        "name": "exceptions/server",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "color": "#e36600",
+                          "displayName": "Dependency call failures"
+                        },
+                        "name": "dependencies/failed",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "title": "Server exceptions and Dependency failures",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 0,
+            "y": 12
+          }
+        },
+        "16": {
+          "metadata": {
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Availability"
+                        },
+                        "name": "availabilityResults/availabilityPercentage",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "Backend Availability",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 3,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Availability"
+                        },
+                        "name": "availabilityResults/availabilityPercentage",
+                        "namespace": "microsoft.insights/components",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "title": "Backend Availability",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 3,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 4,
+            "y": 12
+          }
+        },
+        "2": {
+          "metadata": {
+            "inputs": [],
+            "settings": {
+              "content": {
+                "content": "# Service Bus",
+                "markdownSource": 1,
+                "markdownUri": "",
+                "subtitle": "",
+                "title": ""
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MarkdownPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 1,
+            "x": 8,
+            "y": 0
+          }
+        },
+        "3": {
+          "metadata": {
+            "inputs": [],
+            "settings": {
+              "content": {
+                "content": "# ProcessOnEvent\n",
+                "markdownSource": 1,
+                "markdownUri": "",
+                "subtitle": "",
+                "title": ""
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MarkdownPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 1,
+            "x": 12,
+            "y": 0
+          }
+        },
+        "4": {
+          "metadata": {
+            "filters": {
+              "ApiId": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "event-ingest-api"
+                  ]
+                }
+              }
+            },
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "ApiId",
+                          "operator": 0,
+                          "values": [
+                            "event-ingest-api"
+                          ]
+                        }
+                      ]
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 1,
+                        "metricVisualization": {
+                          "displayName": "Requests"
+                        },
+                        "name": "Requests",
+                        "namespace": "microsoft.apimanagement/service",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.ApiManagement/service/{api_management_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "Frontend Requests",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 1,
+                        "metricVisualization": {
+                          "displayName": "Requests"
+                        },
+                        "name": "Requests",
+                        "namespace": "microsoft.apimanagement/service",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.ApiManagement/service/{api_management_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "title": "Frontend Requests",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 0,
+            "y": 1
+          }
+        },
+        "5": {
+          "metadata": {
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "OnChatMessage Count"
+                        },
+                        "name": "customMetrics/OnChatMessage Count",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "OnPlayerConnected Count"
+                        },
+                        "name": "customMetrics/OnPlayerConnected Count",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 172800000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "OnEvent Requests",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "OnChatMessage Count"
+                        },
+                        "name": "customMetrics/OnChatMessage Count",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "OnPlayerConnected Count"
+                        },
+                        "name": "customMetrics/OnPlayerConnected Count",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "title": "OnEvent Requests",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 4,
+            "y": 1
+          }
+        },
+        "6": {
+          "metadata": {
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 1,
+                        "metricVisualization": {
+                          "displayName": "Incoming Messages",
+                          "resourceDisplayName": "{service_bus_name}"
+                        },
+                        "name": "IncomingMessages",
+                        "namespace": "microsoft.servicebus/namespaces",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ServiceBus/namespaces/{service_bus_name}",
+                          "resourceGroup": "{resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 1,
+                        "metricVisualization": {
+                          "displayName": "Outgoing Messages",
+                          "resourceDisplayName": "{service_bus_name}"
+                        },
+                        "name": "OutgoingMessages",
+                        "namespace": "microsoft.servicebus/namespaces",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ServiceBus/namespaces/{service_bus_name}",
+                          "resourceGroup": "{resource_group_name}"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 3600000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "Service Bus Incoming/Outgoing Messages",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 1,
+                        "metricVisualization": {
+                          "displayName": "Incoming Messages",
+                          "resourceDisplayName": "{service_bus_name}"
+                        },
+                        "name": "IncomingMessages",
+                        "namespace": "microsoft.servicebus/namespaces",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ServiceBus/namespaces/{service_bus_name}",
+                          "resourceGroup": "{resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 1,
+                        "metricVisualization": {
+                          "displayName": "Outgoing Messages",
+                          "resourceDisplayName": "{service_bus_name}"
+                        },
+                        "name": "OutgoingMessages",
+                        "namespace": "microsoft.servicebus/namespaces",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ServiceBus/namespaces/{service_bus_name}",
+                          "resourceGroup": "{resource_group_name}"
+                        }
+                      }
+                    ],
+                    "title": "Service Bus Incoming/Outgoing Messages",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 8,
+            "y": 1
+          }
+        },
+        "7": {
+          "metadata": {
+            "filters": {
+              "cloud/roleName": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "{function_app_name}"
+                  ]
+                }
+              }
+            },
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "ProcessOnChatMessage Count"
+                        },
+                        "name": "customMetrics/ProcessOnChatMessage Count",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "ProcessOnPlayerConnected Count"
+                        },
+                        "name": "customMetrics/ProcessOnPlayerConnected Count",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "ProcessOnEvent Requests",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "ProcessOnChatMessage Count"
+                        },
+                        "name": "customMetrics/ProcessOnChatMessage Count",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "ProcessOnPlayerConnected Count"
+                        },
+                        "name": "customMetrics/ProcessOnPlayerConnected Count",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "title": "ProcessOnEvent Requests",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 12,
+            "y": 1
+          }
+        },
+        "8": {
+          "metadata": {
+            "filters": {
+              "ApiId": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "event-ingest-api"
+                  ]
+                }
+              },
+              "MsPortalFx_TimeRange": {
+                "model": {
+                  "format": "local",
+                  "granularity": "auto",
+                  "relative": "1440m"
+                }
+              }
+            },
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "ApiId",
+                          "operator": 0,
+                          "values": [
+                            "event-ingest-api"
+                          ]
+                        }
+                      ]
+                    },
+                    "grouping": {
+                      "dimension": "BackendResponseCode",
+                      "sort": 2,
+                      "top": 10
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 1,
+                        "metricVisualization": {
+                          "displayName": "Requests"
+                        },
+                        "name": "Requests",
+                        "namespace": "microsoft.apimanagement/service",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.ApiManagement/service/{api_management_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "Frontend Response Codes",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "grouping": {
+                      "dimension": "BackendResponseCode",
+                      "sort": 2,
+                      "top": 10
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 1,
+                        "metricVisualization": {
+                          "displayName": "Requests"
+                        },
+                        "name": "Requests",
+                        "namespace": "microsoft.apimanagement/service",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.ApiManagement/service/{api_management_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "title": "Frontend Response Codes",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 0,
+            "y": 4
+          }
+        },
+        "9": {
+          "metadata": {
+            "filters": {
+              "cloud/roleName": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "{function_app_name}"
+                  ]
+                }
+              }
+            },
+            "inputs": [
+              {
+                "isOptional": true,
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "cloud/roleName",
+                          "operator": 0,
+                          "values": [
+                            "{function_app_name}"
+                          ]
+                        }
+                      ]
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "OnChatMessage Failures"
+                        },
+                        "name": "customMetrics/OnChatMessage Failures",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "OnPlayerConnected Failures"
+                        },
+                        "name": "customMetrics/OnPlayerConnected Failures",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 7,
+                        "metricVisualization": {
+                          "displayName": "OnServerConnected Failures"
+                        },
+                        "name": "customMetrics/OnServerConnected Failures",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "timespan": {
+                      "grain": 1,
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false
+                    },
+                    "title": "OnEvent Failures",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "isOptional": true,
+                "name": "sharedTimeRange"
+              }
+            ],
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "color": "#127160",
+                          "displayName": "OnChatMessage SuccessRate"
+                        },
+                        "name": "customMetrics/OnChatMessage SuccessRate",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      },
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "color": "#466297",
+                          "displayName": "OnPlayerConnected SuccessRate"
+                        },
+                        "name": "customMetrics/OnPlayerConnected SuccessRate",
+                        "namespace": "microsoft.insights/components/kusto",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/{subscription_id}/resourceGroups/{core_resource_group_name}/providers/Microsoft.Insights/components/{app_insights_name}",
+                          "resourceGroup": "{core_resource_group_name}"
+                        }
+                      }
+                    ],
+                    "title": "OnEvent Success Rate",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+          },
+          "position": {
+            "colSpan": 4,
+            "metadata": null,
+            "rowSpan": 3,
+            "x": 4,
+            "y": 4
+          }
+        }
+      }
+    }
+  },
+  "metadata": {
+    "model": {
+      "filterLocale": {
+        "value": "en-us"
+      },
+      "filters": {
+        "value": {
+          "MsPortalFx_TimeRange": {
+            "displayCache": {
+              "name": "UTC Time",
+              "value": "Past 24 hours"
+            },
+            "filteredPartIds": [
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4c9",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4cb",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4cd",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4cf",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4d1",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4d3",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4d5",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4d9",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4db",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4dd",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4df",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4e1"
+            ],
+            "model": {
+              "format": "utc",
+              "granularity": "auto",
+              "relative": "24h"
+            }
+          }
+        }
+      },
+      "timeRange": {
+        "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange",
+        "value": {
+          "relative": {
+            "duration": 24,
+            "timeUnit": 1
+          }
+        }
+      }
+    }
+  }
 }
