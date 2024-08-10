@@ -2,15 +2,14 @@ locals {
   input = file("dashboards/dashboard.json")
 
   dashboard_replacements = {
-    "subscription_id"                  = var.subscription_id
-    "api_management_name"              = data.azurerm_api_management.core.name
-    "function_app_name"                = azurerm_linux_function_app.app.name
-    "resource_group_name"              = azurerm_resource_group.rg.name
-    "app_insights_resource_group_name" = data.azurerm_application_insights.core.resource_group_name
-    "app_insights_name"                = data.azurerm_application_insights.core.name
-    "environment"                      = var.environment
-    "location"                         = var.location
-    "instance"                         = var.instance
+    "subscription_id"          = var.subscription_id
+    "resource_group_name"      = azurerm_resource_group.rg.name
+    "key_vault_name"           = azurerm_key_vault.kv.name
+    "function_app_name"        = azurerm_linux_function_app.app.name
+    "core_resource_group_name" = data.azurerm_resource_group.core.name
+    "app_insights_name"        = data.azurerm_application_insights.core.name
+    "service_bus_name"         = azurerm_servicebus_namespace.ingest.name
+    "api_management_name"      = data.azurerm_api_management.core.name
   }
 
   out = join("\n", [

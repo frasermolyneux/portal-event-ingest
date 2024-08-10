@@ -39,11 +39,6 @@ jobs:
       shell: bash
       run: |
         cd terraform
-        echo "dashboard_replacements=$(terraform output -json dashboard_replacements)" >> $GITHUB_OUTPUT
-        echo "subscription_id=$(terraform output -raw subscription_id)" >> $GITHUB_OUTPUT
-        echo "app_insights_name=$(terraform output -raw app_insights_name)" >> $GITHUB_OUTPUT
-        echo "app_insights_resource_group=$(terraform output -raw app_insights_resource_group)" >> $GITHUB_OUTPUT
-        echo "function_app_name=$(terraform output -raw function_app_name)" >> $GITHUB_OUTPUT
         echo "resource_group_name=$(terraform output -raw resource_group_name)" >> $GITHUB_OUTPUT
         echo "staging_dashboard_name=$(terraform output -raw staging_dashboard_name)" >> $GITHUB_OUTPUT
       env:
@@ -56,13 +51,19 @@ jobs:
       run: |
         $dashboardJson = az portal dashboard show --name ${{ steps.terraform-output.outputs.staging_dashboard_name }} --resource-group ${{ steps.terraform-output.outputs.resource_group_name }}
 
-        $dashboardReplacementsJson = '${{ steps.terraform-output.outputs.dashboard_replacements }}'
-        $dashboardReplacements = ($dashboardReplacementsJson | ConvertFrom-Json)
+        $tokens = @{
+            "/subscriptions/([a-z0-9]{8})-([a-z0-9]{4})-([a-z0-9]{4})-([a-z0-9]{4})-([a-z0-9]{12})" = "/subscriptions/{subscription_id}"
+            "rg-portal-event-ingest-([a-z]+)-([a-z]+)-([0-9]+)"                                     = "{resource_group_name}"
+            "kv-([a-z0-9]+)-([a-z]+)"                                                               = "{key_vault_name}"
+            "fn-portal-event-ingest-([a-z]+)-([a-z]+)-([0-9]+)-([a-z0-9]+)"                         = "{function_app_name}"
+            "rg-portal-core-([a-z]+)-([a-z]+)-([0-9]+)"                                             = "{core_resource_group_name}"
+            "ai-portal-core-([a-z]+)-([a-z]+)-([0-9]+)"                                             = "{app_insights_name}"
+            "sb-portal-event-ingest-([a-z]+)-([a-z]+)-([0-9]+)-([a-z0-9]+)"                         = "{service_bus_name}"
+            "apim-portal-core-([a-z]+)-([a-z]+)-([0-9]+)-([a-z0-9]+)"                               = "{api_management_name}" 
+        }
 
-        foreach ($key in $dashboardReplacements.Keys) {
-            $value = $dashboardReplacements[$key]
-            Write-Host "Replacing $value with $key"
-            $dashboardJson = $dashboardJson -replace $value, $key
+        $tokens.Keys | ForEach-Object {
+            $dashboardJson = $dashboardJson -replace $_, $tokens[$_]
         }
 
         $dashboard = $dashboardJson | ConvertFrom-Json
