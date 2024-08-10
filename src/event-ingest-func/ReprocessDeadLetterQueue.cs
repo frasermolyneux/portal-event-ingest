@@ -23,20 +23,20 @@ public class ReprocessDeadLetterQueue
     [Function(nameof(ReprocessDeadLetterQueue))]
     public async Task<HttpResponseData> RunReprocessDeadLetterQueue([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData req, FunctionContext executionContext)
     {
-        var topicName = req.Query["topicName"];
-        if (string.IsNullOrEmpty(topicName))
+        var queueName = req.Query["queueName"];
+        if (string.IsNullOrEmpty(queueName))
         {
             var response = req.CreateResponse(HttpStatusCode.BadRequest);
-            response.WriteString("Please pass a topicName on the query string");
+            response.WriteString("Please pass a queueName on the query string");
             return response;
         }
 
         try
         {
             ServiceBusClient client = new ServiceBusClient(configuration["service_bus_connection_string"]);
-            ServiceBusSender sender = client.CreateSender(topicName);
+            ServiceBusSender sender = client.CreateSender(queueName);
 
-            ServiceBusReceiver receiver = client.CreateReceiver(topicName, new ServiceBusReceiverOptions
+            ServiceBusReceiver receiver = client.CreateReceiver(queueName, new ServiceBusReceiverOptions
             {
                 SubQueue = SubQueue.DeadLetter,
                 ReceiveMode = ServiceBusReceiveMode.PeekLock
@@ -48,7 +48,7 @@ public class ReprocessDeadLetterQueue
         {
             if (ex.Reason == ServiceBusFailureReason.MessagingEntityNotFound)
             {
-                logger.LogError(ex, $"Topic '{topicName}' not found. Check that the name provided is correct.");
+                logger.LogError(ex, $"Queue '{queueName}' not found. Check that the name provided is correct.");
             }
             else
             {
@@ -61,7 +61,7 @@ public class ReprocessDeadLetterQueue
 
     private async Task ProcessDeadLetterMessagesAsync(ServiceBusSender sender, ServiceBusReceiver receiver)
     {
-        int fetchCount = 10;
+        int fetchCount = 150;
 
         IReadOnlyList<ServiceBusReceivedMessage> dlqMessages;
         do
