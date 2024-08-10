@@ -1,4 +1,4 @@
-name: Update Dashboard from Dev
+name: Update Dashboard from Staging Dashboard
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
   pull-requests: write # This is required to create a pull request
 
 jobs:
-  terraform-plan:
+  update-dashboard:
     environment: Development
     runs-on: ubuntu-latest
 
@@ -79,9 +79,9 @@ jobs:
         git checkout -b ${{github.run_id}}-${{github.run_number}}
 
         git add .
-        git commit -m "Update dashboard from dev"
+        git commit -m "Updating template from staging dashboard"
         git push origin ${{github.run_id}}-${{github.run_number}}
         
-        gh pr create -B main -H ${{github.run_id}}-${{github.run_number}} --title 'Update dashboard from dev' --body 'Created by GitHub Actions'
+        gh pr create -B main -H ${{github.run_id}}-${{github.run_number}} --title 'Updating template from staging dashboard' --body 'Created by GitHub Actions'
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
