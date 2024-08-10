@@ -17,13 +17,13 @@ resource "azurerm_api_management_named_value" "functionapp_host_key_named_value"
 }
 
 resource "azurerm_api_management_backend" "api_management_backend" {
-  name                = local.workload_name
+  name                = local.function_app_name
   resource_group_name = data.azurerm_api_management.core.resource_group_name
   api_management_name = data.azurerm_api_management.core.name
 
   protocol    = "http"
-  title       = local.workload_name
-  description = local.workload_name
+  title       = local.function_app_name
+  description = local.function_app_name
   url         = format("https://%s/api", azurerm_linux_function_app.app.default_hostname)
 
   tls {
