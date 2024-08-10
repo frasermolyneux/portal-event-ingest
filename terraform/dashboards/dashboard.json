@@ -1,4 +1,49 @@
 {
+  "metadata": {
+    "model": {
+      "filterLocale": {
+        "value": "en-us"
+      },
+      "filters": {
+        "value": {
+          "MsPortalFx_TimeRange": {
+            "displayCache": {
+              "name": "UTC Time",
+              "value": "Past 24 hours"
+            },
+            "filteredPartIds": [
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d82c",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d82e",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d830",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d832",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d834",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d836",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d838",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d83a",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d83e",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d840",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d842",
+              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d844"
+            ],
+            "model": {
+              "format": "utc",
+              "granularity": "auto",
+              "relative": "24h"
+            }
+          }
+        }
+      },
+      "timeRange": {
+        "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange",
+        "value": {
+          "relative": {
+            "duration": 24,
+            "timeUnit": 1
+          }
+        }
+      }
+    }
+  },
   "lenses": {
     "0": {
       "metadata": null,
@@ -440,17 +485,6 @@
               "content": {
                 "options": {
                   "chart": {
-                    "filterCollection": {
-                      "filters": [
-                        {
-                          "key": "cloud/roleName",
-                          "operator": 0,
-                          "values": [
-                            "{function_app_name}"
-                          ]
-                        }
-                      ]
-                    },
                     "metrics": [
                       {
                         "aggregationType": 7,
@@ -798,6 +832,16 @@
         },
         "16": {
           "metadata": {
+            "filters": {
+              "availabilityResult/name": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "{function_app_name}"
+                  ]
+                }
+              }
+            },
             "inputs": [
               {
                 "isOptional": true,
@@ -858,10 +902,22 @@
               "content": {
                 "options": {
                   "chart": {
+                    "filterCollection": {
+                      "filters": [
+                        {
+                          "key": "availabilityResult/name",
+                          "operator": 0,
+                          "values": [
+                            "{function_app_name}"
+                          ]
+                        }
+                      ]
+                    },
                     "metrics": [
                       {
                         "aggregationType": 4,
                         "metricVisualization": {
+                          "color": "#62f073",
                           "displayName": "Availability"
                         },
                         "name": "availabilityResults/availabilityPercentage",
@@ -1826,51 +1882,6 @@
             "rowSpan": 3,
             "x": 4,
             "y": 4
-          }
-        }
-      }
-    }
-  },
-  "metadata": {
-    "model": {
-      "filterLocale": {
-        "value": "en-us"
-      },
-      "filters": {
-        "value": {
-          "MsPortalFx_TimeRange": {
-            "displayCache": {
-              "name": "UTC Time",
-              "value": "Past 24 hours"
-            },
-            "filteredPartIds": [
-              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4c9",
-              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4cb",
-              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4cd",
-              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4cf",
-              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4d1",
-              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4d3",
-              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4d5",
-              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4d9",
-              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4db",
-              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4dd",
-              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4df",
-              "StartboardPart-MonitorChartPart-b780a6fd-fdfa-49dd-8eb7-b7f371f3d4e1"
-            ],
-            "model": {
-              "format": "utc",
-              "granularity": "auto",
-              "relative": "24h"
-            }
-          }
-        }
-      },
-      "timeRange": {
-        "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange",
-        "value": {
-          "relative": {
-            "duration": 24,
-            "timeUnit": 1
           }
         }
       }
