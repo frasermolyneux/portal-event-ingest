@@ -24,6 +24,10 @@ resource "azurerm_linux_function_app" "app" {
       dotnet_version              = "8.0"
     }
 
+    cors {
+      allowed_origins = ["https://portal.azure.com"]
+    }
+
     application_insights_connection_string = data.azurerm_application_insights.core.connection_string
     application_insights_key               = data.azurerm_application_insights.core.instrumentation_key
 
