@@ -1,11 +1,16 @@
-resource "azurerm_linux_function_app" "app" {
+moved {
+  from = azurerm_linux_function_app.app
+  to   = azurerm_linux_function_app.legacy_app
+}
+
+resource "azurerm_linux_function_app" "legacy_app" {
   name = local.function_app_name
   tags = var.tags
 
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
 
-  service_plan_id = azurerm_service_plan.sp.id
+  service_plan_id = data.azurerm_service_plan.core.id
 
   storage_account_name       = azurerm_storage_account.function_app_storage.name
   storage_account_access_key = azurerm_storage_account.function_app_storage.primary_access_key
@@ -64,6 +69,6 @@ resource "azurerm_linux_function_app" "app" {
 }
 
 data "azurerm_function_app_host_keys" "app" {
-  name                = azurerm_linux_function_app.app.name
+  name                = azurerm_linux_function_app.legacy_app.name
   resource_group_name = azurerm_resource_group.rg.name
 }

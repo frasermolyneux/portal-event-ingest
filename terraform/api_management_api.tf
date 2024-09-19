@@ -24,7 +24,7 @@ resource "azurerm_api_management_backend" "api_management_backend" {
   protocol    = "http"
   title       = local.function_app_name
   description = local.function_app_name
-  url         = format("https://%s/api", azurerm_linux_function_app.app.default_hostname)
+  url         = format("https://%s/api", azurerm_linux_function_app.legacy_app.default_hostname)
 
   tls {
     validate_certificate_chain = true
