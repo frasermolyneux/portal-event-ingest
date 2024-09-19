@@ -33,12 +33,12 @@ resource "azurerm_linux_function_app" "app" {
 
     api_management_api_id = azurerm_api_management_api.event_ingest_api.id
 
-    ftps_state          = "Disabled"
-    always_on           = true
+    ftps_state = "Disabled"
+    //always_on           = true // Always on is not supported for consumption function apps
     minimum_tls_version = "1.2"
 
-    health_check_path                 = "/api/health"
-    health_check_eviction_time_in_min = 5
+    //health_check_path                 = "/api/health" // Disabling health check for consumption function app
+    //health_check_eviction_time_in_min = 5 // Disabling health check for consumption function app
   }
 
   app_settings = {
