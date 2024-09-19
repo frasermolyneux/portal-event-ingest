@@ -1,9 +1,4 @@
-moved {
-  from = azurerm_linux_function_app.app
-  to   = azurerm_linux_function_app.legacy_app
-}
-
-resource "azurerm_linux_function_app" "legacy_app" {
+resource "azurerm_linux_function_app" "app" {
   name = local.function_app_name
   tags = var.tags
 
@@ -69,6 +64,6 @@ resource "azurerm_linux_function_app" "legacy_app" {
 }
 
 data "azurerm_function_app_host_keys" "app" {
-  name                = azurerm_linux_function_app.legacy_app.name
+  name                = azurerm_linux_function_app.app.name
   resource_group_name = azurerm_resource_group.rg.name
 }
