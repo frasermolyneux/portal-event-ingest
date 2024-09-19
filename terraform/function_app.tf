@@ -5,7 +5,7 @@ resource "azurerm_linux_function_app" "app" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
 
-  service_plan_id = azurerm_service_plan.sp.id
+  service_plan_id = data.azurerm_service_plan.core.id
 
   storage_account_name       = azurerm_storage_account.function_app_storage.name
   storage_account_access_key = azurerm_storage_account.function_app_storage.primary_access_key
