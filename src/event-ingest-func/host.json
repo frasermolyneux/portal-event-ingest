@@ -2,8 +2,7 @@
     "version": "2.0",
     "logging": {
         "logLevel": {
-            "default": "Information",
-            "Azure.Messaging.ServiceBus": "Warning"
+            "Function.HealthCheck": "Warning"
         },
         "applicationInsights": {
             "samplingSettings": {
