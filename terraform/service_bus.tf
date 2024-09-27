@@ -6,13 +6,14 @@ resource "azurerm_servicebus_namespace" "ingest" {
   tags                = var.tags
 
   sku = "Basic"
+
+  local_auth_enabled = false
 }
 
 resource "azurerm_servicebus_queue" "player_connected" {
   name         = "player_connected_queue"
   namespace_id = azurerm_servicebus_namespace.ingest.id
 }
-
 
 resource "azurerm_servicebus_queue" "chat_message" {
   name         = "chat_message_queue"
@@ -32,13 +33,4 @@ resource "azurerm_servicebus_queue" "server_connected" {
 resource "azurerm_servicebus_queue" "map_change" {
   name         = "map_change_queue"
   namespace_id = azurerm_servicebus_namespace.ingest.id
-}
-
-resource "azurerm_servicebus_namespace_authorization_rule" "event_ingest_func_app" {
-  name         = "event-ingest-func-app"
-  namespace_id = azurerm_servicebus_namespace.ingest.id
-
-  listen = true
-  send   = true
-  manage = false
 }
