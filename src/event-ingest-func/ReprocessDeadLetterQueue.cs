@@ -33,7 +33,8 @@ public class ReprocessDeadLetterQueue
 
         try
         {
-            ServiceBusClient client = new ServiceBusClient(configuration["service_bus_connection_string"]);
+            var credential = new DefaultAzureCredential();
+            ServiceBusClient client = new ServiceBusClient(configuration["ServiceBusConnection:fullyQualifiedNamespace"], credential);
             ServiceBusSender sender = client.CreateSender(queueName);
 
             ServiceBusReceiver receiver = client.CreateReceiver(queueName, new ServiceBusReceiverOptions

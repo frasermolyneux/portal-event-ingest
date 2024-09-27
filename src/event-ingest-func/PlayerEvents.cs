@@ -40,7 +40,8 @@ public class PlayerEvents
             throw;
         }
 
-        await using (var client = new ServiceBusClient(configuration["service_bus_connection_string"]))
+        var credential = new DefaultAzureCredential();
+        await using (var client = new ServiceBusClient(configuration["ServiceBusConnection:fullyQualifiedNamespace"], credential))
         {
             var sender = client.CreateSender("player_connected_queue");
             await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onPlayerConnected)));
@@ -67,7 +68,8 @@ public class PlayerEvents
             throw;
         }
 
-        await using (var client = new ServiceBusClient(configuration["service_bus_connection_string"]))
+        var credential = new DefaultAzureCredential();
+        await using (var client = new ServiceBusClient(configuration["ServiceBusConnection:fullyQualifiedNamespace"], credential))
         {
             var sender = client.CreateSender("chat_message_queue");
             await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onChatMessage)));
@@ -94,7 +96,8 @@ public class PlayerEvents
             throw;
         }
 
-        await using (var client = new ServiceBusClient(configuration["service_bus_connection_string"]))
+        var credential = new DefaultAzureCredential();
+        await using (var client = new ServiceBusClient(configuration["ServiceBusConnection:fullyQualifiedNamespace"], credential))
         {
             var sender = client.CreateSender("map_vote_queue");
             await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapVote)));

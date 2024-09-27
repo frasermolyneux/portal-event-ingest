@@ -40,7 +40,8 @@ public class ServerEvents
             throw;
         }
 
-        await using (var client = new ServiceBusClient(configuration["service_bus_connection_string"]))
+        var credential = new DefaultAzureCredential();
+        await using (var client = new ServiceBusClient(configuration["ServiceBusConnection:fullyQualifiedNamespace"], credential))
         {
             var sender = client.CreateSender("server_connected_queue");
             await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onServerConnected)));
@@ -67,7 +68,8 @@ public class ServerEvents
             throw;
         }
 
-        await using (var client = new ServiceBusClient(configuration["service_bus_connection_string"]))
+        var credential = new DefaultAzureCredential();
+        await using (var client = new ServiceBusClient(configuration["ServiceBusConnection:fullyQualifiedNamespace"], credential))
         {
             var sender = client.CreateSender("map_change_queue");
             await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapChange)));

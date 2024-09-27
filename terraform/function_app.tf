@@ -42,9 +42,10 @@ resource "azurerm_linux_function_app" "app" {
   }
 
   app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE"                          = "0" # This will be set to 0 on initial creation but will be updated to 1 when the package is deployed (required for azurerm_function_app_host_keys)
-    "ApplicationInsightsAgent_EXTENSION_VERSION"        = "~3"
-    "service_bus_connection_string"                     = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.kv.name, azurerm_key_vault_secret.service_bus_connection_string_secret.name)
+    "WEBSITE_RUN_FROM_PACKAGE"                      = "0" # This will be set to 0 on initial creation but will be updated to 1 when the package is deployed (required for azurerm_function_app_host_keys)
+    "ApplicationInsightsAgent_EXTENSION_VERSION"    = "~3"
+    "ServiceBusConnection__fullyQualifiedNamespace" = format("%s.servicebus.windows.net", azurerm_servicebus_namespace.ingest.name)
+    //"service_bus_connection_string"                     = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.kv.name, azurerm_key_vault_secret.service_bus_connection_string_secret.name)
     "apim_base_url"                                     = data.azurerm_api_management.core.gateway_url
     "portal_repository_apim_subscription_key_primary"   = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.kv.name, azurerm_key_vault_secret.repository_api_subscription_secret_primary.name)
     "portal_repository_apim_subscription_key_secondary" = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.kv.name, azurerm_key_vault_secret.repository_api_subscription_secret_secondary.name)

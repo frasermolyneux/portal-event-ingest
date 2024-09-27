@@ -37,7 +37,7 @@ public class PlayerEventsIngest
 
     [Function("ProcessOnPlayerConnected")]
     public async Task ProcessOnPlayerConnected(
-        [ServiceBusTrigger("player_connected_queue", Connection = "service_bus_connection_string")]
+        [ServiceBusTrigger("player_connected_queue", Connection = "ServiceBusConnection")]
         string myQueueItem)
     {
         OnPlayerConnected? onPlayerConnected;
@@ -98,7 +98,7 @@ public class PlayerEventsIngest
 
     [Function("ProcessOnChatMessage")]
     public async Task ProcessOnChatMessage(
-        [ServiceBusTrigger("chat_message_queue", Connection = "service_bus_connection_string")]
+        [ServiceBusTrigger("chat_message_queue", Connection = "ServiceBusConnection")]
         string myQueueItem)
     {
         OnChatMessage? onChatMessage;
@@ -146,7 +146,7 @@ public class PlayerEventsIngest
 
     [Function("ProcessOnMapVote")]
     public async Task ProcessOnMapVote(
-     [ServiceBusTrigger("map_vote_queue", Connection = "service_bus_connection_string")]
+     [ServiceBusTrigger("map_vote_queue", Connection = "ServiceBusConnection")]
         string myQueueItem)
     {
         OnMapVote? onMapVote;
