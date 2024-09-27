@@ -63,12 +63,6 @@ resource "azurerm_linux_function_app" "app" {
   }
 }
 
-resource "azurerm_role_assignment" "app-to-storage" {
-  scope                = azurerm_storage_account.function_app_storage.id
-  role_definition_name = "Storage Blob Data Owner"
-  principal_id         = azurerm_linux_function_app.app.identity[0].principal_id
-}
-
 data "azurerm_function_app_host_keys" "app" {
   name                = azurerm_linux_function_app.app.name
   resource_group_name = azurerm_resource_group.rg.name
