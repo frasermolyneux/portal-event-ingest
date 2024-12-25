@@ -16,7 +16,7 @@ repository_api = {
 
 tags = {
   Environment = "prd",
-  Workload    = "portal",
+  Workload    = "portal-event-ingest",
   DeployedBy  = "GitHub-Terraform",
   Git         = "https://github.com/frasermolyneux/portal-event-ingest"
 }
