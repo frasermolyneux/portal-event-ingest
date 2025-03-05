@@ -19,7 +19,7 @@
 	<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.2" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.2" />
 	<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.2" />
-	<PackageReference Include="XtremeIdiots.Portal.RepositoryApiClient" Version="1.1.302.1" />
+	<PackageReference Include="XtremeIdiots.Portal.RepositoryApiClient" Version="1.1.303.1" />
   <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
   </ItemGroup>
   <ItemGroup>
