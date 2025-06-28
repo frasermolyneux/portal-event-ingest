@@ -6,5 +6,5 @@ resource "azurerm_api_management_subscription" "repository_api_subscription" {
   allow_tracing = false
 
   product_id   = data.azurerm_api_management_product.repository_api_product.id
-  display_name = format("%s-%s", local.function_app_name, data.azurerm_api_management_api.repository_api.name)
+  display_name = format("%s-%s", local.function_app_name, data.azurerm_api_management_product.repository_api_product.product_id)
 }
