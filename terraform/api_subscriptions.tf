@@ -5,6 +5,6 @@ resource "azurerm_api_management_subscription" "repository_api_subscription" {
   state         = "active"
   allow_tracing = false
 
-  api_id       = split(";", data.azurerm_api_management_api.repository_api.id)[0] // Strip revision from id when creating subscription
+  product_id   = data.azurerm_api_management_product.repository_api_product.id
   display_name = format("%s-%s", local.function_app_name, data.azurerm_api_management_api.repository_api.name)
 }
