@@ -12,7 +12,7 @@ using XtremeIdiots.Portal.RepositoryApi.Abstractions.Extensions;
 using XtremeIdiots.Portal.RepositoryApi.Abstractions.Models.ChatMessages;
 using XtremeIdiots.Portal.RepositoryApi.Abstractions.Models.Maps;
 using XtremeIdiots.Portal.RepositoryApi.Abstractions.Models.Players;
-using XtremeIdiots.Portal.RepositoryApiClient;
+using XtremeIdiots.Portal.RepositoryApiClient.V1;
 
 namespace XtremeIdiots.Portal.EventIngestFunc;
 
@@ -69,7 +69,7 @@ public class PlayerEventsIngest
         onPlayerConnectedTelemetry.Properties.Add("Guid", onPlayerConnected.Guid);
         telemetryClient.TrackEvent(onPlayerConnectedTelemetry);
 
-        var playerExistsApiResponse = await repositoryApiClient.Players.HeadPlayerByGameType(gameType, onPlayerConnected.Guid);
+        var playerExistsApiResponse = await repositoryApiClient.Players.V1.HeadPlayerByGameType(gameType, onPlayerConnected.Guid);
 
         if (playerExistsApiResponse.IsNotFound)
         {
@@ -78,7 +78,7 @@ public class PlayerEventsIngest
                 IpAddress = onPlayerConnected.IpAddress
             };
 
-            await repositoryApiClient.Players.CreatePlayer(player);
+            await repositoryApiClient.Players.V1.CreatePlayer(player);
         }
         else
         {
@@ -91,7 +91,7 @@ public class PlayerEventsIngest
                     IpAddress = onPlayerConnected.IpAddress
                 };
 
-                await repositoryApiClient.Players.UpdatePlayer(editPlayerDto);
+                await repositoryApiClient.Players.V1.UpdatePlayer(editPlayerDto);
             }
         }
     }
@@ -136,7 +136,7 @@ public class PlayerEventsIngest
         if (playerId != Guid.Empty)
         {
             var chatMessage = new CreateChatMessageDto(onChatMessage.ServerId, playerId, onChatMessage.Type.ToChatType(), onChatMessage.Username, onChatMessage.Message, onChatMessage.EventGeneratedUtc);
-            await repositoryApiClient.ChatMessages.CreateChatMessage(chatMessage);
+            await repositoryApiClient.ChatMessages.V1.CreateChatMessage(chatMessage);
         }
         else
         {
@@ -183,12 +183,12 @@ public class PlayerEventsIngest
 
         if (playerId != Guid.Empty)
         {
-            var mapApiResponse = await repositoryApiClient.Maps.GetMap(gameType, onMapVote.MapName);
+            var mapApiResponse = await repositoryApiClient.Maps.V1.GetMap(gameType, onMapVote.MapName);
 
             if (mapApiResponse.IsSuccess && mapApiResponse.Result != null)
             {
                 var upsertMapVoteDto = new UpsertMapVoteDto(mapApiResponse.Result.MapId, playerId, onMapVote.ServerId, onMapVote.Like);
-                await repositoryApiClient.Maps.UpsertMapVote(upsertMapVoteDto);
+                await repositoryApiClient.Maps.V1.UpsertMapVote(upsertMapVoteDto);
             }
         }
         else
@@ -204,7 +204,7 @@ public class PlayerEventsIngest
         if (memoryCache.TryGetValue(cacheKey, out Guid playerId))
             return playerId;
 
-        var playerDtoApiResponse = await repositoryApiClient.Players.GetPlayerByGameType(gameType, guid, PlayerEntityOptions.None);
+        var playerDtoApiResponse = await repositoryApiClient.Players.V1.GetPlayerByGameType(gameType, guid, PlayerEntityOptions.None);
 
         if (playerDtoApiResponse.IsSuccess && playerDtoApiResponse.Result != null)
         {

@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 using XtremeIdiots.Portal.EventIngestApi.Abstractions.Models;
 using XtremeIdiots.Portal.RepositoryApi.Abstractions.Models.GameServers;
-using XtremeIdiots.Portal.RepositoryApiClient;
+using XtremeIdiots.Portal.RepositoryApiClient.V1;
 
 namespace XtremeIdiots.Portal.EventIngestFunc;
 
@@ -48,7 +48,7 @@ public class ServerEventsIngest
             $"OnServerConnected :: Id: '{onServerConnected.Id}', GameType: '{onServerConnected.GameType}'");
 
         var gameServerEvent = new CreateGameServerEventDto(gameServerId, "OnServerConnected", JsonConvert.SerializeObject(onServerConnected));
-        await repositoryApiClient.GameServersEvents.CreateGameServerEvent(gameServerEvent);
+        await repositoryApiClient.GameServersEvents.V1.CreateGameServerEvent(gameServerEvent);
     }
 
     [Function("ProcessOnMapChange")]
@@ -77,6 +77,6 @@ public class ServerEventsIngest
             $"ProcessOnMapChange :: GameName: '{onMapChange.GameName}', GameType: '{onMapChange.GameType}', MapName: '{onMapChange.MapName}'");
 
         var gameServerEvent = new CreateGameServerEventDto(onMapChange.ServerId, "MapChange", JsonConvert.SerializeObject(onMapChange));
-        await repositoryApiClient.GameServersEvents.CreateGameServerEvent(gameServerEvent);
+        await repositoryApiClient.GameServersEvents.V1.CreateGameServerEvent(gameServerEvent);
     }
 }
