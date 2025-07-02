@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
-using XtremeIdiots.Portal.EventIngestApi.Abstractions.Models;
+using XtremeIdiots.Portal.Events.Abstractions.Models.V1;
 using XtremeIdiots.Portal.RepositoryApi.Abstractions.Constants;
 using XtremeIdiots.Portal.RepositoryApi.Abstractions.Extensions;
 using XtremeIdiots.Portal.RepositoryApi.Abstractions.Models.ChatMessages;
@@ -14,7 +14,7 @@ using XtremeIdiots.Portal.RepositoryApi.Abstractions.Models.Maps;
 using XtremeIdiots.Portal.RepositoryApi.Abstractions.Models.Players;
 using XtremeIdiots.Portal.RepositoryApiClient.V1;
 
-namespace XtremeIdiots.Portal.EventIngestFunc;
+namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
 public class PlayerEventsIngest
 {

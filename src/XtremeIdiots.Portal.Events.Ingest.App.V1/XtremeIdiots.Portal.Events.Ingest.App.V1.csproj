@@ -5,7 +5,7 @@
   <OutputType>Exe</OutputType>
   <ImplicitUsings>enable</ImplicitUsings>
   <Nullable>enable</Nullable>
-  <RootNamespace>XtremeIdiots.Portal.EventIngestFunc</RootNamespace>
+  <RootNamespace>XtremeIdiots.Portal.Events.Ingest.App.V1</RootNamespace>
     <UserSecretsId>96b5fd2d-824b-456b-af9e-0d50099edd81</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
@@ -24,7 +24,7 @@
   <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\event-ingest-abstractions\event-ingest-abstractions.csproj" />
+    <ProjectReference Include="..\XtremeIdiots.Portal.Events.Abstractions.V1\XtremeIdiots.Portal.Events.Abstractions.V1.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

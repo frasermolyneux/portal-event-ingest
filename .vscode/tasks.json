@@ -12,7 +12,7 @@
 			"type": "process",
 			"problemMatcher": "$msCompile",
 			"options": {
-				"cwd": "${workspaceFolder}/src\\event-ingest-func"
+				"cwd": "${workspaceFolder}/src\\XtremeIdiots.Portal.Events.Ingest.App.V1"
 			}
 		},
 		{
@@ -31,7 +31,7 @@
 			},
 			"problemMatcher": "$msCompile",
 			"options": {
-				"cwd": "${workspaceFolder}/src\\event-ingest-func"
+				"cwd": "${workspaceFolder}/src\\XtremeIdiots.Portal.Events.Ingest.App.V1"
 			}
 		},
 		{
@@ -65,7 +65,7 @@
 			"type": "process",
 			"problemMatcher": "$msCompile",
 			"options": {
-				"cwd": "${workspaceFolder}/src\\event-ingest-func"
+				"cwd": "${workspaceFolder}/src\\XtremeIdiots.Portal.Events.Ingest.App.V1"
 			}
 		},
 		{
@@ -82,14 +82,14 @@
 			"dependsOn": "clean release (functions)",
 			"problemMatcher": "$msCompile",
 			"options": {
-				"cwd": "${workspaceFolder}/src\\event-ingest-func"
+				"cwd": "${workspaceFolder}/src\\XtremeIdiots.Portal.Events.Ingest.App.V1"
 			}
 		},
 		{
 			"type": "func",
 			"dependsOn": "build (functions)",
 			"options": {
-				"cwd": "${workspaceFolder}/src\\event-ingest-func/bin/Debug/net9.0"
+				"cwd": "${workspaceFolder}/src\\XtremeIdiots.Portal.Events.Ingest.App.V1/bin/Debug/net9.0"
 			},
 			"command": "host start",
 			"isBackground": true,

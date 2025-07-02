@@ -7,7 +7,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace XtremeIdiots.Portal.EventIngestFunc;
+namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
 public class ReprocessDeadLetterQueue
 {

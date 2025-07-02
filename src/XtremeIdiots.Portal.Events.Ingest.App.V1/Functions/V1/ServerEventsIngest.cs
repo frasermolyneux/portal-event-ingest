@@ -3,11 +3,11 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
-using XtremeIdiots.Portal.EventIngestApi.Abstractions.Models;
+using XtremeIdiots.Portal.Events.Abstractions.Models.V1;
 using XtremeIdiots.Portal.RepositoryApi.Abstractions.Models.GameServers;
 using XtremeIdiots.Portal.RepositoryApiClient.V1;
 
-namespace XtremeIdiots.Portal.EventIngestFunc;
+namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
 public class ServerEventsIngest
 {

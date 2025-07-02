@@ -1,6 +1,6 @@
 {
-    "azureFunctions.projectSubpath": "src\\event-ingest-func",
-    "azureFunctions.deploySubpath": "src\\event-ingest-func/bin/Release/net9.0/publish",
+    "azureFunctions.projectSubpath": "src\\XtremeIdiots.Portal.Events.Ingest.App.V1",
+    "azureFunctions.deploySubpath": "src\\XtremeIdiots.Portal.Events.Ingest.App.V1/bin/Release/net9.0/publish",
     "azureFunctions.projectLanguage": "C#",
     "azureFunctions.projectRuntime": "~4",
     "debug.internalConsoleOptions": "neverOpen",

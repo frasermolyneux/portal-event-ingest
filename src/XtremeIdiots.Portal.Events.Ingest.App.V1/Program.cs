@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using XtremeIdiots.Portal.EventIngestFunc;
+using XtremeIdiots.Portal.Events.Ingest.App.V1;
 using XtremeIdiots.Portal.RepositoryApiClient.V1;
 
 var host = new HostBuilder()

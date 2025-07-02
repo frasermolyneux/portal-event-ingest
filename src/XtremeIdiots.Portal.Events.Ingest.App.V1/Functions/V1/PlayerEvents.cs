@@ -10,9 +10,9 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
-using XtremeIdiots.Portal.EventIngestApi.Abstractions.Models;
+using XtremeIdiots.Portal.Events.Abstractions.Models.V1;
 
-namespace XtremeIdiots.Portal.EventIngestFunc;
+namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
 public class PlayerEvents
 {
@@ -46,7 +46,8 @@ public class PlayerEvents
         {
             var sender = client.CreateSender("player_connected_queue");
             await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onPlayerConnected)));
-        };
+        }
+        ;
 
         return req.CreateResponse(HttpStatusCode.OK);
     }
@@ -74,7 +75,8 @@ public class PlayerEvents
         {
             var sender = client.CreateSender("chat_message_queue");
             await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onChatMessage)));
-        };
+        }
+        ;
 
         return req.CreateResponse(HttpStatusCode.OK);
     }
@@ -102,7 +104,8 @@ public class PlayerEvents
         {
             var sender = client.CreateSender("map_vote_queue");
             await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapVote)));
-        };
+        }
+        ;
 
         return req.CreateResponse(HttpStatusCode.OK);
     }

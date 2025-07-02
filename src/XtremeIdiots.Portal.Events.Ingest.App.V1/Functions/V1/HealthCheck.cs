@@ -3,7 +3,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace XtremeIdiots.Portal.EventIngestFunc
+namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1
 {
     public class HealthCheck
     {
