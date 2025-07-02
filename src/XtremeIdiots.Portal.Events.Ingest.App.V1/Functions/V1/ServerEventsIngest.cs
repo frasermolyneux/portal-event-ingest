@@ -4,8 +4,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 using XtremeIdiots.Portal.Events.Abstractions.Models.V1;
-using XtremeIdiots.Portal.RepositoryApi.Abstractions.Models.GameServers;
-using XtremeIdiots.Portal.RepositoryApiClient.V1;
+using XtremeIdiots.Portal.Repository.Abstractions.Models.V1.GameServers;
+using XtremeIdiots.Portal.Repository.Api.Client.V1;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 

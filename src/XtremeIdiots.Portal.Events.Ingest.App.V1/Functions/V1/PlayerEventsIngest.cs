@@ -7,12 +7,12 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 using XtremeIdiots.Portal.Events.Abstractions.Models.V1;
-using XtremeIdiots.Portal.RepositoryApi.Abstractions.Constants;
-using XtremeIdiots.Portal.RepositoryApi.Abstractions.Extensions;
-using XtremeIdiots.Portal.RepositoryApi.Abstractions.Models.ChatMessages;
-using XtremeIdiots.Portal.RepositoryApi.Abstractions.Models.Maps;
-using XtremeIdiots.Portal.RepositoryApi.Abstractions.Models.Players;
-using XtremeIdiots.Portal.RepositoryApiClient.V1;
+using XtremeIdiots.Portal.Repository.Abstractions.Constants.V1;
+using XtremeIdiots.Portal.Repository.Abstractions.Extensions.V1;
+using XtremeIdiots.Portal.Repository.Abstractions.Models.V1.ChatMessages;
+using XtremeIdiots.Portal.Repository.Abstractions.Models.V1.Maps;
+using XtremeIdiots.Portal.Repository.Abstractions.Models.V1.Players;
+using XtremeIdiots.Portal.Repository.Api.Client.V1;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
