@@ -21,7 +21,7 @@ public class ReprocessDeadLetterQueue
     }
 
     [Function(nameof(ReprocessDeadLetterQueue))]
-    public async Task<HttpResponseData> RunReprocessDeadLetterQueue([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData req, FunctionContext executionContext)
+    public async Task<HttpResponseData> RunReprocessDeadLetterQueue([HttpTrigger(AuthorizationLevel.Function, "post", Route = "api/v1/ReprocessDeadLetterQueue")] HttpRequestData req, FunctionContext executionContext)
     {
         var queueName = req.Query["queueName"];
         if (string.IsNullOrEmpty(queueName))
