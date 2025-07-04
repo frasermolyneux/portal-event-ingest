@@ -31,7 +31,7 @@ resource "azurerm_linux_function_app" "app" {
     application_insights_connection_string = data.azurerm_application_insights.core.connection_string
     application_insights_key               = data.azurerm_application_insights.core.instrumentation_key
 
-    api_management_api_id = azurerm_api_management_api.event_ingest_api.id
+    api_management_api_id = azurerm_api_management_api.event_ingest_api_versioned["v1"].id
 
     ftps_state          = "Disabled"
     always_on           = true
