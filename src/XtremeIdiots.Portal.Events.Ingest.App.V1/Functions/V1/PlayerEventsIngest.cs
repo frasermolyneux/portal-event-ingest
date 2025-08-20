@@ -185,9 +185,9 @@ public class PlayerEventsIngest
         {
             var mapApiResponse = await repositoryApiClient.Maps.V1.GetMap(gameType, onMapVote.MapName);
 
-            if (mapApiResponse.IsSuccess && mapApiResponse.Result != null)
+            if (mapApiResponse.IsSuccess && mapApiResponse.Result?.Data != null)
             {
-                var upsertMapVoteDto = new UpsertMapVoteDto(mapApiResponse.Result.MapId, playerId, onMapVote.ServerId, onMapVote.Like);
+                var upsertMapVoteDto = new UpsertMapVoteDto(mapApiResponse.Result.Data.MapId, playerId, onMapVote.ServerId, onMapVote.Like);
                 await repositoryApiClient.Maps.V1.UpsertMapVote(upsertMapVoteDto);
             }
         }
@@ -206,12 +206,12 @@ public class PlayerEventsIngest
 
         var playerDtoApiResponse = await repositoryApiClient.Players.V1.GetPlayerByGameType(gameType, guid, PlayerEntityOptions.None);
 
-        if (playerDtoApiResponse.IsSuccess && playerDtoApiResponse.Result != null)
+        if (playerDtoApiResponse.IsSuccess && playerDtoApiResponse.Result?.Data != null)
         {
             var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(15));
-            memoryCache.Set(cacheKey, playerDtoApiResponse.Result.PlayerId, cacheEntryOptions);
+            memoryCache.Set(cacheKey, playerDtoApiResponse.Result.Data.PlayerId, cacheEntryOptions);
 
-            return playerDtoApiResponse.Result.PlayerId;
+            return playerDtoApiResponse.Result.Data.PlayerId;
         }
 
         return Guid.Empty;
