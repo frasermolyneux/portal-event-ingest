@@ -15,7 +15,7 @@ namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1
         }
 
         [Function(nameof(HealthCheck))]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "api/v1/health")] HttpRequestData req,
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "health")] HttpRequestData req,
             FunctionContext context)
         {
             var healthStatus = await healthCheck.CheckHealthAsync();
