@@ -13,7 +13,7 @@ resource "azurerm_monitor_metric_alert" "on_chat_message_missing" {
 
   criteria {
     metric_namespace = "microsoft.insights/components"
-    metric_name      = "customEvents/count"
+    metric_name      = "customEvents"
     aggregation      = "Count"
     operator         = "LessThan"
     threshold        = 1
