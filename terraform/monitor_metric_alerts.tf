@@ -6,10 +6,10 @@ resource "azurerm_monitor_metric_alert" "on_chat_message_missing" {
   resource_group_name = azurerm_resource_group.rg.name
   scopes              = [data.azurerm_application_insights.core.id]
 
-  description = "Triggers when the OnChatMessage custom event has not been ingested for four hours."
+  description = "Triggers when the OnChatMessage custom event has not been ingested for six hours."
 
   frequency   = "PT1H"
-  window_size = "PT4H"
+  window_size = "PT6H"
 
   criteria {
     metric_namespace = "microsoft.insights/components"
