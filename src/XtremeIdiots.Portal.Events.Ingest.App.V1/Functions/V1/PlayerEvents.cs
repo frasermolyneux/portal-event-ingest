@@ -1,26 +1,25 @@
 ﻿using System.Net;
-using Azure.Identity;
 
 using Azure.Messaging.ServiceBus;
 
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
 using XtremeIdiots.Portal.Events.Abstractions.Models.V1;
+using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
 public class PlayerEvents
 {
-    private readonly IConfiguration configuration;
+    private readonly IServiceBusClientFactory serviceBusClientFactory;
 
-    public PlayerEvents(IConfiguration configuration)
+    public PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
     {
-        this.configuration = configuration;
+        this.serviceBusClientFactory = serviceBusClientFactory;
     }
 
     [Function(nameof(OnPlayerConnected))]
@@ -41,13 +40,8 @@ public class PlayerEvents
             throw;
         }
 
-        var credential = new DefaultAzureCredential();
-        await using (var client = new ServiceBusClient(configuration["ServiceBusConnection:fullyQualifiedNamespace"], credential))
-        {
-            var sender = client.CreateSender("player_connected_queue");
-            await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onPlayerConnected)));
-        }
-        ;
+        var sender = serviceBusClientFactory.CreateSender("player_connected_queue");
+        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onPlayerConnected)));
 
         return req.CreateResponse(HttpStatusCode.OK);
     }
@@ -70,13 +64,8 @@ public class PlayerEvents
             throw;
         }
 
-        var credential = new DefaultAzureCredential();
-        await using (var client = new ServiceBusClient(configuration["ServiceBusConnection:fullyQualifiedNamespace"], credential))
-        {
-            var sender = client.CreateSender("chat_message_queue");
-            await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onChatMessage)));
-        }
-        ;
+        var sender = serviceBusClientFactory.CreateSender("chat_message_queue");
+        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onChatMessage)));
 
         return req.CreateResponse(HttpStatusCode.OK);
     }
@@ -99,13 +88,8 @@ public class PlayerEvents
             throw;
         }
 
-        var credential = new DefaultAzureCredential();
-        await using (var client = new ServiceBusClient(configuration["ServiceBusConnection:fullyQualifiedNamespace"], credential))
-        {
-            var sender = client.CreateSender("map_vote_queue");
-            await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapVote)));
-        }
-        ;
+        var sender = serviceBusClientFactory.CreateSender("map_vote_queue");
+        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapVote)));
 
         return req.CreateResponse(HttpStatusCode.OK);
     }

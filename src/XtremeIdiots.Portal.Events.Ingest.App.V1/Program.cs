@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using XtremeIdiots.Portal.Events.Ingest.App.V1;
+using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
+using XtremeIdiots.Portal.Events.Ingest.App.V1.Services;
 using XtremeIdiots.Portal.Repository.Api.Client.V1;
 
 var host = new HostBuilder()
@@ -30,6 +32,8 @@ var host = new HostBuilder()
             .WithEntraIdAuthentication(configuration["RepositoryApi:ApplicationAudience"] ?? throw new InvalidOperationException("RepositoryApi:ApplicationAudience configuration is required")));
 
         services.AddMemoryCache();
+
+        services.AddSingleton<IServiceBusClientFactory, ServiceBusClientFactory>();
 
         services.AddHealthChecks();
     })

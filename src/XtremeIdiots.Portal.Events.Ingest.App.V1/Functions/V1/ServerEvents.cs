@@ -1,26 +1,25 @@
 ﻿using System.Net;
-using Azure.Identity;
 
 using Azure.Messaging.ServiceBus;
 
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
 using XtremeIdiots.Portal.Events.Abstractions.Models.V1;
+using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
 public class ServerEvents
 {
-    private readonly IConfiguration configuration;
+    private readonly IServiceBusClientFactory serviceBusClientFactory;
 
-    public ServerEvents(IConfiguration configuration)
+    public ServerEvents(IServiceBusClientFactory serviceBusClientFactory)
     {
-        this.configuration = configuration;
+        this.serviceBusClientFactory = serviceBusClientFactory;
     }
 
     [Function(nameof(OnServerConnected))]
@@ -41,13 +40,8 @@ public class ServerEvents
             throw;
         }
 
-        var credential = new DefaultAzureCredential();
-        await using (var client = new ServiceBusClient(configuration["ServiceBusConnection:fullyQualifiedNamespace"], credential))
-        {
-            var sender = client.CreateSender("server_connected_queue");
-            await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onServerConnected)));
-        }
-        ;
+        var sender = serviceBusClientFactory.CreateSender("server_connected_queue");
+        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onServerConnected)));
 
         return req.CreateResponse(HttpStatusCode.OK);
     }
@@ -70,13 +64,8 @@ public class ServerEvents
             throw;
         }
 
-        var credential = new DefaultAzureCredential();
-        await using (var client = new ServiceBusClient(configuration["ServiceBusConnection:fullyQualifiedNamespace"], credential))
-        {
-            var sender = client.CreateSender("map_change_queue");
-            await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapChange)));
-        }
-        ;
+        var sender = serviceBusClientFactory.CreateSender("map_change_queue");
+        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapChange)));
 
         return req.CreateResponse(HttpStatusCode.OK);
     }
