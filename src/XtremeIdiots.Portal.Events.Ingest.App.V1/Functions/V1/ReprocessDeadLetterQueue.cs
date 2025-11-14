@@ -1,23 +1,23 @@
 using System.Net;
-using Azure.Identity;
 using Azure.Messaging.ServiceBus;
 
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+
+using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
 public class ReprocessDeadLetterQueue
 {
     private readonly ILogger<ReprocessDeadLetterQueue> logger;
-    private readonly IConfiguration configuration;
+    private readonly IServiceBusClientFactory serviceBusClientFactory;
 
-    public ReprocessDeadLetterQueue(ILogger<ReprocessDeadLetterQueue> logger, IConfiguration configuration)
+    public ReprocessDeadLetterQueue(ILogger<ReprocessDeadLetterQueue> logger, IServiceBusClientFactory serviceBusClientFactory)
     {
         this.logger = logger;
-        this.configuration = configuration;
+        this.serviceBusClientFactory = serviceBusClientFactory;
     }
 
     [Function(nameof(ReprocessDeadLetterQueue))]
@@ -33,11 +33,8 @@ public class ReprocessDeadLetterQueue
 
         try
         {
-            var credential = new DefaultAzureCredential();
-            ServiceBusClient client = new ServiceBusClient(configuration["ServiceBusConnection:fullyQualifiedNamespace"], credential);
-            ServiceBusSender sender = client.CreateSender(queueName);
-
-            ServiceBusReceiver receiver = client.CreateReceiver(queueName, new ServiceBusReceiverOptions
+            var sender = serviceBusClientFactory.CreateSender(queueName);
+            var receiver = serviceBusClientFactory.CreateReceiver(queueName, new ServiceBusReceiverOptions
             {
                 SubQueue = SubQueue.DeadLetter,
                 ReceiveMode = ServiceBusReceiveMode.PeekLock
@@ -60,7 +57,7 @@ public class ReprocessDeadLetterQueue
         return req.CreateResponse(HttpStatusCode.OK);
     }
 
-    private async Task ProcessDeadLetterMessagesAsync(ServiceBusSender sender, ServiceBusReceiver receiver)
+    private async Task ProcessDeadLetterMessagesAsync(IServiceBusSender sender, IServiceBusReceiver receiver)
     {
         int fetchCount = 150;
 
