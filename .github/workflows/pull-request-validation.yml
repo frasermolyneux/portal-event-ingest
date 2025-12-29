@@ -32,7 +32,6 @@ jobs:
         dotnet-project: "XtremeIdiots.Portal.Events.Ingest.App.V1"
         dotnet-version: 9.0.x
         src-folder: "src"
-        majorMinorVersion: "1.1"
 
   terraform-plan-and-apply-dev:
     environment: Development
