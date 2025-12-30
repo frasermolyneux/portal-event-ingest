@@ -1,28 +1,26 @@
 # Copilot Instructions
 
-## Architecture & Data Flow
-- Azure Functions app (`net9.0`, isolated worker) hosts HTTP endpoints in `Functions/V1` that accept JSON payloads, validate required fields, and publish to Service Bus queues (`player_connected_queue`, `chat_message_queue`, etc.).
-- Matching Service Bus-triggered functions persist events into the Repository API via `XtremeIdiots.Portal.Repository.Api.Client.V1`; follow the HEAD→create/update flow used in `PlayerEventsIngest` to avoid duplicates.
-- Event contracts live in `XtremeIdiots.Portal.Events.Abstractions.V1`; new payload shapes should extend `OnEventBase` so they can be packaged and re-used.
-- `TelemetryInitializer` sets the Application Insights role name and each ingest handler emits `EventTelemetry`; preserve these calls when extending logic so dashboards stay accurate.
+## App Shape & Flow
+- .NET 9 isolated Azure Functions host wires logging, Application Insights, Repository API client, memory cache, and Service Bus factory in [src/XtremeIdiots.Portal.Events.Ingest.App.V1/Program.cs#L14-L40](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Program.cs#L14-L40).
+- HTTP triggers in [src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/PlayerEvents.cs#L25-L95](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/PlayerEvents.cs#L25-L95) and [src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/ServerEvents.cs#L25-L71](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/ServerEvents.cs#L25-L71) accept JSON, log raw payloads on failure, and enqueue Service Bus messages (`player_connected_queue`, `chat_message_queue`, `map_vote_queue`, `server_connected_queue`, `map_change_queue`).
+- Service Bus triggers in [src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/PlayerEventsIngest.cs#L38-L218](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/PlayerEventsIngest.cs#L38-L218) and [src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/ServerEventsIngest.cs#L25-L70](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/ServerEventsIngest.cs#L25-L70) deserialize, validate required fields, emit `EventTelemetry`, then call Repository API (players, chat, maps, game-server events). Follow the existing HEAD→create/update flow when avoiding duplicates.
+- Game server events are persisted verbatim via `CreateGameServerEventDto` for server lifecycle/map changes; player map votes first resolve map metadata before upsert.
+- Health probe is exposed at `/health` returning the aggregated `HealthCheckService` status in [src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/HealthCheck.cs#L12-L24](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/HealthCheck.cs#L12-L24).
+- DLQ replay uses [src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/ReprocessDeadLetterQueue.cs#L19-L79](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/ReprocessDeadLetterQueue.cs#L19-L79); prefer extending it for any dead-letter reprocessing.
 
-## Configuration Expectations
-- Configuration values come from `local.settings.json`, user secrets (`Program.cs` loads assembly secrets), and app settings deployed via Terraform. Use the `Section:Key` casing (`RepositoryApi:BaseUrl`) that maps to `__` in Terraform.
-- Service Bus sender functions rely on `DefaultAzureCredential`; locally you must authenticate (e.g., `az login`) or supply env vars matching the connection info. Service Bus triggers use the connection string from `ServiceBusConnection`.
-- When adding queues or settings, update both host config and Terraform (`service_bus.tf`, `function_app.tf`) so deployments stay in sync.
+## Contracts & Patterns
+- Event contracts live under [src/XtremeIdiots.Portal.Events.Abstractions.V1/Models/V1](src/XtremeIdiots.Portal.Events.Abstractions.V1/Models/V1); extend `OnEventBase` and reuse helpers like `ToGameType`/`ToChatType` when adding shapes.
+- Defensive JSON handling: HTTP triggers log the raw body then rethrow, and ingest triggers validate every required field before proceeding (see map vote/game type validations in [PlayerEventsIngest](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/PlayerEventsIngest.cs#L152-L197)).
+- Player lookups are cached for 15 minutes using the key `$"{gameType}-${guid}"` before calling the Repository API (see `GetPlayerId` in [PlayerEventsIngest](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/PlayerEventsIngest.cs#L200-L217)).
+- Application Insights role name is set globally in [src/XtremeIdiots.Portal.Events.Ingest.App.V1/TelemetryInitializer.cs#L6-L12](src/XtremeIdiots.Portal.Events.Ingest.App.V1/TelemetryInitializer.cs#L6-L12) and each handler tracks an `EventTelemetry` instance; preserve these when extending handlers for dashboards.
+- Service Bus access is wrapped behind `IServiceBusClientFactory`/`IServiceBusSender`/`IServiceBusReceiver` ([src/XtremeIdiots.Portal.Events.Ingest.App.V1/Services/ServiceBusClientFactory.cs#L1-L32](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Services/ServiceBusClientFactory.cs#L1-L32)) so functions stay testable; prefer adding capabilities via these abstractions.
 
-## Implementation Patterns
-- All queue publishers serialize with `JsonConvert.SerializeObject`; ingest functions immediately deserialize and fail fast with detailed error logs. Follow this defensive pattern for new events.
-- `PlayerEventsIngest.GetPlayerId` caches lookups for 15 minutes to avoid redundant API calls. Reuse the same cache key style (`$"{gameType}-${guid}"`) if you expand player-related features.
-- Health probing is handled by `HealthCheck` at `/api/health`; any new health dependencies should plug into `HealthCheckService` registrations in `Program.cs`.
-- `ReprocessDeadLetterQueue` is the sanctioned path for replaying DLQs; extend it rather than rolling ad-hoc scripts if additional queues need support.
+## Configuration & Identity
+- Required settings: `RepositoryApi:BaseUrl`, `RepositoryApi:ApiKey`, `RepositoryApi:ApplicationAudience` plus Application Insights connection string. Missing values throw during startup ([Program](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Program.cs#L24-L33)).
+- Service Bus senders use `DefaultAzureCredential` against `ServiceBusConnection:fullyQualifiedNamespace` ([ServiceBusClientFactory](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Services/ServiceBusClientFactory.cs#L12-L24)); triggers use the `ServiceBusConnection` connection string binding.
+- Config is pulled from `local.settings.json`, user secrets (loaded in `Program`), and Terraform app settings. Keep `Section:Key` casing to match the `__` convention in Terraform.
 
-## Tooling & Workflows
-- Use the provided VS Code tasks: `build (functions)` cleans then builds the function app, and `test` runs `dotnet test src --filter FullyQualifiedName!~IntegrationTests`.
-- GitHub workflows call custom actions (`frasermolyneux/actions`) for .NET CI, Terraform plan/apply, and Function App deployment; reuse these actions in new pipelines instead of inventing alternatives.
-- Versioned OpenAPI definitions live under `openapi/` (`EventIngest.openapi+json.json` mirrors the HTTP triggers). Keep these files updated when routes or payloads change so API Management imports remain correct.
-
-## Terraform & Environments
-- Terraform state is split via backend files in `terraform/backends/`; choose the correct backend + `tfvars` (`dev.tfvars`, `prd.tfvars`) when reproducing pipeline steps locally.
-- `function_app.tf` wires managed identity auth (system-assigned) and Key Vault secret references for Repository API keys. Any new outbound dependency should follow the same Key Vault-backed pattern.
-- Service Bus namespace disables shared keys (`local_auth_enabled = false`); all code assumes AAD-based access. Avoid reintroducing connection-string authentication outside of the trigger binding.
+## Tooling, Workflows, Infra
+- VS Code tasks: `build (functions)` cleans/builds the function app; `test` runs `dotnet test src --filter FullyQualifiedName!~IntegrationTests`; `func` task runs the built functions host from `bin/Debug/net9.0`.
+- OpenAPI specs live in `openapi/` and the root `EventIngest.openapi+json.json`; update these when routes/payloads change so API Management stays in sync.
+- Terraform: backends per environment under `terraform/backends/` with matching `tfvars` in `terraform/tfvars/`; Function App uses system-assigned identity and Key Vault-backed secrets (`function_app.tf`), and Service Bus disables shared keys (`service_bus.tf` uses AAD). Keep new settings/queues reflected in Terraform and host config together.
