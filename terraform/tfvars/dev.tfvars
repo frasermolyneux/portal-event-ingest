@@ -31,7 +31,7 @@ portal_environments_state = {
   tenant_id            = "e56a6947-bb9a-4a6e-846a-1f118d1c3a14"
 }
 
-api_management_name = "apim-portal-core-dev-swedencentral-01-3138575b4c87"
+api_management_name = "apim-portal-core-dev-swedencentral-01-2db7de738f7a"
 
 repository_api = {
   application_name     = "portal-repository-dev-01"
