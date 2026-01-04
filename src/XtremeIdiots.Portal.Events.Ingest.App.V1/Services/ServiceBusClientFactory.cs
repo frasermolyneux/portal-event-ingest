@@ -11,7 +11,16 @@ public class ServiceBusClientFactory : IServiceBusClientFactory, IDisposable
 
     public ServiceBusClientFactory(IConfiguration configuration)
     {
-        var credential = new DefaultAzureCredential();
+        var managedIdentityClientId = configuration["ServiceBusConnection:ManagedIdentityClientId"]
+            ?? configuration["AZURE_CLIENT_ID"];
+
+        var credential = string.IsNullOrWhiteSpace(managedIdentityClientId)
+            ? new DefaultAzureCredential()
+            : new DefaultAzureCredential(new DefaultAzureCredentialOptions
+            {
+                ManagedIdentityClientId = managedIdentityClientId
+            });
+
         var fullyQualifiedNamespace = configuration["ServiceBusConnection:fullyQualifiedNamespace"]
             ?? throw new InvalidOperationException("ServiceBusConnection:fullyQualifiedNamespace configuration is required");
         _client = new ServiceBusClient(fullyQualifiedNamespace, credential);

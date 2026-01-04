@@ -17,6 +17,11 @@ locals {
 
   workload_resource_group = local.workload_resource_groups[var.location]
 
+  app_configuration_endpoint = data.terraform_remote_state.portal_environments.outputs.app_configuration.endpoint
+
+  managed_identities            = try(data.terraform_remote_state.portal_environments.outputs.managed_identities, {})
+  event_ingest_funcapp_identity = local.managed_identities["event_ingest_funcapp_identity"]
+
   # Local Resource Naming
   legacy_resource_group_name       = "rg-portal-event-ingest-${var.environment}-${var.location}-${var.instance}"
   legacy_key_vault_name            = substr(format("kv-%s-%s", random_id.legacy_environment_id.hex, var.location), 0, 24)

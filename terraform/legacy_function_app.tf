@@ -15,8 +15,11 @@ resource "azurerm_linux_function_app" "legacy_app" {
   functions_extension_version = "~4"
 
   identity {
-    type = "SystemAssigned"
+    type         = "UserAssigned"
+    identity_ids = [local.event_ingest_funcapp_identity.id]
   }
+
+  key_vault_reference_identity_id = local.event_ingest_funcapp_identity.id
 
   site_config {
     application_stack {
@@ -42,9 +45,16 @@ resource "azurerm_linux_function_app" "legacy_app" {
   }
 
   app_settings = {
+    "AzureAppConfiguration__Endpoint"                = local.app_configuration_endpoint
+    "AzureAppConfiguration__ManagedIdentityClientId" = local.event_ingest_funcapp_identity.client_id
+    "AzureAppConfiguration__Environment"             = var.environment
+
+    "AZURE_CLIENT_ID" = local.event_ingest_funcapp_identity.client_id
+
     "WEBSITE_RUN_FROM_PACKAGE"                      = "0" # This will be set to 0 on initial creation but will be updated to 1 when the package is deployed (required for azurerm_function_app_host_keys)
     "ApplicationInsightsAgent_EXTENSION_VERSION"    = "~3"
     "ServiceBusConnection__fullyQualifiedNamespace" = format("%s.servicebus.windows.net", azurerm_servicebus_namespace.legacy_ingest.name)
+    "ServiceBusConnection__ManagedIdentityClientId" = local.event_ingest_funcapp_identity.client_id
 
     "RepositoryApi__BaseUrl"             = format("%s/repository", data.azurerm_api_management.core.gateway_url)
     "RepositoryApi__ApiKey"              = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.legacy_kv.name, azurerm_key_vault_secret.legacy_repository_api_subscription_secret_primary.name)
