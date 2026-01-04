@@ -34,33 +34,3 @@ resource "azurerm_servicebus_queue" "legacy_map_change" {
   name         = "map_change_queue"
   namespace_id = azurerm_servicebus_namespace.legacy_ingest.id
 }
-
-moved {
-  from = azurerm_servicebus_namespace.ingest
-  to   = azurerm_servicebus_namespace.legacy_ingest
-}
-
-moved {
-  from = azurerm_servicebus_queue.player_connected
-  to   = azurerm_servicebus_queue.legacy_player_connected
-}
-
-moved {
-  from = azurerm_servicebus_queue.chat_message
-  to   = azurerm_servicebus_queue.legacy_chat_message
-}
-
-moved {
-  from = azurerm_servicebus_queue.map_vote
-  to   = azurerm_servicebus_queue.legacy_map_vote
-}
-
-moved {
-  from = azurerm_servicebus_queue.server_connected
-  to   = azurerm_servicebus_queue.legacy_server_connected
-}
-
-moved {
-  from = azurerm_servicebus_queue.map_change
-  to   = azurerm_servicebus_queue.legacy_map_change
-}

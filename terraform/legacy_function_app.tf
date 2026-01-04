@@ -66,8 +66,3 @@ data "azurerm_function_app_host_keys" "app" {
   name                = azurerm_linux_function_app.legacy_app.name
   resource_group_name = azurerm_resource_group.legacy_rg.name
 }
-
-moved {
-  from = azurerm_linux_function_app.app
-  to   = azurerm_linux_function_app.legacy_app
-}

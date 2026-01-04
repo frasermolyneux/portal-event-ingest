@@ -27,18 +27,3 @@ resource "azuread_service_principal" "legacy_repository_api_service_principal" {
     data.azuread_client_config.current.object_id
   ]
 }
-
-moved {
-  from = random_uuid.app_role_event_generator
-  to   = random_uuid.legacy_app_role_event_generator
-}
-
-moved {
-  from = azuread_application.event_ingest_api
-  to   = azuread_application.legacy_event_ingest_api
-}
-
-moved {
-  from = azuread_service_principal.repository_api_service_principal
-  to   = azuread_service_principal.legacy_repository_api_service_principal
-}

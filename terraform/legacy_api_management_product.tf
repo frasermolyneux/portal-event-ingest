@@ -55,18 +55,3 @@ resource "azurerm_api_management_product_policy" "legacy_event_ingest_api_produc
 </policies>
 XML
 }
-
-moved {
-  from = azurerm_api_management_api_version_set.event_ingest_api_version_set
-  to   = azurerm_api_management_api_version_set.legacy_event_ingest_api_version_set
-}
-
-moved {
-  from = azurerm_api_management_product.event_ingest_api_product
-  to   = azurerm_api_management_product.legacy_event_ingest_api_product
-}
-
-moved {
-  from = azurerm_api_management_product_policy.event_ingest_api_product_policy
-  to   = azurerm_api_management_product_policy.legacy_event_ingest_api_product_policy
-}

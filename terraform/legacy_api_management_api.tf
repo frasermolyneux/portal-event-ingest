@@ -15,8 +15,3 @@ resource "azurerm_api_management_named_value" "legacy_functionapp_host_key_named
     azurerm_role_assignment.legacy_apim_kv_role_assignment
   ]
 }
-
-moved {
-  from = azurerm_api_management_named_value.functionapp_host_key_named_value
-  to   = azurerm_api_management_named_value.legacy_functionapp_host_key_named_value
-}

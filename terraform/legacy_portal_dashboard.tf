@@ -52,13 +52,3 @@ resource "azurerm_portal_dashboard" "legacy_staging_dashboard" {
     ]
   }
 }
-
-moved {
-  from = azurerm_portal_dashboard.app
-  to   = azurerm_portal_dashboard.legacy_app
-}
-
-moved {
-  from = azurerm_portal_dashboard.staging_dashboard
-  to   = azurerm_portal_dashboard.legacy_staging_dashboard
-}

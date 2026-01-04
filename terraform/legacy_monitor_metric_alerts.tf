@@ -37,8 +37,3 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "legacy_on_chat_message_m
 
   tags = var.tags
 }
-
-moved {
-  from = azurerm_monitor_scheduled_query_rules_alert.on_chat_message_missing
-  to   = azurerm_monitor_scheduled_query_rules_alert.legacy_on_chat_message_missing
-}

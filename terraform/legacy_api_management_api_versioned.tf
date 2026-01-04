@@ -189,28 +189,3 @@ resource "azurerm_api_management_api_diagnostic" "legacy_event_ingest_api_diagno
 
   http_correlation_protocol = "W3C"
 }
-
-moved {
-  from = azurerm_api_management_backend.event_ingest_api_management_backend_versioned
-  to   = azurerm_api_management_backend.legacy_event_ingest_api_management_backend_versioned
-}
-
-moved {
-  from = azurerm_api_management_api.event_ingest_api_versioned
-  to   = azurerm_api_management_api.legacy_event_ingest_api_versioned
-}
-
-moved {
-  from = azurerm_api_management_product_api.event_ingest_api_versioned
-  to   = azurerm_api_management_product_api.legacy_event_ingest_api_versioned
-}
-
-moved {
-  from = azurerm_api_management_api_policy.event_ingest_api_policy_versioned
-  to   = azurerm_api_management_api_policy.legacy_event_ingest_api_policy_versioned
-}
-
-moved {
-  from = azurerm_api_management_api_diagnostic.event_ingest_api_diagnostic_versioned
-  to   = azurerm_api_management_api_diagnostic.legacy_event_ingest_api_diagnostic_versioned
-}
