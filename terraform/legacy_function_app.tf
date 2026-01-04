@@ -1,13 +1,13 @@
-resource "azurerm_linux_function_app" "app" {
-  name = local.function_app_name
+resource "azurerm_linux_function_app" "legacy_app" {
+  name = local.legacy_function_app_name
   tags = var.tags
 
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.legacy_rg.name
+  location            = azurerm_resource_group.legacy_rg.location
 
   service_plan_id = data.azurerm_service_plan.core.id
 
-  storage_account_name          = azurerm_storage_account.function_app_storage.name
+  storage_account_name          = azurerm_storage_account.legacy_function_app_storage.name
   storage_uses_managed_identity = true
 
   https_only = true
@@ -31,7 +31,7 @@ resource "azurerm_linux_function_app" "app" {
     application_insights_connection_string = data.azurerm_application_insights.core.connection_string
     application_insights_key               = data.azurerm_application_insights.core.instrumentation_key
 
-    api_management_api_id = azurerm_api_management_api.event_ingest_api_versioned["v1"].id
+    api_management_api_id = azurerm_api_management_api.legacy_event_ingest_api_versioned["v1"].id
 
     ftps_state          = "Disabled"
     always_on           = true
@@ -44,10 +44,10 @@ resource "azurerm_linux_function_app" "app" {
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE"                      = "0" # This will be set to 0 on initial creation but will be updated to 1 when the package is deployed (required for azurerm_function_app_host_keys)
     "ApplicationInsightsAgent_EXTENSION_VERSION"    = "~3"
-    "ServiceBusConnection__fullyQualifiedNamespace" = format("%s.servicebus.windows.net", azurerm_servicebus_namespace.ingest.name)
+    "ServiceBusConnection__fullyQualifiedNamespace" = format("%s.servicebus.windows.net", azurerm_servicebus_namespace.legacy_ingest.name)
 
     "RepositoryApi__BaseUrl"             = format("%s/repository", data.azurerm_api_management.core.gateway_url)
-    "RepositoryApi__ApiKey"              = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.kv.name, azurerm_key_vault_secret.repository_api_subscription_secret_primary.name)
+    "RepositoryApi__ApiKey"              = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.legacy_kv.name, azurerm_key_vault_secret.legacy_repository_api_subscription_secret_primary.name)
     "RepositoryApi__ApplicationAudience" = var.repository_api.application_audience
 
     // https://learn.microsoft.com/en-us/azure/azure-monitor/profiler/profiler-azure-functions#app-settings-for-enabling-profiler
@@ -63,6 +63,11 @@ resource "azurerm_linux_function_app" "app" {
 }
 
 data "azurerm_function_app_host_keys" "app" {
-  name                = azurerm_linux_function_app.app.name
-  resource_group_name = azurerm_resource_group.rg.name
+  name                = azurerm_linux_function_app.legacy_app.name
+  resource_group_name = azurerm_resource_group.legacy_rg.name
+}
+
+moved {
+  from = azurerm_linux_function_app.app
+  to   = azurerm_linux_function_app.legacy_app
 }

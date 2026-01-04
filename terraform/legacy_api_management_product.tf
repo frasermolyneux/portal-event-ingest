@@ -1,4 +1,4 @@
-resource "azurerm_api_management_api_version_set" "event_ingest_api_version_set" {
+resource "azurerm_api_management_api_version_set" "legacy_event_ingest_api_version_set" {
   name                = "event-ingest-api"
   resource_group_name = data.azurerm_api_management.core.resource_group_name
   api_management_name = data.azurerm_api_management.core.name
@@ -7,7 +7,7 @@ resource "azurerm_api_management_api_version_set" "event_ingest_api_version_set"
   versioning_scheme = "Segment"
 }
 
-resource "azurerm_api_management_product" "event_ingest_api_product" {
+resource "azurerm_api_management_product" "legacy_event_ingest_api_product" {
   product_id          = "event-ingest-api"
   resource_group_name = data.azurerm_api_management.core.resource_group_name
   api_management_name = data.azurerm_api_management.core.name
@@ -19,8 +19,8 @@ resource "azurerm_api_management_product" "event_ingest_api_product" {
   published             = true
 }
 
-resource "azurerm_api_management_product_policy" "event_ingest_api_product_policy" {
-  product_id          = azurerm_api_management_product.event_ingest_api_product.product_id
+resource "azurerm_api_management_product_policy" "legacy_event_ingest_api_product_policy" {
+  product_id          = azurerm_api_management_product.legacy_event_ingest_api_product.product_id
   resource_group_name = data.azurerm_api_management.core.resource_group_name
   api_management_name = data.azurerm_api_management.core.name
 
@@ -32,7 +32,7 @@ resource "azurerm_api_management_product_policy" "event_ingest_api_product_polic
       <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="JWT validation was unsuccessful" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true">
           <openid-config url="https://login.microsoftonline.com/${data.azuread_client_config.current.tenant_id}/v2.0/.well-known/openid-configuration" />
           <audiences>
-              <audience>${format("api://%s", local.app_registration_name)}</audience>
+              <audience>${format("api://%s", local.legacy_app_registration_name)}</audience>
           </audiences>
           <issuers>
               <issuer>https://sts.windows.net/${data.azuread_client_config.current.tenant_id}/</issuer>
@@ -54,4 +54,19 @@ resource "azurerm_api_management_product_policy" "event_ingest_api_product_polic
   <on-error />
 </policies>
 XML
+}
+
+moved {
+  from = azurerm_api_management_api_version_set.event_ingest_api_version_set
+  to   = azurerm_api_management_api_version_set.legacy_event_ingest_api_version_set
+}
+
+moved {
+  from = azurerm_api_management_product.event_ingest_api_product
+  to   = azurerm_api_management_product.legacy_event_ingest_api_product
+}
+
+moved {
+  from = azurerm_api_management_product_policy.event_ingest_api_product_policy
+  to   = azurerm_api_management_product_policy.legacy_event_ingest_api_product_policy
 }

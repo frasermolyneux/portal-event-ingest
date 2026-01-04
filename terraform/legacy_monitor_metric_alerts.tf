@@ -1,9 +1,9 @@
-resource "azurerm_monitor_scheduled_query_rules_alert" "on_chat_message_missing" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "legacy_on_chat_message_missing" {
   count = var.environment == "prd" ? 1 : 0
 
   name                = "portal-event-ingest-${var.environment} - OnChatMessage custom event - missing"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.legacy_rg.name
+  location            = azurerm_resource_group.legacy_rg.location
 
   description = "Triggers when the OnChatMessage custom event has not been ingested for six hours."
 
@@ -36,4 +36,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "on_chat_message_missing"
   }
 
   tags = var.tags
+}
+
+moved {
+  from = azurerm_monitor_scheduled_query_rules_alert.on_chat_message_missing
+  to   = azurerm_monitor_scheduled_query_rules_alert.legacy_on_chat_message_missing
 }
