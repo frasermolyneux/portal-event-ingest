@@ -32,7 +32,7 @@ resource "azurerm_api_management_product_policy" "legacy_event_ingest_api_produc
       <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="JWT validation was unsuccessful" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true">
           <openid-config url="https://login.microsoftonline.com/${data.azuread_client_config.current.tenant_id}/v2.0/.well-known/openid-configuration" />
           <audiences>
-              <audience>${format("api://%s", local.legacy_app_registration_name)}</audience>
+          <audience>${format("api://%s/%s", data.azuread_client_config.current.tenant_id, local.legacy_app_registration_name)}</audience>
           </audiences>
           <issuers>
               <issuer>https://sts.windows.net/${data.azuread_client_config.current.tenant_id}/</issuer>
