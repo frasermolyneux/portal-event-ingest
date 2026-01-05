@@ -70,11 +70,16 @@ XML
 }
 
 resource "azurerm_api_management_api_diagnostic" "legacy_event_ingest_api_diagnostic_legacy" {
-  identifier               = "applicationinsights"
-  api_name                 = azurerm_api_management_api.legacy_event_ingest_api_legacy.name
-  resource_group_name      = local.core_api_management.resource_group_name
-  api_management_name      = local.core_api_management.name
-  api_management_logger_id = format("%s/providers/Microsoft.ApiManagement/service/serviceValue/loggers/%s", data.azurerm_resource_group.core.id, data.azurerm_application_insights.core.name)
+  identifier          = "applicationinsights"
+  api_name            = azurerm_api_management_api.legacy_event_ingest_api_legacy.name
+  resource_group_name = local.core_api_management.resource_group_name
+  api_management_name = local.core_api_management.name
+  api_management_logger_id = format(
+    "%s/providers/Microsoft.ApiManagement/service/%s/loggers/%s",
+    data.azurerm_resource_group.core.id,
+    local.core_api_management.name,
+    local.core_app_insights.name
+  )
 
   sampling_percentage = 20
 

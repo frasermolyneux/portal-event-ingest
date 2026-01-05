@@ -4,7 +4,7 @@
 // Drop legacy state without deleting the remote objects.
 
 removed {
-  from = azurerm_api_management_api_version_set.legacy_event_ingest_api
+  from = azurerm_api_management_api_version_set.legacy_event_ingest_api_version_set
 
   lifecycle {
     destroy = false
@@ -12,7 +12,7 @@ removed {
 }
 
 removed {
-  from = azurerm_api_management_product.legacy_event_ingest_api
+  from = azurerm_api_management_product.legacy_event_ingest_api_product
 
   lifecycle {
     destroy = false
@@ -20,7 +20,7 @@ removed {
 }
 
 removed {
-  from = azurerm_api_management_product_policy.legacy_event_ingest_api
+  from = azurerm_api_management_product_policy.legacy_event_ingest_api_product_policy
 
   lifecycle {
     destroy = false
