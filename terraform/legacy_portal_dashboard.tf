@@ -6,10 +6,10 @@ locals {
     "resource_group_name"      = azurerm_resource_group.legacy_rg.name
     "key_vault_name"           = azurerm_key_vault.legacy_kv.name
     "function_app_name"        = azurerm_linux_function_app.legacy_app.name
-    "core_resource_group_name" = data.azurerm_resource_group.core.name
-    "app_insights_name"        = data.azurerm_application_insights.core.name
+    "core_resource_group_name" = local.core_api_management.resource_group_name
+    "app_insights_name"        = local.core_app_insights.name
     "service_bus_name"         = azurerm_servicebus_namespace.legacy_ingest.name
-    "api_management_name"      = data.azurerm_api_management.core.name
+    "api_management_name"      = local.core_api_management.name
   }
 
   legacy_out = join("\n", [
