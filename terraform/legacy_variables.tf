@@ -54,7 +54,17 @@ variable "portal_environments_state" {
   })
 }
 
-variable "api_management_name" {}
+variable "portal_core_state" {
+  description = "Backend config for portal-core remote state"
+  type = object({
+    resource_group_name  = string
+    storage_account_name = string
+    container_name       = string
+    key                  = string
+    subscription_id      = string
+    tenant_id            = string
+  })
+}
 
 variable "repository_api" {
   type = object({

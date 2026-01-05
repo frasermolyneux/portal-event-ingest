@@ -22,6 +22,11 @@ locals {
   managed_identities            = try(data.terraform_remote_state.portal_environments.outputs.managed_identities, {})
   event_ingest_funcapp_identity = local.managed_identities["event_ingest_funcapp_identity"]
 
+  core_api_management          = data.terraform_remote_state.portal_core.outputs.api_management
+  core_api_management_identity = data.terraform_remote_state.portal_core.outputs.api_management_identity
+  core_app_insights            = data.terraform_remote_state.portal_core.outputs.app_insights
+  event_ingest_api_shared      = data.terraform_remote_state.portal_core.outputs.event_ingest_api
+
   event_ingest_api_identifier_uri = data.terraform_remote_state.portal_environments.outputs.event_ingest_api.application.primary_identifier_uri
 
   # Local Resource Naming

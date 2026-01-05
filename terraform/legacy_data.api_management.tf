@@ -1,4 +1,3 @@
-data "azurerm_api_management" "core" {
-  name                = var.api_management_name
-  resource_group_name = data.azurerm_resource_group.core.name
-}
+
+# APIM instance data source no longer required after consuming portal-core outputs.
+

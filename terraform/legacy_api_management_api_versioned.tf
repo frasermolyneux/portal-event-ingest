@@ -73,8 +73,8 @@ resource "azurerm_api_management_backend" "legacy_event_ingest_api_management_ba
   for_each = local.legacy_filtered_backend_mapping
 
   name                = each.value.name
-  resource_group_name = data.azurerm_api_management.core.resource_group_name
-  api_management_name = data.azurerm_api_management.core.name
+  resource_group_name = local.core_api_management.resource_group_name
+  api_management_name = local.core_api_management.name
 
   protocol    = lower(each.value.protocol)
   title       = each.value.name
@@ -98,8 +98,8 @@ resource "azurerm_api_management_api" "legacy_event_ingest_api_versioned" {
   for_each = toset(local.legacy_versioned_apis)
 
   name                = "event-ingest-api-${replace(each.key, ".", "-")}"
-  resource_group_name = data.azurerm_api_management.core.resource_group_name
-  api_management_name = data.azurerm_api_management.core.name
+  resource_group_name = local.core_api_management.resource_group_name
+  api_management_name = local.core_api_management.name
 
   revision     = "1"
   display_name = "Event Ingest API"
@@ -110,7 +110,7 @@ resource "azurerm_api_management_api" "legacy_event_ingest_api_versioned" {
   subscription_required = true
 
   version        = each.key
-  version_set_id = azurerm_api_management_api_version_set.legacy_event_ingest_api_version_set.id
+  version_set_id = local.event_ingest_api_shared.version_set_id
 
   subscription_key_parameter_names {
     header = "Ocp-Apim-Subscription-Key"
@@ -128,10 +128,10 @@ resource "azurerm_api_management_product_api" "legacy_event_ingest_api_versioned
   for_each = azurerm_api_management_api.legacy_event_ingest_api_versioned
 
   api_name   = each.value.name
-  product_id = azurerm_api_management_product.legacy_event_ingest_api_product.product_id
+  product_id = local.event_ingest_api_shared.product_id
 
-  resource_group_name = data.azurerm_api_management.core.resource_group_name
-  api_management_name = data.azurerm_api_management.core.name
+  resource_group_name = local.core_api_management.resource_group_name
+  api_management_name = local.core_api_management.name
 }
 
 // Configure policies for versioned APIs
@@ -139,8 +139,8 @@ resource "azurerm_api_management_api_policy" "legacy_event_ingest_api_policy_ver
   for_each = azurerm_api_management_api.legacy_event_ingest_api_versioned
 
   api_name            = each.value.name
-  resource_group_name = data.azurerm_api_management.core.resource_group_name
-  api_management_name = data.azurerm_api_management.core.name
+  resource_group_name = local.core_api_management.resource_group_name
+  api_management_name = local.core_api_management.name
 
   xml_content = <<XML
 <policies>
@@ -176,8 +176,8 @@ resource "azurerm_api_management_api_diagnostic" "legacy_event_ingest_api_diagno
 
   identifier               = "applicationinsights"
   api_name                 = each.value.name
-  resource_group_name      = data.azurerm_api_management.core.resource_group_name
-  api_management_name      = data.azurerm_api_management.core.name
+  resource_group_name      = local.core_api_management.resource_group_name
+  api_management_name      = local.core_api_management.name
   api_management_logger_id = format("%s/providers/Microsoft.ApiManagement/service/serviceValue/loggers/%s", data.azurerm_resource_group.core.id, data.azurerm_application_insights.core.name)
 
   sampling_percentage = 20

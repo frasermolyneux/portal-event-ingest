@@ -1,3 +1,3 @@
 data "azurerm_resource_group" "core" {
-  name = "rg-portal-core-${var.environment}-${var.location}-${var.instance}"
+  name = local.core_api_management.resource_group_name
 }
