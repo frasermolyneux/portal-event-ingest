@@ -56,7 +56,7 @@ resource "azurerm_linux_function_app" "legacy_app" {
     "ServiceBusConnection__fullyQualifiedNamespace" = format("%s.servicebus.windows.net", azurerm_servicebus_namespace.legacy_ingest.name)
     "ServiceBusConnection__ManagedIdentityClientId" = local.event_ingest_funcapp_identity.client_id
 
-    "RepositoryApi__BaseUrl"             = format("%s/repository", data.azurerm_api_management.core.gateway_url)
+    "RepositoryApi__BaseUrl"             = format("%s/repository", local.core_api_management.gateway_url)
     "RepositoryApi__ApiKey"              = format("@Microsoft.KeyVault(VaultName=%s;SecretName=%s)", azurerm_key_vault.legacy_kv.name, azurerm_key_vault_secret.legacy_repository_api_subscription_secret_primary.name)
     "RepositoryApi__ApplicationAudience" = var.repository_api.application_audience
 
