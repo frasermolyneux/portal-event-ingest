@@ -2,7 +2,7 @@
 // This is used to maintain compatibility with existing clients that do not include the version in the path
 
 data "local_file" "event_ingest_openapi_versionless" {
-  filename = "../openapi/openapi-versionless.json"
+  filename = "../openapi/openapi-noversion.json"
 }
 
 resource "azurerm_api_management_api" "legacy_event_ingest_api_versionless" {
