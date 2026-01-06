@@ -1,12 +1,12 @@
 // Legacy resource for API Management API without a version number in the path
 // This is used to maintain compatibility with existing clients that do not include the version in the path
 
-data "local_file" "event_ingest_openapi_legacy" {
-  filename = "../openapi/openapi-legacy.json"
+data "local_file" "event_ingest_openapi_versionless" {
+  filename = "../openapi/openapi-versionless.json"
 }
 
-resource "azurerm_api_management_api" "legacy_event_ingest_api_legacy" {
-  name                = "event-ingest-api-legacy"
+resource "azurerm_api_management_api" "legacy_event_ingest_api_versionless" {
+  name                = "event-ingest-api-versionless"
   resource_group_name = local.core_api_management.resource_group_name
   api_management_name = local.core_api_management.name
 
@@ -28,20 +28,20 @@ resource "azurerm_api_management_api" "legacy_event_ingest_api_legacy" {
 
   import {
     content_format = "openapi+json"
-    content_value  = data.local_file.event_ingest_openapi_legacy.content
+    content_value  = data.local_file.event_ingest_openapi_versionless.content
   }
 }
 
-resource "azurerm_api_management_product_api" "legacy_event_ingest_api_legacy" {
-  api_name   = azurerm_api_management_api.legacy_event_ingest_api_legacy.name
+resource "azurerm_api_management_product_api" "legacy_event_ingest_api_versionless" {
+  api_name   = azurerm_api_management_api.legacy_event_ingest_api_versionless.name
   product_id = local.event_ingest_api_shared.product_id
 
   resource_group_name = local.core_api_management.resource_group_name
   api_management_name = local.core_api_management.name
 }
 
-resource "azurerm_api_management_api_policy" "legacy_event_ingest_api_policy_legacy" {
-  api_name            = azurerm_api_management_api.legacy_event_ingest_api_legacy.name
+resource "azurerm_api_management_api_policy" "legacy_event_ingest_api_policy_versionless" {
+  api_name            = azurerm_api_management_api.legacy_event_ingest_api_versionless.name
   resource_group_name = local.core_api_management.resource_group_name
   api_management_name = local.core_api_management.name
 
@@ -69,9 +69,9 @@ XML
   ]
 }
 
-resource "azurerm_api_management_api_diagnostic" "legacy_event_ingest_api_diagnostic_legacy" {
+resource "azurerm_api_management_api_diagnostic" "legacy_event_ingest_api_diagnostic_versionless" {
   identifier          = "applicationinsights"
-  api_name            = azurerm_api_management_api.legacy_event_ingest_api_legacy.name
+  api_name            = azurerm_api_management_api.legacy_event_ingest_api_versionless.name
   resource_group_name = local.core_api_management.resource_group_name
   api_management_name = local.core_api_management.name
   api_management_logger_id = format(
