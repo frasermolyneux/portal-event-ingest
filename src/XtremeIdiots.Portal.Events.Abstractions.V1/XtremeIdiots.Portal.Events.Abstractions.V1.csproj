@@ -7,6 +7,11 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<VersionPrefix>1.0.1</VersionPrefix>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<PackageId>XtremeIdiots.Portal.Events.Abstractions.V1</PackageId>
 		<Authors>Fraser Molyneux</Authors>
 		<Company>XtremeIdiots</Company>
