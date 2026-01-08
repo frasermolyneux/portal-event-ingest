@@ -29,10 +29,6 @@ locals {
 
   event_ingest_api_identifier_uri = data.terraform_remote_state.portal_environments.outputs.event_ingest_api.application.primary_identifier_uri
 
-  spec_storage_account        = data.terraform_remote_state.portal_environments.outputs.spec_storage.account
-  spec_storage_containers     = data.terraform_remote_state.portal_environments.outputs.spec_storage.containers
-  event_ingest_spec_container = local.spec_storage_containers["event-ingest"]
-
   # Local Resource Naming
   legacy_resource_group_name       = "rg-portal-event-ingest-${var.environment}-${var.location}-${var.instance}"
   legacy_key_vault_name            = substr(format("kv-%s-%s", random_id.legacy_environment_id.hex, var.location), 0, 24)
