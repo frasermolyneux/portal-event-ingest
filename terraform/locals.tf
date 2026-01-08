@@ -24,7 +24,9 @@ locals {
 
   api_management   = data.terraform_remote_state.portal_environments.outputs.api_management
   event_ingest_api = data.terraform_remote_state.portal_environments.outputs.event_ingest_api
+  repository_api   = data.terraform_remote_state.portal_environments.outputs.repository_api
   app_insights     = data.terraform_remote_state.portal_core.outputs.app_insights
+  app_service_plan = data.terraform_remote_state.portal_core.outputs.app_service_plans["apps"]
 
   # Local Resource Naming
   function_app_name         = "fn-portal-event-ingest-${var.environment}-${var.location}-${random_id.environment_id.hex}"
