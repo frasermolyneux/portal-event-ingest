@@ -1,6 +1,6 @@
 
-resource "azurerm_api_management_product_policy" "event_ingest_api_product_policy" {
-  product_id = azurerm_api_management_product.event_ingest_api_product.product_id
+resource "azurerm_api_management_product_policy" "api_product_policy" {
+  product_id = azurerm_api_management_product.api_product.product_id
 
   resource_group_name = data.azurerm_api_management.api_management.resource_group_name
   api_management_name = data.azurerm_api_management.api_management.name
