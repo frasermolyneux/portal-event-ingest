@@ -1,6 +1,6 @@
-environment = "prd"
-location    = "uksouth"
-instance    = "01"
+workload_name = "portal-event-ingest"
+environment   = "prd"
+location      = "uksouth"
 
 subscription_id = "32444f38-32f4-409f-889c-8e8aa2b5b4d1"
 
@@ -38,12 +38,6 @@ portal_core_state = {
   key                  = "terraform.tfstate"
   subscription_id      = "7760848c-794d-4a19-8cb2-52f71a21ac2b"
   tenant_id            = "e56a6947-bb9a-4a6e-846a-1f118d1c3a14"
-}
-
-repository_api = {
-  application_name     = "portal-repository-prd-01"
-  application_audience = "api://e56a6947-bb9a-4a6e-846a-1f118d1c3a14/portal-repository-prd-01"
-  apim_product_id      = "repository-api"
 }
 
 tags = {

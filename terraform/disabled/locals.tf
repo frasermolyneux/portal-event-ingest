@@ -25,7 +25,11 @@ locals {
   core_api_management          = data.terraform_remote_state.portal_core.outputs.api_management
   core_api_management_identity = data.terraform_remote_state.portal_core.outputs.api_management_identity
   core_app_insights            = data.terraform_remote_state.portal_core.outputs.app_insights
-  event_ingest_api_shared      = data.terraform_remote_state.portal_core.outputs.event_ingest_api
+  event_ingest_api_shared = {
+    version_set_id      = azurerm_api_management_api_version_set.legacy_event_ingest_api_version_set.id
+    product_id          = azurerm_api_management_product.legacy_event_ingest_api_product.product_id
+    product_resource_id = "${local.core_api_management.id}/products/${azurerm_api_management_product.legacy_event_ingest_api_product.product_id}"
+  }
 
   event_ingest_api_identifier_uri = data.terraform_remote_state.portal_environments.outputs.event_ingest_api.application.primary_identifier_uri
 

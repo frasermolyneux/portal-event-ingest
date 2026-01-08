@@ -1,6 +1,6 @@
-environment = "dev"
-location    = "swedencentral"
-instance    = "01"
+workload_name = "portal-event-ingest"
+environment   = "dev"
+location      = "swedencentral"
 
 subscription_id = "d68448b0-9947-46d7-8771-baa331a3063a"
 
@@ -38,12 +38,6 @@ portal_core_state = {
   key                  = "terraform.tfstate"
   subscription_id      = "7760848c-794d-4a19-8cb2-52f71a21ac2b"
   tenant_id            = "e56a6947-bb9a-4a6e-846a-1f118d1c3a14"
-}
-
-repository_api = {
-  application_name     = "portal-repository-dev-01"
-  application_audience = "api://e56a6947-bb9a-4a6e-846a-1f118d1c3a14/portal-repository-dev-01"
-  apim_product_id      = "repository-api"
 }
 
 tags = {
