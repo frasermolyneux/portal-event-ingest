@@ -116,7 +116,7 @@ resource "azurerm_api_management_product_api" "versioned_api" {
   for_each = azurerm_api_management_api.versioned_api
 
   api_name   = each.value.name
-  product_id = local.event_ingest_api_shared.product_id
+  product_id = azurerm_api_management_product.api_product.product_id
 
   resource_group_name = data.azurerm_api_management.api_management.resource_group_name
   api_management_name = data.azurerm_api_management.api_management.name
