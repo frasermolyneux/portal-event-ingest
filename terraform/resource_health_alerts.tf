@@ -1,5 +1,5 @@
 resource "azurerm_monitor_activity_log_alert" "rg_resource_health" {
-  name = "portal-event-ingest-${var.environment} - ${data.azurerm_resource_group.rg.name} - resource health"
+  name = "${var.workload_name}-${var.environment}-${data.azurerm_resource_group.rg.name}-resource-health"
 
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = "global"
