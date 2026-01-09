@@ -32,7 +32,6 @@ locals {
   # Local Resource Naming
   function_app_name         = "fn-portal-event-ingest-${var.environment}-${var.location}-${random_id.environment_id.hex}"
   function_app_storage_name = "safn${random_id.environment_id.hex}"
-  key_vault_name            = substr(format("kv-%s-%s", random_id.environment_id.hex, var.location), 0, 24)
   service_bus_name          = substr(format("sb-portal-event-ingest-%s-%s-%s-%s", var.environment, var.location, random_id.environment_id.hex, random_id.environment_id.hex), 0, 50)
   dashboard_name            = "portal-event-ingest-${var.environment}-${random_id.environment_id.hex}"
 }
