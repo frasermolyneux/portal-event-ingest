@@ -27,7 +27,7 @@ locals {
   backend_mapping = {
     "v1" = {
       name         = local.function_app_name
-      hostname     = azurerm_linux_function_app.app.default_hostname
+      hostname     = azurerm_linux_function_app.function_app.default_hostname
       protocol     = "http"
       tls_validate = true
       description  = "Backend for v1.x APIs"
@@ -60,13 +60,13 @@ locals {
 }
 
 // Data sources for versioned OpenAPI specification files
-data "local_file" "event_ingest_openapi_versioned" {
+data "local_file" "openapi_versioned" {
   for_each = toset(local.versioned_apis)
   filename = "../openapi/openapi-${each.key}.json"
 }
 
 // Create backend for versioned APIs
-resource "azurerm_api_management_backend" "event_ingest_api_management_backend_versioned" {
+resource "azurerm_api_management_backend" "versioned_api_backend" {
   for_each = local.filtered_backend_mapping
 
   name = each.value.name
@@ -86,10 +86,10 @@ resource "azurerm_api_management_backend" "event_ingest_api_management_backend_v
 }
 
 // Dynamic versioned APIs that are discovered from OpenAPI spec files
-resource "azurerm_api_management_api" "event_ingest_api_versioned" {
+resource "azurerm_api_management_api" "versioned_api" {
   for_each = toset(local.versioned_apis)
 
-  name = "event-ingest-api-${replace(each.key, ".", "-")}"
+  name = "${local.event_ingest_api.api_management.root_path}-api-${replace(each.key, ".", "-")}"
 
   resource_group_name = data.azurerm_api_management.api_management.resource_group_name
   api_management_name = data.azurerm_api_management.api_management.name
@@ -103,17 +103,17 @@ resource "azurerm_api_management_api" "event_ingest_api_versioned" {
   subscription_required = false
 
   version        = each.key
-  version_set_id = local.event_ingest_api_shared.version_set_id
+  version_set_id = azurerm_api_management_api_version_set.api_version_set.id
 
   import {
     content_format = "openapi+json"
-    content_value  = data.local_file.event_ingest_openapi_versioned[each.key].content
+    content_value  = data.local_file.openapi_versioned[each.key].content
   }
 }
 
 // Add versioned APIs to the product
-resource "azurerm_api_management_product_api" "event_ingest_api_versioned" {
-  for_each = azurerm_api_management_api.event_ingest_api_versioned
+resource "azurerm_api_management_product_api" "versioned_api" {
+  for_each = azurerm_api_management_api.versioned_api
 
   api_name   = each.value.name
   product_id = local.event_ingest_api_shared.product_id
@@ -123,8 +123,8 @@ resource "azurerm_api_management_product_api" "event_ingest_api_versioned" {
 }
 
 // Configure policies for versioned APIs
-resource "azurerm_api_management_api_policy" "event_ingest_api_policy_versioned" {
-  for_each = azurerm_api_management_api.event_ingest_api_versioned
+resource "azurerm_api_management_api_policy" "versioned_api_policy" {
+  for_each = azurerm_api_management_api.versioned_api
 
   api_name = each.value.name
 
@@ -137,8 +137,8 @@ resource "azurerm_api_management_api_policy" "event_ingest_api_policy_versioned"
       <base/>
       <set-backend-service backend-id="${
   contains(keys(local.filtered_backend_mapping), local.get_major_version[each.key])
-  ? azurerm_api_management_backend.event_ingest_api_management_backend_versioned[local.get_major_version[each.key]].name
-  : azurerm_api_management_backend.event_ingest_api_management_backend_versioned[local.default_backend_version].name
+  ? azurerm_api_management_backend.versioned_api_backend[local.get_major_version[each.key]].name
+  : azurerm_api_management_backend.versioned_api_backend[local.default_backend_version].name
 }" />
       <!-- Correct path rewriting for versioned APIs -->
       <set-variable name="rewriteUriTemplate" value="@("/api" + context.Request.OriginalUrl.Path.Substring(context.Api.Path.Length))" />
@@ -155,6 +155,6 @@ resource "azurerm_api_management_api_policy" "event_ingest_api_policy_versioned"
 XML
 
 depends_on = [
-  azurerm_api_management_backend.event_ingest_api_management_backend_versioned
+  azurerm_api_management_backend.versioned_api_backend
 ]
 }
