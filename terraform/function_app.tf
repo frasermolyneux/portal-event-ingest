@@ -32,8 +32,8 @@ resource "azurerm_linux_function_app" "function_app" {
       allowed_origins = ["https://portal.azure.com"]
     }
 
-    application_insights_connection_string = data.azurerm_application_insights.ai.connection_string
-    application_insights_key               = data.azurerm_application_insights.ai.instrumentation_key
+    application_insights_connection_string = data.azurerm_application_insights.app_insights.connection_string
+    application_insights_key               = data.azurerm_application_insights.app_insights.instrumentation_key
 
     ftps_state          = "Disabled"
     always_on           = true
@@ -41,6 +41,28 @@ resource "azurerm_linux_function_app" "function_app" {
 
     health_check_path                 = "/api/health"
     health_check_eviction_time_in_min = 5
+  }
+
+  auth_settings_v2 {
+    auth_enabled    = true
+    runtime_version = "~1"
+
+    require_authentication = true
+    unauthenticated_action = "Return401"
+    require_https          = true
+    http_route_api_prefix  = "/api"
+
+    login {
+      token_store_enabled = false
+    }
+
+    active_directory_v2 {
+      client_id            = local.event_ingest_api.application.client_id
+      tenant_auth_endpoint = "https://login.microsoftonline.com/${data.azuread_client_config.current.tenant_id}/v2.0"
+      allowed_audiences = [
+        local.event_ingest_api.application.primary_identifier_uri
+      ]
+    }
   }
 
   app_settings = {

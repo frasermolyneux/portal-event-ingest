@@ -21,6 +21,7 @@ locals {
 
   managed_identities            = data.terraform_remote_state.portal_environments.outputs.managed_identities
   event_ingest_funcapp_identity = local.managed_identities["event_ingest_funcapp_identity"]
+  api_management_identity       = local.managed_identities["environments_api_management_identity"]
 
   api_management   = data.terraform_remote_state.portal_environments.outputs.api_management
   event_ingest_api = data.terraform_remote_state.portal_environments.outputs.event_ingest_api
