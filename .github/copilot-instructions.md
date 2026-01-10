@@ -16,7 +16,7 @@
 - Service Bus access is wrapped behind `IServiceBusClientFactory`/`IServiceBusSender`/`IServiceBusReceiver` ([src/XtremeIdiots.Portal.Events.Ingest.App.V1/Services/ServiceBusClientFactory.cs#L1-L32](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Services/ServiceBusClientFactory.cs#L1-L32)) so functions stay testable; prefer adding capabilities via these abstractions.
 
 ## Configuration & Identity
-- Required settings: `RepositoryApi:BaseUrl`, `RepositoryApi:ApiKey`, `RepositoryApi:ApplicationAudience` plus Application Insights connection string. Missing values throw during startup ([Program](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Program.cs#L24-L33)).
+- Required settings: `RepositoryApi:BaseUrl`, `RepositoryApi:ApplicationAudience` plus Application Insights connection string. Missing values throw during startup ([Program](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Program.cs#L24-L33)).
 - Service Bus senders use `DefaultAzureCredential` against `ServiceBusConnection:fullyQualifiedNamespace` ([ServiceBusClientFactory](src/XtremeIdiots.Portal.Events.Ingest.App.V1/Services/ServiceBusClientFactory.cs#L12-L24)); triggers use the `ServiceBusConnection` connection string binding.
 - Config is pulled from `local.settings.json`, user secrets (loaded in `Program`), and Terraform app settings. Keep `Section:Key` casing to match the `__` convention in Terraform.
 
