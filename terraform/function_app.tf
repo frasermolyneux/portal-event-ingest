@@ -76,7 +76,7 @@ resource "azurerm_linux_function_app" "function_app" {
     "ServiceBusConnection__fullyQualifiedNamespace" = format("%s.servicebus.windows.net", azurerm_servicebus_namespace.sb.name)
     "ServiceBusConnection__ManagedIdentityClientId" = local.event_ingest_funcapp_identity.client_id
 
-    "RepositoryApi__BaseUrl"             = format("%s/repository", local.repository_api.api_management.endpoint)
+    "RepositoryApi__BaseUrl"             = local.repository_api.api_management.endpoint
     "RepositoryApi__ApplicationAudience" = local.repository_api.application.primary_identifier_uri
 
     // https://learn.microsoft.com/en-us/azure/azure-monitor/profiler/profiler-azure-functions#app-settings-for-enabling-profiler
