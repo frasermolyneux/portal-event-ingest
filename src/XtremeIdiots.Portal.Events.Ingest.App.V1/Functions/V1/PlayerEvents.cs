@@ -23,7 +23,7 @@ public class PlayerEvents
     }
 
     [Function(nameof(OnPlayerConnected))]
-    public async Task<HttpResponseData> OnPlayerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = "api/v1/OnPlayerConnected")] HttpRequestData req, FunctionContext executionContext)
+    public async Task<HttpResponseData> OnPlayerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/OnPlayerConnected")] HttpRequestData req, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(OnPlayerConnected));
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -47,7 +47,7 @@ public class PlayerEvents
     }
 
     [Function(nameof(OnChatMessage))]
-    public async Task<HttpResponseData> OnChatMessage([HttpTrigger(AuthorizationLevel.Function, "post", Route = "api/v1/OnChatMessage")] HttpRequestData req, FunctionContext executionContext)
+    public async Task<HttpResponseData> OnChatMessage([HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/OnChatMessage")] HttpRequestData req, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(OnChatMessage));
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -71,7 +71,7 @@ public class PlayerEvents
     }
 
     [Function(nameof(OnMapVote))]
-    public async Task<HttpResponseData> OnMapVote([HttpTrigger(AuthorizationLevel.Function, "post", Route = "api/v1/OnMapVote")] HttpRequestData req, FunctionContext executionContext)
+    public async Task<HttpResponseData> OnMapVote([HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/OnMapVote")] HttpRequestData req, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(OnMapVote));
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();

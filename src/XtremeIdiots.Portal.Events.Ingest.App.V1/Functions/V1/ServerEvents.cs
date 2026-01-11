@@ -23,7 +23,7 @@ public class ServerEvents
     }
 
     [Function(nameof(OnServerConnected))]
-    public async Task<HttpResponseData> OnServerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = "api/v1/OnServerConnected")] HttpRequestData req, FunctionContext executionContext)
+    public async Task<HttpResponseData> OnServerConnected([HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/OnServerConnected")] HttpRequestData req, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(OnPlayerConnected));
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -47,7 +47,7 @@ public class ServerEvents
     }
 
     [Function(nameof(OnMapChange))]
-    public async Task<HttpResponseData> OnMapChange([HttpTrigger(AuthorizationLevel.Function, "post", Route = "api/v1/OnMapChange")] HttpRequestData req, FunctionContext executionContext)
+    public async Task<HttpResponseData> OnMapChange([HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/OnMapChange")] HttpRequestData req, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(OnPlayerConnected));
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
