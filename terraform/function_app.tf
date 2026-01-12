@@ -17,10 +17,10 @@ resource "azurerm_linux_function_app" "function_app" {
 
   identity {
     type         = "UserAssigned"
-    identity_ids = [local.event_ingest_funcapp_identity.id]
+    identity_ids = [local.event_ingest_identity.id]
   }
 
-  key_vault_reference_identity_id = local.event_ingest_funcapp_identity.id
+  key_vault_reference_identity_id = local.event_ingest_identity.id
 
   site_config {
     application_stack {
@@ -67,14 +67,14 @@ resource "azurerm_linux_function_app" "function_app" {
 
   app_settings = {
     "AzureAppConfiguration__Endpoint"                = local.app_configuration_endpoint
-    "AzureAppConfiguration__ManagedIdentityClientId" = local.event_ingest_funcapp_identity.client_id
+    "AzureAppConfiguration__ManagedIdentityClientId" = local.event_ingest_identity.client_id
     "AzureAppConfiguration__Environment"             = var.environment
 
-    "AZURE_CLIENT_ID" = local.event_ingest_funcapp_identity.client_id
+    "AZURE_CLIENT_ID" = local.event_ingest_identity.client_id
 
     "ApplicationInsightsAgent_EXTENSION_VERSION"    = "~3"
     "ServiceBusConnection__fullyQualifiedNamespace" = format("%s.servicebus.windows.net", azurerm_servicebus_namespace.sb.name)
-    "ServiceBusConnection__ManagedIdentityClientId" = local.event_ingest_funcapp_identity.client_id
+    "ServiceBusConnection__ManagedIdentityClientId" = local.event_ingest_identity.client_id
 
     "RepositoryApi__BaseUrl"             = local.repository_api.api_management.endpoint
     "RepositoryApi__ApplicationAudience" = local.repository_api.application.primary_identifier_uri
