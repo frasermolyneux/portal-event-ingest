@@ -154,7 +154,9 @@ resource "azurerm_api_management_api_policy" "versioned_api_policy" {
       <rewrite-uri template="@((string)context.Variables["rewriteUriTemplate"])" />
   </inbound>
   <backend>
-      <forward-request />
+      <retry condition="@(context.Response.StatusCode >= 500 || context.Response.StatusCode == 408 || context.Response.StatusCode == 429)" count="3" interval="1" delta="2" max-interval="8" first-fast-retry="true">
+          <forward-request timeout="5" />
+      </retry>
   </backend>
   <outbound>
       <base/>
