@@ -133,11 +133,11 @@ resource "azurerm_api_management_product_api" "versioned_api" {
 }
 
 // Configure policies for versioned APIs
-// Retry policy: Retries backend requests on failures (5xx, 408, 429) with exponential backoff
+// Retry policy: Retries backend requests on failures (5xx, 408, 429, connection errors) with exponential backoff
 // - timeout: 5s per request (fail fast)
 // - count: 3 retries max
-// - intervals: 1s, 3s, 5s (exponential backoff with delta=2)
-// - Total max time: 29s (5 + 1 + 5 + 3 + 5 + 5 + 5) < 30s requirement
+// - intervals: immediate first retry, then 1s, 3s (exponential backoff with delta=2)
+// - Total max time: 24s (5 + 5 + 1 + 5 + 3 + 5) < 30s requirement
 resource "azurerm_api_management_api_policy" "versioned_api_policy" {
   for_each = azurerm_api_management_api.versioned_api
 
@@ -159,7 +159,7 @@ resource "azurerm_api_management_api_policy" "versioned_api_policy" {
       <rewrite-uri template="@((string)context.Variables["rewriteUriTemplate"])" />
   </inbound>
   <backend>
-      <retry condition="@(context.Response.StatusCode >= 500 || context.Response.StatusCode == 408 || context.Response.StatusCode == 429)" count="3" interval="1" delta="2" max-interval="8" first-fast-retry="true">
+      <retry condition="@(context.Response == null || context.Response.StatusCode >= 500 || context.Response.StatusCode == 408 || context.Response.StatusCode == 429)" count="3" interval="1" delta="2" max-interval="8" first-fast-retry="true">
           <forward-request timeout="5" />
       </retry>
   </backend>
