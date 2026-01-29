@@ -1,0 +1,1222 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Event Ingest API V2",
+    "description": "RESTful API for ingesting B3 (BigBrotherBot) game events. Supports player lifecycle, communication, map voting, and server/game events.",
+    "version": "2.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com",
+      "description": "Production API endpoint"
+    }
+  ],
+  "paths": {
+    "/v2/player-lifecycle/connect": {
+      "post": {
+        "tags": ["Player Lifecycle"],
+        "summary": "Client Connect Event",
+        "description": "Triggered when a player initially establishes connection to the server, before authentication.",
+        "operationId": "ClientConnect",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientConnectEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440000",
+                "eventGeneratedUtc": "2024-01-29T10:30:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
+                "playerName": "Player1",
+                "playerIpAddress": "192.168.1.100",
+                "connectionNumber": 5
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/player-lifecycle/auth": {
+      "post": {
+        "tags": ["Player Lifecycle"],
+        "summary": "Client Auth Event",
+        "description": "Triggered when a player successfully authenticates and their identity is confirmed.",
+        "operationId": "ClientAuth",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientAuthEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440001",
+                "eventGeneratedUtc": "2024-01-29T10:30:05Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
+                "playerName": "Player1",
+                "playerDbId": 12345,
+                "playerLevel": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/player-lifecycle/join": {
+      "post": {
+        "tags": ["Player Lifecycle"],
+        "summary": "Client Join Event",
+        "description": "Triggered when a player joins the game after successful connection and authentication.",
+        "operationId": "ClientJoin",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientJoinEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440002",
+                "eventGeneratedUtc": "2024-01-29T10:30:10Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
+                "playerName": "Player1",
+                "playerTeam": "allies"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/player-lifecycle/disconnect": {
+      "post": {
+        "tags": ["Player Lifecycle"],
+        "summary": "Client Disconnect Event",
+        "description": "Triggered when a player disconnects from the server.",
+        "operationId": "ClientDisconnect",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientDisconnectEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440003",
+                "eventGeneratedUtc": "2024-01-29T10:45:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
+                "playerName": "Player1",
+                "sessionDurationSeconds": 900
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/player-lifecycle/name-change": {
+      "post": {
+        "tags": ["Player Lifecycle"],
+        "summary": "Client Name Change Event",
+        "description": "Triggered when a player changes their name/nickname during a session.",
+        "operationId": "ClientNameChange",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientNameChangeEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440004",
+                "eventGeneratedUtc": "2024-01-29T10:35:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
+                "playerName": "Player2",
+                "previousName": "Player1",
+                "newName": "Player2"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/communication/say": {
+      "post": {
+        "tags": ["Communication"],
+        "summary": "Client Say Event",
+        "description": "Public chat message visible to all players on the server.",
+        "operationId": "ClientSay",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientSayEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440005",
+                "eventGeneratedUtc": "2024-01-29T10:31:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
+                "playerName": "Player1",
+                "playerTeam": "allies",
+                "message": "Hello everyone!",
+                "messageLength": 15
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/communication/team-say": {
+      "post": {
+        "tags": ["Communication"],
+        "summary": "Client Team Say Event",
+        "description": "Team-only chat message visible only to players on the same team.",
+        "operationId": "ClientTeamSay",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientTeamSayEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440006",
+                "eventGeneratedUtc": "2024-01-29T10:32:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
+                "playerName": "Player1",
+                "playerTeam": "allies",
+                "message": "Let's attack B!"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/communication/squad-say": {
+      "post": {
+        "tags": ["Communication"],
+        "summary": "Client Squad Say Event",
+        "description": "Squad-only chat message visible only to players in the same squad.",
+        "operationId": "ClientSquadSay",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientSquadSayEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440007",
+                "eventGeneratedUtc": "2024-01-29T10:33:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Bf3",
+                "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
+                "playerName": "Player1",
+                "playerTeam": "us",
+                "squadId": "1",
+                "message": "Need ammo!"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/communication/private-say": {
+      "post": {
+        "tags": ["Communication"],
+        "summary": "Client Private Say Event",
+        "description": "Private message (whisper) sent from one player to another specific player.",
+        "operationId": "ClientPrivateSay",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientPrivateSayEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440008",
+                "eventGeneratedUtc": "2024-01-29T10:34:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
+                "playerName": "Player1",
+                "recipientGuid": "ZZZZYYYYXXXXWWWWVVVV0987654321AA",
+                "recipientName": "Player2",
+                "message": "Want to team up?"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/communication/radio": {
+      "post": {
+        "tags": ["Communication"],
+        "summary": "Client Radio Event",
+        "description": "Radio command issued by a player (game-specific feature for quick communication).",
+        "operationId": "ClientRadio",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientRadioEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440009",
+                "eventGeneratedUtc": "2024-01-29T10:35:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
+                "playerName": "Player1",
+                "playerTeam": "allies",
+                "radioCommand": "radio_affirmative"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/map-voting/like": {
+      "post": {
+        "tags": ["Map Voting"],
+        "summary": "Client Map Vote Like Event",
+        "description": "Custom event triggered when a player uses the !like command to vote positively for the current map.",
+        "operationId": "ClientMapVoteLike",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientMapVoteLikeEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440010",
+                "eventGeneratedUtc": "2024-01-29T10:36:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
+                "playerName": "Player1",
+                "mapName": "mp_crash",
+                "voteType": "LIKE",
+                "like": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/map-voting/dislike": {
+      "post": {
+        "tags": ["Map Voting"],
+        "summary": "Client Map Vote Dislike Event",
+        "description": "Custom event triggered when a player uses the !dislike command to vote negatively for the current map.",
+        "operationId": "ClientMapVoteDislike",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientMapVoteDislikeEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440011",
+                "eventGeneratedUtc": "2024-01-29T10:37:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
+                "playerName": "Player1",
+                "mapName": "mp_shipment",
+                "voteType": "DISLIKE",
+                "like": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/server-game/startup": {
+      "post": {
+        "tags": ["Server and Game"],
+        "summary": "Server Startup Event",
+        "description": "Custom event triggered when the B3 bot connects to the game server and initializes.",
+        "operationId": "ServerStartup",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServerStartupEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440012",
+                "eventGeneratedUtc": "2024-01-29T10:00:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/server-game/map-change": {
+      "post": {
+        "tags": ["Server and Game"],
+        "summary": "Game Map Change Event",
+        "description": "Triggered when the server changes from one map to another.",
+        "operationId": "GameMapChange",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GameMapChangeEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440013",
+                "eventGeneratedUtc": "2024-01-29T10:20:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "previousMap": "mp_crash",
+                "newMap": "mp_strike",
+                "mapName": "mp_strike",
+                "gameName": "Team Deathmatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/server-game/round-start": {
+      "post": {
+        "tags": ["Server and Game"],
+        "summary": "Game Round Start Event",
+        "description": "Triggered when a new round starts in the game.",
+        "operationId": "GameRoundStart",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GameRoundStartEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440014",
+                "eventGeneratedUtc": "2024-01-29T10:21:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "mapName": "mp_strike",
+                "roundInfo": "Round 1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/server-game/round-end": {
+      "post": {
+        "tags": ["Server and Game"],
+        "summary": "Game Round End Event",
+        "description": "Triggered when a round ends in the game.",
+        "operationId": "GameRoundEnd",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GameRoundEndEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440015",
+                "eventGeneratedUtc": "2024-01-29T10:30:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "mapName": "mp_strike",
+                "roundResults": "allies won"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/server-game/exit": {
+      "post": {
+        "tags": ["Server and Game"],
+        "summary": "Game Exit Event",
+        "description": "Triggered when the game/match ends completely (all rounds finished).",
+        "operationId": "GameExit",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GameExitEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440016",
+                "eventGeneratedUtc": "2024-01-29T10:40:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "mapName": "mp_strike",
+                "gameResults": "allies 150 - axis 120"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/server-game/warmup": {
+      "post": {
+        "tags": ["Server and Game"],
+        "summary": "Game Warmup Event",
+        "description": "Triggered when the game enters warmup period (pre-match preparation phase).",
+        "operationId": "GameWarmup",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GameWarmupEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440017",
+                "eventGeneratedUtc": "2024-01-29T10:19:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "mapName": "mp_strike",
+                "warmupInfo": "60 seconds"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    },
+    "/v2/server-game/player-scores": {
+      "post": {
+        "tags": ["Server and Game"],
+        "summary": "Game Round Player Scores Event",
+        "description": "Triggered when player scores are updated during or after a round.",
+        "operationId": "GameRoundPlayerScores",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GameRoundPlayerScoresEvent"
+              },
+              "example": {
+                "eventId": "550e8400-e29b-41d4-a716-446655440018",
+                "eventGeneratedUtc": "2024-01-29T10:29:00Z",
+                "serverId": "123e4567-e89b-12d3-a456-426614174000",
+                "gameType": "Cod4",
+                "mapName": "mp_strike",
+                "scoreData": {
+                  "players": [
+                    {"guid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ", "score": 25, "kills": 15, "deaths": 8}
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event accepted successfully"
+          },
+          "400": {
+            "description": "Invalid request or validation failed"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GameType": {
+        "type": "string",
+        "enum": ["Cod4", "IourT41", "IourT42", "IourT43", "Bf3", "Bfbc2", "Moh", "Cod7"],
+        "description": "Game type identifier"
+      },
+      "EventType": {
+        "type": "string",
+        "enum": [
+          "ClientConnect", "ClientAuth", "ClientJoin", "ClientDisconnect", "ClientNameChange",
+          "ClientSay", "ClientTeamSay", "ClientSquadSay", "ClientPrivateSay", "ClientRadio",
+          "ClientMapVoteLike", "ClientMapVoteDislike",
+          "ServerStartup", "GameMapChange", "GameRoundStart", "GameRoundEnd", "GameExit", "GameWarmup", "GameRoundPlayerScores"
+        ],
+        "description": "Event type identifier"
+      },
+      "CommunicationType": {
+        "type": "string",
+        "enum": ["Public", "Team", "Squad", "Private", "Radio"],
+        "description": "Type of communication/chat message"
+      },
+      "BaseEvent": {
+        "type": "object",
+        "required": ["eventId", "eventGeneratedUtc", "serverId", "gameType"],
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for this event"
+          },
+          "eventGeneratedUtc": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC timestamp when the event was generated (ISO 8601)"
+          },
+          "eventType": {
+            "$ref": "#/components/schemas/EventType"
+          },
+          "serverId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Server identifier"
+          },
+          "gameType": {
+            "$ref": "#/components/schemas/GameType"
+          }
+        }
+      },
+      "PlayerEvent": {
+        "allOf": [
+          {"$ref": "#/components/schemas/BaseEvent"},
+          {
+            "type": "object",
+            "required": ["playerGuid", "playerName"],
+            "properties": {
+              "playerGuid": {
+                "type": "string",
+                "description": "Player GUID (primary identifier)"
+              },
+              "playerName": {
+                "type": "string",
+                "description": "Player name at time of event"
+              },
+              "playerIpAddress": {
+                "type": "string",
+                "description": "Player IP address (optional)"
+              },
+              "playerTeam": {
+                "type": "string",
+                "description": "Player team (if applicable)"
+              }
+            }
+          }
+        ]
+      },
+      "CommunicationEvent": {
+        "allOf": [
+          {"$ref": "#/components/schemas/PlayerEvent"},
+          {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "communicationType": {
+                "$ref": "#/components/schemas/CommunicationType"
+              },
+              "message": {
+                "type": "string",
+                "description": "Message text content"
+              },
+              "messageLength": {
+                "type": "integer",
+                "description": "Message length in characters"
+              },
+              "recipientGuid": {
+                "type": "string",
+                "description": "Recipient GUID (for private messages)"
+              },
+              "recipientName": {
+                "type": "string",
+                "description": "Recipient name (for private messages)"
+              },
+              "targetTeam": {
+                "type": "string",
+                "description": "Target team (for team messages)"
+              },
+              "squadId": {
+                "type": "string",
+                "description": "Squad ID (for squad messages)"
+              },
+              "radioCommand": {
+                "type": "string",
+                "description": "Radio command (for radio messages)"
+              },
+              "radioCommandCategory": {
+                "type": "string",
+                "description": "Radio command category (for radio messages)"
+              }
+            }
+          }
+        ]
+      },
+      "GameEvent": {
+        "allOf": [
+          {"$ref": "#/components/schemas/BaseEvent"},
+          {
+            "type": "object",
+            "properties": {
+              "mapName": {
+                "type": "string",
+                "description": "Current map name"
+              },
+              "gameName": {
+                "type": "string",
+                "description": "Game mode name"
+              },
+              "roundInfo": {
+                "type": "string",
+                "description": "Round-specific information"
+              },
+              "gameResults": {
+                "type": "string",
+                "description": "Match results data"
+              },
+              "scoreData": {
+                "type": "object",
+                "description": "Player score data"
+              },
+              "previousMap": {
+                "type": "string",
+                "description": "Previous map name (for map changes)"
+              },
+              "newMap": {
+                "type": "string",
+                "description": "New map name (for map changes)"
+              },
+              "warmupInfo": {
+                "type": "string",
+                "description": "Warmup information"
+              }
+            }
+          }
+        ]
+      },
+      "ClientConnectEvent": {
+        "allOf": [
+          {"$ref": "#/components/schemas/PlayerEvent"},
+          {
+            "type": "object",
+            "required": ["connectionNumber"],
+            "properties": {
+              "connectionNumber": {
+                "type": "integer",
+                "description": "Number of connections to this server"
+              }
+            }
+          }
+        ]
+      },
+      "ClientAuthEvent": {
+        "allOf": [
+          {"$ref": "#/components/schemas/PlayerEvent"},
+          {
+            "type": "object",
+            "properties": {
+              "playerDbId": {
+                "type": "integer",
+                "description": "Player's database ID (if registered)"
+              },
+              "playerLevel": {
+                "type": "integer",
+                "description": "Player's admin level"
+              }
+            }
+          }
+        ]
+      },
+      "ClientJoinEvent": {
+        "$ref": "#/components/schemas/PlayerEvent"
+      },
+      "ClientDisconnectEvent": {
+        "allOf": [
+          {"$ref": "#/components/schemas/PlayerEvent"},
+          {
+            "type": "object",
+            "properties": {
+              "sessionDurationSeconds": {
+                "type": "integer",
+                "description": "Session duration in seconds"
+              }
+            }
+          }
+        ]
+      },
+      "ClientNameChangeEvent": {
+        "allOf": [
+          {"$ref": "#/components/schemas/PlayerEvent"},
+          {
+            "type": "object",
+            "required": ["newName"],
+            "properties": {
+              "previousName": {
+                "type": "string",
+                "description": "Previous player name"
+              },
+              "newName": {
+                "type": "string",
+                "description": "New player name"
+              }
+            }
+          }
+        ]
+      },
+      "ClientSayEvent": {
+        "$ref": "#/components/schemas/CommunicationEvent"
+      },
+      "ClientTeamSayEvent": {
+        "$ref": "#/components/schemas/CommunicationEvent"
+      },
+      "ClientSquadSayEvent": {
+        "$ref": "#/components/schemas/CommunicationEvent"
+      },
+      "ClientPrivateSayEvent": {
+        "$ref": "#/components/schemas/CommunicationEvent"
+      },
+      "ClientRadioEvent": {
+        "$ref": "#/components/schemas/CommunicationEvent"
+      },
+      "ClientMapVoteLikeEvent": {
+        "allOf": [
+          {"$ref": "#/components/schemas/PlayerEvent"},
+          {
+            "type": "object",
+            "required": ["mapName", "voteType", "like"],
+            "properties": {
+              "mapName": {
+                "type": "string",
+                "description": "Map name being voted on"
+              },
+              "voteType": {
+                "type": "string",
+                "enum": ["LIKE"],
+                "description": "Vote type (always LIKE)"
+              },
+              "like": {
+                "type": "boolean",
+                "enum": [true],
+                "description": "Whether this is a like vote (always true)"
+              }
+            }
+          }
+        ]
+      },
+      "ClientMapVoteDislikeEvent": {
+        "allOf": [
+          {"$ref": "#/components/schemas/PlayerEvent"},
+          {
+            "type": "object",
+            "required": ["mapName", "voteType", "like"],
+            "properties": {
+              "mapName": {
+                "type": "string",
+                "description": "Map name being voted on"
+              },
+              "voteType": {
+                "type": "string",
+                "enum": ["DISLIKE"],
+                "description": "Vote type (always DISLIKE)"
+              },
+              "like": {
+                "type": "boolean",
+                "enum": [false],
+                "description": "Whether this is a like vote (always false)"
+              }
+            }
+          }
+        ]
+      },
+      "ServerStartupEvent": {
+        "$ref": "#/components/schemas/BaseEvent"
+      },
+      "GameMapChangeEvent": {
+        "$ref": "#/components/schemas/GameEvent"
+      },
+      "GameRoundStartEvent": {
+        "$ref": "#/components/schemas/GameEvent"
+      },
+      "GameRoundEndEvent": {
+        "$ref": "#/components/schemas/GameEvent"
+      },
+      "GameExitEvent": {
+        "$ref": "#/components/schemas/GameEvent"
+      },
+      "GameWarmupEvent": {
+        "$ref": "#/components/schemas/GameEvent"
+      },
+      "GameRoundPlayerScoresEvent": {
+        "$ref": "#/components/schemas/GameEvent"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Player Lifecycle",
+      "description": "Events tracking player connections, authentication, and profile changes"
+    },
+    {
+      "name": "Communication",
+      "description": "Events capturing player chat and communication"
+    },
+    {
+      "name": "Map Voting",
+      "description": "Custom map voting functionality events"
+    },
+    {
+      "name": "Server and Game",
+      "description": "Server state and game flow tracking events"
+    }
+  ]
+}
