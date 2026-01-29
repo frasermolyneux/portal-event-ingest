@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XtremeIdiots.Portal.Events.Abstractions.V1\XtremeIdiots.Portal.Events.Abstractions.V1.csproj" />
+    <ProjectReference Include="..\XtremeIdiots.Portal.Events.Abstractions.V2\XtremeIdiots.Portal.Events.Abstractions.V2.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
