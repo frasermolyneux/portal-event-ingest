@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<RootNamespace>XtremeIdiots.Portal.Events.Abstractions.V2</RootNamespace>
+		<AssemblyName>XtremeIdiots.Portal.Events.Abstractions.V2</AssemblyName>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<VersionPrefix>2.0.0</VersionPrefix>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<PackageId>XtremeIdiots.Portal.Events.Abstractions.V2</PackageId>
+		<Authors>Fraser Molyneux</Authors>
+		<Company>XtremeIdiots</Company>
+		<Product>XtremeIdiots Portal</Product>
+		<Title>XtremeIdiots Portal Events Ingest Abstractions V2</Title>
+		<Description>Event contracts and helpers shared by the XtremeIdiots Portal event ingest functions V2.</Description>
+		<PackageProjectUrl>https://github.com/frasermolyneux/portal-event-ingest</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/frasermolyneux/portal-event-ingest</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+	</PropertyGroup>
+
+</Project>
