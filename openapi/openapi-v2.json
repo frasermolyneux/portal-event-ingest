@@ -503,9 +503,7 @@
                 "gameType": "Cod4",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player1",
-                "mapName": "mp_crash",
-                "voteType": "LIKE",
-                "like": true
+                "mapName": "mp_crash"
               }
             }
           }
@@ -550,9 +548,7 @@
                 "gameType": "Cod4",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player1",
-                "mapName": "mp_shipment",
-                "voteType": "DISLIKE",
-                "like": false
+                "mapName": "mp_shipment"
               }
             }
           }
@@ -728,7 +724,7 @@
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
                 "gameType": "Cod4",
                 "mapName": "mp_strike",
-                "roundResults": "allies won"
+                "gameResults": "allies won"
               }
             }
           }
@@ -1133,21 +1129,11 @@
           {"$ref": "#/components/schemas/PlayerEvent"},
           {
             "type": "object",
-            "required": ["mapName", "voteType", "like"],
+            "required": ["mapName"],
             "properties": {
               "mapName": {
                 "type": "string",
                 "description": "Map name being voted on"
-              },
-              "voteType": {
-                "type": "string",
-                "enum": ["LIKE"],
-                "description": "Vote type (always LIKE)"
-              },
-              "like": {
-                "type": "boolean",
-                "enum": [true],
-                "description": "Whether this is a like vote (always true)"
               }
             }
           }
@@ -1158,21 +1144,11 @@
           {"$ref": "#/components/schemas/PlayerEvent"},
           {
             "type": "object",
-            "required": ["mapName", "voteType", "like"],
+            "required": ["mapName"],
             "properties": {
               "mapName": {
                 "type": "string",
                 "description": "Map name being voted on"
-              },
-              "voteType": {
-                "type": "string",
-                "enum": ["DISLIKE"],
-                "description": "Vote type (always DISLIKE)"
-              },
-              "like": {
-                "type": "boolean",
-                "enum": [false],
-                "description": "Whether this is a like vote (always false)"
               }
             }
           }

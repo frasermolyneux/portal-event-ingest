@@ -12,16 +12,4 @@ public class ClientMapVoteLikeEvent : PlayerEvent
     /// </summary>
     [Required]
     public string MapName { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Vote type (always "LIKE" for this event)
-    /// </summary>
-    [Required]
-    public string VoteType { get; set; } = "LIKE";
-
-    /// <summary>
-    /// Whether this is a like vote (always true for this event)
-    /// </summary>
-    [Required]
-    public bool Like { get; set; } = true;
 }
