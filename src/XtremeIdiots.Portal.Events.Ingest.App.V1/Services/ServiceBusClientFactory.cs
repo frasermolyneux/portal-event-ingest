@@ -5,9 +5,10 @@ using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.V1.Services;
 
-public class ServiceBusClientFactory(IConfiguration configuration) : IServiceBusClientFactory, IDisposable
+public sealed class ServiceBusClientFactory(IConfiguration configuration) : IServiceBusClientFactory, IAsyncDisposable, IDisposable
 {
     private readonly ServiceBusClient _client = CreateClient(configuration);
+    private bool _disposed;
 
     private static ServiceBusClient CreateClient(IConfiguration configuration)
     {
@@ -36,8 +37,21 @@ public class ServiceBusClientFactory(IConfiguration configuration) : IServiceBus
         return new ServiceBusReceiverWrapper(_client.CreateReceiver(queueName, options));
     }
 
+    public async ValueTask DisposeAsync()
+    {
+        if (!_disposed)
+        {
+            await _client.DisposeAsync();
+            _disposed = true;
+        }
+    }
+
     public void Dispose()
     {
-        _client?.DisposeAsync().AsTask().Wait();
+        if (!_disposed)
+        {
+            _client.DisposeAsync().AsTask().GetAwaiter().GetResult();
+            _disposed = true;
+        }
     }
 }

@@ -18,7 +18,7 @@ public class ServerEvents(IServiceBusClientFactory serviceBusClientFactory)
     [Function(nameof(OnServerConnected))]
     public async Task<HttpResponseData> OnServerConnected([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/OnServerConnected")] HttpRequestData req, FunctionContext executionContext)
     {
-        var logger = executionContext.GetLogger(nameof(OnPlayerConnected));
+        var logger = executionContext.GetLogger(nameof(OnServerConnected));
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
         OnServerConnected? onServerConnected;
@@ -42,7 +42,7 @@ public class ServerEvents(IServiceBusClientFactory serviceBusClientFactory)
     [Function(nameof(OnMapChange))]
     public async Task<HttpResponseData> OnMapChange([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/OnMapChange")] HttpRequestData req, FunctionContext executionContext)
     {
-        var logger = executionContext.GetLogger(nameof(OnPlayerConnected));
+        var logger = executionContext.GetLogger(nameof(OnMapChange));
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
         OnMapChange? onMapChange;
