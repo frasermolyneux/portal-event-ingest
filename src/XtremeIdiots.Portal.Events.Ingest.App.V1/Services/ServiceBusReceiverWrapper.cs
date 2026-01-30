@@ -8,17 +8,11 @@ public class ServiceBusReceiverWrapper(ServiceBusReceiver receiver) : IServiceBu
     private readonly ServiceBusReceiver _receiver = receiver ?? throw new ArgumentNullException(nameof(receiver));
 
     public Task<IReadOnlyList<ServiceBusReceivedMessage>> ReceiveMessagesAsync(int maxMessages, TimeSpan? maxWaitTime = null, CancellationToken cancellationToken = default)
-    {
-        return _receiver.ReceiveMessagesAsync(maxMessages, maxWaitTime, cancellationToken);
-    }
+        => _receiver.ReceiveMessagesAsync(maxMessages, maxWaitTime, cancellationToken);
 
     public Task CompleteMessageAsync(ServiceBusReceivedMessage message, CancellationToken cancellationToken = default)
-    {
-        return _receiver.CompleteMessageAsync(message, cancellationToken);
-    }
+        => _receiver.CompleteMessageAsync(message, cancellationToken);
 
     public Task CloseAsync(CancellationToken cancellationToken = default)
-    {
-        return _receiver.CloseAsync(cancellationToken);
-    }
+        => _receiver.CloseAsync(cancellationToken);
 }

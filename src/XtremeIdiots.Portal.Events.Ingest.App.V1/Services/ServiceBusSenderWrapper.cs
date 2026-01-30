@@ -8,7 +8,5 @@ public class ServiceBusSenderWrapper(ServiceBusSender sender) : IServiceBusSende
     private readonly ServiceBusSender _sender = sender ?? throw new ArgumentNullException(nameof(sender));
 
     public Task SendMessageAsync(ServiceBusMessage message, CancellationToken cancellationToken = default)
-    {
-        return _sender.SendMessageAsync(message, cancellationToken);
-    }
+        => _sender.SendMessageAsync(message, cancellationToken);
 }
