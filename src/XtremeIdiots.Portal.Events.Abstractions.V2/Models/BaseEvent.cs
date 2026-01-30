@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using XtremeIdiots.Portal.Repository.Abstractions.Constants.V1;
 
 namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models;
 
@@ -32,7 +33,7 @@ public class BaseEvent
     public Guid ServerId { get; set; }
 
     /// <summary>
-    /// Game type
+    /// Game type (uses portal's canonical GameType enum)
     /// </summary>
     [Required]
     public GameType GameType { get; set; }

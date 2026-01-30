@@ -39,7 +39,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440000",
                 "eventGeneratedUtc": "2024-01-29T10:30:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player1",
                 "playerIpAddress": "192.168.1.100",
@@ -85,7 +85,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440001",
                 "eventGeneratedUtc": "2024-01-29T10:30:05Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player1",
                 "playerDbId": 12345,
@@ -131,7 +131,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440002",
                 "eventGeneratedUtc": "2024-01-29T10:30:10Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player1",
                 "playerTeam": "allies"
@@ -176,7 +176,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440003",
                 "eventGeneratedUtc": "2024-01-29T10:45:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player1",
                 "sessionDurationSeconds": 900
@@ -221,7 +221,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440004",
                 "eventGeneratedUtc": "2024-01-29T10:35:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player2",
                 "previousName": "Player1",
@@ -267,7 +267,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440005",
                 "eventGeneratedUtc": "2024-01-29T10:31:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player1",
                 "playerTeam": "allies",
@@ -314,7 +314,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440006",
                 "eventGeneratedUtc": "2024-01-29T10:32:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player1",
                 "playerTeam": "allies",
@@ -360,7 +360,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440007",
                 "eventGeneratedUtc": "2024-01-29T10:33:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Bf3",
+                "gameType": "Battlefield3",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player1",
                 "playerTeam": "us",
@@ -407,7 +407,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440008",
                 "eventGeneratedUtc": "2024-01-29T10:34:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player1",
                 "recipientGuid": "ZZZZYYYYXXXXWWWWVVVV0987654321AA",
@@ -454,7 +454,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440009",
                 "eventGeneratedUtc": "2024-01-29T10:35:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player1",
                 "playerTeam": "allies",
@@ -500,7 +500,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440010",
                 "eventGeneratedUtc": "2024-01-29T10:36:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player1",
                 "mapName": "mp_crash"
@@ -545,7 +545,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440011",
                 "eventGeneratedUtc": "2024-01-29T10:37:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "playerGuid": "AAAABBBBCCCCDDDDEEEE1234567890ZZ",
                 "playerName": "Player1",
                 "mapName": "mp_shipment"
@@ -590,7 +590,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440012",
                 "eventGeneratedUtc": "2024-01-29T10:00:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4"
+                "gameType": "CallOfDuty4"
               }
             }
           }
@@ -632,7 +632,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440013",
                 "eventGeneratedUtc": "2024-01-29T10:20:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "previousMap": "mp_crash",
                 "newMap": "mp_strike",
                 "mapName": "mp_strike",
@@ -678,7 +678,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440014",
                 "eventGeneratedUtc": "2024-01-29T10:21:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "mapName": "mp_strike",
                 "roundInfo": "Round 1"
               }
@@ -722,7 +722,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440015",
                 "eventGeneratedUtc": "2024-01-29T10:30:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "mapName": "mp_strike",
                 "gameResults": "allies won"
               }
@@ -766,7 +766,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440016",
                 "eventGeneratedUtc": "2024-01-29T10:40:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "mapName": "mp_strike",
                 "gameResults": "allies 150 - axis 120"
               }
@@ -810,7 +810,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440017",
                 "eventGeneratedUtc": "2024-01-29T10:19:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "mapName": "mp_strike",
                 "warmupInfo": "60 seconds"
               }
@@ -854,7 +854,7 @@
                 "eventId": "550e8400-e29b-41d4-a716-446655440018",
                 "eventGeneratedUtc": "2024-01-29T10:29:00Z",
                 "serverId": "123e4567-e89b-12d3-a456-426614174000",
-                "gameType": "Cod4",
+                "gameType": "CallOfDuty4",
                 "mapName": "mp_strike",
                 "scoreData": {
                   "players": [
@@ -879,9 +879,25 @@
   "components": {
     "schemas": {
       "GameType": {
-        "type": "string",
-        "enum": ["Cod4", "IourT41", "IourT42", "IourT43", "Bf3", "Bfbc2", "Moh", "Cod7"],
-        "description": "Game type identifier"
+        "oneOf": [
+          {
+            "type": "string",
+            "enum": [
+              "Unknown", "CallOfDuty2", "CallOfDuty4", "CallOfDuty5", "Insurgency", "ArkSurvivalEvolved",
+              "Battlefield1", "Battlefield3", "Battlefield4", "Battlefield5", "BattlefieldBadCompany2",
+              "CrysisWars", "Left4Dead2", "Minecraft", "PlayerUnknownsBattleground", "RisingStormVietnam",
+              "Rust", "WarThunder", "WorldOfWarships", "WorldWar3", "UnrealTournament2004", "Arma", "Arma2", "Arma3"
+            ],
+            "description": "Game type identifier (portal canonical values)"
+          },
+          {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 23,
+            "description": "Game type numeric value"
+          }
+        ],
+        "description": "Game type using portal's canonical GameType enum. Accepts both string names (e.g., 'CallOfDuty4') and numeric values (e.g., 2). All values are converted to portal's GameType before being sent to Service Bus. Common mappings: CallOfDuty4=2, Battlefield3=7, BattlefieldBadCompany2=10, UnrealTournament2004=20."
       },
       "EventType": {
         "type": "string",

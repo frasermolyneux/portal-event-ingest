@@ -1,16 +1,2 @@
-namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models;
-
-/// <summary>
-/// Game types supported by the event ingest system
-/// </summary>
-public enum GameType
-{
-    Cod4,
-    IourT41,
-    IourT42,
-    IourT43,
-    Bf3,
-    Bfbc2,
-    Moh,
-    Cod7
-}
+// This file is intentionally empty - GameType is now imported from XtremeIdiots.Portal.Repository.Abstractions.Constants.V1
+// The V2 API accepts game type values and converts them to the portal's canonical GameType enum

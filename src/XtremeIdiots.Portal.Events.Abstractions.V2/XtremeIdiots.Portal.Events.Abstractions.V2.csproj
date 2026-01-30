@@ -24,4 +24,8 @@
 		<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="XtremeIdiots.Portal.Repository.Abstractions.V1" Version="2.1.59" />
+	</ItemGroup>
+
 </Project>
