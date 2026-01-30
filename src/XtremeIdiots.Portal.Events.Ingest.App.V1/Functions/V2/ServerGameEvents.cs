@@ -5,7 +5,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2.ServerGame;
+using XtremeIdiots.Portal.Events.Abstractions.V2.Models.ServerGame;
 using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V2;
@@ -46,7 +46,7 @@ public class ServerGameEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            serverStartupEvent.EventType = Abstractions.V2.Models.V2.EventType.ServerStartup;
+            serverStartupEvent.EventType = Abstractions.V2.Models.EventType.ServerStartup;
         }
         catch (Exception ex)
         {
@@ -88,7 +88,7 @@ public class ServerGameEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            gameMapChangeEvent.EventType = Abstractions.V2.Models.V2.EventType.GameMapChange;
+            gameMapChangeEvent.EventType = Abstractions.V2.Models.EventType.GameMapChange;
         }
         catch (Exception ex)
         {
@@ -130,7 +130,7 @@ public class ServerGameEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            gameRoundStartEvent.EventType = Abstractions.V2.Models.V2.EventType.GameRoundStart;
+            gameRoundStartEvent.EventType = Abstractions.V2.Models.EventType.GameRoundStart;
         }
         catch (Exception ex)
         {
@@ -172,7 +172,7 @@ public class ServerGameEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            gameRoundEndEvent.EventType = Abstractions.V2.Models.V2.EventType.GameRoundEnd;
+            gameRoundEndEvent.EventType = Abstractions.V2.Models.EventType.GameRoundEnd;
         }
         catch (Exception ex)
         {
@@ -214,7 +214,7 @@ public class ServerGameEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            gameExitEvent.EventType = Abstractions.V2.Models.V2.EventType.GameExit;
+            gameExitEvent.EventType = Abstractions.V2.Models.EventType.GameExit;
         }
         catch (Exception ex)
         {
@@ -256,7 +256,7 @@ public class ServerGameEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            gameWarmupEvent.EventType = Abstractions.V2.Models.V2.EventType.GameWarmup;
+            gameWarmupEvent.EventType = Abstractions.V2.Models.EventType.GameWarmup;
         }
         catch (Exception ex)
         {
@@ -298,7 +298,7 @@ public class ServerGameEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            gameRoundPlayerScoresEvent.EventType = Abstractions.V2.Models.V2.EventType.GameRoundPlayerScores;
+            gameRoundPlayerScoresEvent.EventType = Abstractions.V2.Models.EventType.GameRoundPlayerScores;
         }
         catch (Exception ex)
         {

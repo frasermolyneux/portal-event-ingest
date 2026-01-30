@@ -1,4 +1,4 @@
-namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2;
+namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models;
 
 /// <summary>
 /// Game types supported by the event ingest system

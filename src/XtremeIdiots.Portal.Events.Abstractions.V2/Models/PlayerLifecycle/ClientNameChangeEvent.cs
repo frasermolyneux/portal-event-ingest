@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2.PlayerLifecycle;
+namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.PlayerLifecycle;
 
 /// <summary>
 /// Event triggered when a player changes their name

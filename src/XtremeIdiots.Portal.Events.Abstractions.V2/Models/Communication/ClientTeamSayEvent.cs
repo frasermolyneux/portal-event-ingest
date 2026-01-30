@@ -1,4 +1,4 @@
-namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2.Communication;
+namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.Communication;
 
 /// <summary>
 /// Team-only chat message visible to same team

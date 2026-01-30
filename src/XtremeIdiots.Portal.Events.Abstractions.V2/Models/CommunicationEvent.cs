@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2;
+namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models;
 
 /// <summary>
 /// Base event for communication/chat events

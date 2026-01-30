@@ -5,7 +5,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2.CustomPlugins;
+using XtremeIdiots.Portal.Events.Abstractions.V2.Models.CustomPlugins;
 using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V2;
@@ -46,7 +46,7 @@ public class MapVotingEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            clientMapVoteLikeEvent.EventType = Abstractions.V2.Models.V2.EventType.ClientMapVoteLike;
+            clientMapVoteLikeEvent.EventType = Abstractions.V2.Models.EventType.ClientMapVoteLike;
         }
         catch (Exception ex)
         {
@@ -88,7 +88,7 @@ public class MapVotingEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            clientMapVoteDislikeEvent.EventType = Abstractions.V2.Models.V2.EventType.ClientMapVoteDislike;
+            clientMapVoteDislikeEvent.EventType = Abstractions.V2.Models.EventType.ClientMapVoteDislike;
         }
         catch (Exception ex)
         {

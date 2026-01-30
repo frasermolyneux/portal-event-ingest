@@ -1,4 +1,4 @@
-namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2.PlayerLifecycle;
+namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.PlayerLifecycle;
 
 /// <summary>
 /// Event triggered when a player disconnects from the server

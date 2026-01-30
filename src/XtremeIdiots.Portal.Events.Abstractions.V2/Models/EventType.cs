@@ -1,4 +1,4 @@
-namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2;
+namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models;
 
 /// <summary>
 /// Event types supported by the V2 API

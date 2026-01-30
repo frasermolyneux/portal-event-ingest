@@ -1,4 +1,4 @@
-namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2.ServerGame;
+namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.ServerGame;
 
 /// <summary>
 /// Event triggered when the game/match ends completely

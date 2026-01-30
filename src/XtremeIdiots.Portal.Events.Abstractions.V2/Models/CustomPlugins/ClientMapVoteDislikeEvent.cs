@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2.CustomPlugins;
+namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.CustomPlugins;
 
 /// <summary>
 /// Event triggered when a player votes negatively for the current map

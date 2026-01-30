@@ -5,7 +5,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2.Communication;
+using XtremeIdiots.Portal.Events.Abstractions.V2.Models.Communication;
 using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V2;
@@ -46,8 +46,8 @@ public class CommunicationEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            clientSayEvent.EventType = Abstractions.V2.Models.V2.EventType.ClientSay;
-            clientSayEvent.CommunicationType = Abstractions.V2.Models.V2.CommunicationType.Public;
+            clientSayEvent.EventType = Abstractions.V2.Models.EventType.ClientSay;
+            clientSayEvent.CommunicationType = Abstractions.V2.Models.CommunicationType.Public;
             clientSayEvent.MessageLength = clientSayEvent.Message?.Length ?? 0;
         }
         catch (Exception ex)
@@ -90,8 +90,8 @@ public class CommunicationEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            clientTeamSayEvent.EventType = Abstractions.V2.Models.V2.EventType.ClientTeamSay;
-            clientTeamSayEvent.CommunicationType = Abstractions.V2.Models.V2.CommunicationType.Team;
+            clientTeamSayEvent.EventType = Abstractions.V2.Models.EventType.ClientTeamSay;
+            clientTeamSayEvent.CommunicationType = Abstractions.V2.Models.CommunicationType.Team;
             clientTeamSayEvent.MessageLength = clientTeamSayEvent.Message?.Length ?? 0;
             clientTeamSayEvent.TargetTeam = clientTeamSayEvent.PlayerTeam;
         }
@@ -135,8 +135,8 @@ public class CommunicationEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            clientSquadSayEvent.EventType = Abstractions.V2.Models.V2.EventType.ClientSquadSay;
-            clientSquadSayEvent.CommunicationType = Abstractions.V2.Models.V2.CommunicationType.Squad;
+            clientSquadSayEvent.EventType = Abstractions.V2.Models.EventType.ClientSquadSay;
+            clientSquadSayEvent.CommunicationType = Abstractions.V2.Models.CommunicationType.Squad;
             clientSquadSayEvent.MessageLength = clientSquadSayEvent.Message?.Length ?? 0;
         }
         catch (Exception ex)
@@ -179,8 +179,8 @@ public class CommunicationEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            clientPrivateSayEvent.EventType = Abstractions.V2.Models.V2.EventType.ClientPrivateSay;
-            clientPrivateSayEvent.CommunicationType = Abstractions.V2.Models.V2.CommunicationType.Private;
+            clientPrivateSayEvent.EventType = Abstractions.V2.Models.EventType.ClientPrivateSay;
+            clientPrivateSayEvent.CommunicationType = Abstractions.V2.Models.CommunicationType.Private;
             clientPrivateSayEvent.MessageLength = clientPrivateSayEvent.Message?.Length ?? 0;
         }
         catch (Exception ex)
@@ -223,8 +223,8 @@ public class CommunicationEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            clientRadioEvent.EventType = Abstractions.V2.Models.V2.EventType.ClientRadio;
-            clientRadioEvent.CommunicationType = Abstractions.V2.Models.V2.CommunicationType.Radio;
+            clientRadioEvent.EventType = Abstractions.V2.Models.EventType.ClientRadio;
+            clientRadioEvent.CommunicationType = Abstractions.V2.Models.CommunicationType.Radio;
             clientRadioEvent.MessageLength = clientRadioEvent.Message?.Length ?? 0;
         }
         catch (Exception ex)

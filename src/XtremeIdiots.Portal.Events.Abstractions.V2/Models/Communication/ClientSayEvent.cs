@@ -1,4 +1,4 @@
-namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2.Communication;
+namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.Communication;
 
 /// <summary>
 /// Public chat message visible to all players

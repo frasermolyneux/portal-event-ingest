@@ -1,4 +1,4 @@
-namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2.Communication;
+namespace XtremeIdiots.Portal.Events.Abstractions.V2.Models.Communication;
 
 /// <summary>
 /// Private message (whisper) sent to specific player

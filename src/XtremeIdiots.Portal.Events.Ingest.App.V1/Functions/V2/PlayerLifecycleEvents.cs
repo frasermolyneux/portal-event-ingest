@@ -5,7 +5,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using XtremeIdiots.Portal.Events.Abstractions.V2.Models.V2.PlayerLifecycle;
+using XtremeIdiots.Portal.Events.Abstractions.V2.Models.PlayerLifecycle;
 using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V2;
@@ -47,7 +47,7 @@ public class PlayerLifecycleEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            clientConnectEvent.EventType = Abstractions.V2.Models.V2.EventType.ClientConnect;
+            clientConnectEvent.EventType = Abstractions.V2.Models.EventType.ClientConnect;
         }
         catch (Exception ex)
         {
@@ -89,7 +89,7 @@ public class PlayerLifecycleEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            clientAuthEvent.EventType = Abstractions.V2.Models.V2.EventType.ClientAuth;
+            clientAuthEvent.EventType = Abstractions.V2.Models.EventType.ClientAuth;
         }
         catch (Exception ex)
         {
@@ -131,7 +131,7 @@ public class PlayerLifecycleEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            clientJoinEvent.EventType = Abstractions.V2.Models.V2.EventType.ClientJoin;
+            clientJoinEvent.EventType = Abstractions.V2.Models.EventType.ClientJoin;
         }
         catch (Exception ex)
         {
@@ -173,7 +173,7 @@ public class PlayerLifecycleEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            clientDisconnectEvent.EventType = Abstractions.V2.Models.V2.EventType.ClientDisconnect;
+            clientDisconnectEvent.EventType = Abstractions.V2.Models.EventType.ClientDisconnect;
         }
         catch (Exception ex)
         {
@@ -215,7 +215,7 @@ public class PlayerLifecycleEvents
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            clientNameChangeEvent.EventType = Abstractions.V2.Models.V2.EventType.ClientNameChange;
+            clientNameChangeEvent.EventType = Abstractions.V2.Models.EventType.ClientNameChange;
         }
         catch (Exception ex)
         {
