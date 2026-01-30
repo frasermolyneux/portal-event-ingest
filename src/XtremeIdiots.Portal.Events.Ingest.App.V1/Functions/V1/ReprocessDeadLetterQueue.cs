@@ -59,16 +59,12 @@ public class ReprocessDeadLetterQueue(ILogger<ReprocessDeadLetterQueue> logger, 
 
             logger.LogInformation($"dl-count: {dlqMessages.Count}");
 
-            int i = 1;
-
             foreach (var dlqMessage in dlqMessages)
             {
                 ServiceBusMessage message = new(dlqMessage);
 
                 await sender.SendMessageAsync(message);
                 await receiver.CompleteMessageAsync(dlqMessage);
-
-                i++;
             }
         } while (dlqMessages.Count > 0);
 
