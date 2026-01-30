@@ -42,13 +42,13 @@ public class PlayerEventsIngest(
             throw new InvalidOperationException("OnPlayerConnected event was null");
 
         if (string.IsNullOrWhiteSpace(onPlayerConnected.GameType))
-            throw new ArgumentException("OnPlayerConnected event contained null or empty 'GameType'", nameof(onPlayerConnected.GameType));
+            throw new ArgumentException("OnPlayerConnected event contained null or empty 'GameType'", nameof(onPlayerConnected));
 
         if (string.IsNullOrWhiteSpace(onPlayerConnected.Guid))
-            throw new ArgumentException("OnPlayerConnected event contained null or empty 'Guid'", nameof(onPlayerConnected.Guid));
+            throw new ArgumentException("OnPlayerConnected event contained null or empty 'Guid'", nameof(onPlayerConnected));
 
         if (!Enum.TryParse(onPlayerConnected.GameType, out GameType gameType))
-            throw new ArgumentException($"OnPlayerConnected event contained invalid 'GameType': {onPlayerConnected.GameType}", nameof(onPlayerConnected.GameType));
+            throw new ArgumentException($"OnPlayerConnected event contained invalid 'GameType': {onPlayerConnected.GameType}", nameof(onPlayerConnected));
 
         var onPlayerConnectedTelemetry = new EventTelemetry("OnPlayerConnected");
         onPlayerConnectedTelemetry.Properties.Add("GameType", onPlayerConnected.GameType);
@@ -103,13 +103,13 @@ public class PlayerEventsIngest(
             throw new InvalidOperationException("OnChatMessage event was null");
 
         if (string.IsNullOrWhiteSpace(onChatMessage.GameType))
-            throw new ArgumentException("OnChatMessage event contained null or empty 'GameType'", nameof(onChatMessage.GameType));
+            throw new ArgumentException("OnChatMessage event contained null or empty 'GameType'", nameof(onChatMessage));
 
         if (string.IsNullOrWhiteSpace(onChatMessage.Guid))
-            throw new ArgumentException("OnChatMessage event contained null or empty 'Guid'", nameof(onChatMessage.Guid));
+            throw new ArgumentException("OnChatMessage event contained null or empty 'Guid'", nameof(onChatMessage));
 
         if (!Enum.TryParse(onChatMessage.GameType, out GameType gameType))
-            throw new ArgumentException($"OnChatMessage event contained invalid 'GameType': {onChatMessage.GameType}", nameof(onChatMessage.GameType));
+            throw new ArgumentException($"OnChatMessage event contained invalid 'GameType': {onChatMessage.GameType}", nameof(onChatMessage));
 
         var onChatMessageTelemetry = new EventTelemetry("OnChatMessage");
         onChatMessageTelemetry.Properties.Add("GameType", onChatMessage.GameType);
@@ -151,13 +151,13 @@ public class PlayerEventsIngest(
             throw new InvalidOperationException("OnMapVote event was null");
 
         if (string.IsNullOrWhiteSpace(onMapVote.MapName))
-            throw new ArgumentException("OnMapVote event contained null or empty 'MapName'", nameof(onMapVote.MapName));
+            throw new ArgumentException("OnMapVote event contained null or empty 'MapName'", nameof(onMapVote));
 
         if (string.IsNullOrWhiteSpace(onMapVote.Guid))
-            throw new ArgumentException("OnMapVote event contained null or empty 'Guid'", nameof(onMapVote.Guid));
+            throw new ArgumentException("OnMapVote event contained null or empty 'Guid'", nameof(onMapVote));
 
         if (!Enum.TryParse(onMapVote.GameType, out GameType gameType))
-            throw new ArgumentException($"OnMapVote event contained invalid 'GameType': {onMapVote.GameType}", nameof(onMapVote.GameType));
+            throw new ArgumentException($"OnMapVote event contained invalid 'GameType': {onMapVote.GameType}", nameof(onMapVote));
 
         var onMapVoteTelemetry = new EventTelemetry("OnMapVote");
         onMapVoteTelemetry.Properties.Add("GameType", onMapVote.GameType);

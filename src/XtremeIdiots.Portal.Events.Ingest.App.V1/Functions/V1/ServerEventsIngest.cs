@@ -33,7 +33,7 @@ public class ServerEventsIngest(
             throw new InvalidOperationException("OnServerConnected event was null");
 
         if (!Guid.TryParse(onServerConnected.Id, out Guid gameServerId))
-            throw new ArgumentException("OnServerConnected event contained invalid or empty 'Id'", nameof(onServerConnected.Id));
+            throw new ArgumentException("OnServerConnected event contained invalid or empty 'Id'", nameof(onServerConnected));
 
         logger.LogInformation(
             $"OnServerConnected :: Id: '{onServerConnected.Id}', GameType: '{onServerConnected.GameType}'");
@@ -62,7 +62,7 @@ public class ServerEventsIngest(
             throw new InvalidOperationException("OnMapChange event was null");
 
         if (onMapChange.ServerId == Guid.Empty)
-            throw new ArgumentException("OnMapChange event contained null or empty 'ServerId'", nameof(onMapChange.ServerId));
+            throw new ArgumentException("OnMapChange event contained null or empty 'ServerId'", nameof(onMapChange));
 
         logger.LogInformation(
             $"ProcessOnMapChange :: GameName: '{onMapChange.GameName}', GameType: '{onMapChange.GameType}', MapName: '{onMapChange.MapName}'");

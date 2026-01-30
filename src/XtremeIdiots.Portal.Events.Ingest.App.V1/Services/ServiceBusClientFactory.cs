@@ -8,7 +8,7 @@ namespace XtremeIdiots.Portal.Events.Ingest.App.V1.Services;
 public sealed class ServiceBusClientFactory(IConfiguration configuration) : IServiceBusClientFactory, IAsyncDisposable, IDisposable
 {
     private readonly ServiceBusClient _client = CreateClient(configuration);
-    private bool _disposed;
+    private int _disposed;
 
     private static ServiceBusClient CreateClient(IConfiguration configuration)
     {
@@ -39,19 +39,19 @@ public sealed class ServiceBusClientFactory(IConfiguration configuration) : ISer
 
     public async ValueTask DisposeAsync()
     {
-        if (!_disposed)
+        if (Interlocked.Exchange(ref _disposed, 1) == 0)
         {
             await _client.DisposeAsync();
-            _disposed = true;
+            GC.SuppressFinalize(this);
         }
     }
 
     public void Dispose()
     {
-        if (!_disposed)
+        if (Interlocked.Exchange(ref _disposed, 1) == 0)
         {
             _client.DisposeAsync().AsTask().GetAwaiter().GetResult();
-            _disposed = true;
+            GC.SuppressFinalize(this);
         }
     }
 }
