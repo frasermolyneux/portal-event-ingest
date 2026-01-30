@@ -13,15 +13,8 @@ using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
-public class ServerEvents
+public class ServerEvents(IServiceBusClientFactory serviceBusClientFactory)
 {
-    private readonly IServiceBusClientFactory serviceBusClientFactory;
-
-    public ServerEvents(IServiceBusClientFactory serviceBusClientFactory)
-    {
-        this.serviceBusClientFactory = serviceBusClientFactory;
-    }
-
     [Function(nameof(OnServerConnected))]
     public async Task<HttpResponseData> OnServerConnected([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/OnServerConnected")] HttpRequestData req, FunctionContext executionContext)
     {

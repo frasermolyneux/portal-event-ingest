@@ -9,19 +9,10 @@ using XtremeIdiots.Portal.Repository.Api.Client.V1;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
-public class ServerEventsIngest
+public class ServerEventsIngest(
+    ILogger<ServerEventsIngest> logger,
+    IRepositoryApiClient repositoryApiClient)
 {
-    private readonly ILogger<ServerEventsIngest> logger;
-    private readonly IRepositoryApiClient repositoryApiClient;
-
-    public ServerEventsIngest(
-        ILogger<ServerEventsIngest> logger,
-        IRepositoryApiClient repositoryApiClient)
-    {
-        this.logger = logger;
-        this.repositoryApiClient = repositoryApiClient;
-    }
-
     [Function("ProcessOnServerConnected")]
     public async Task ProcessOnServerConnected(
         [ServiceBusTrigger("server_connected_queue", Connection = "ServiceBusConnection")]

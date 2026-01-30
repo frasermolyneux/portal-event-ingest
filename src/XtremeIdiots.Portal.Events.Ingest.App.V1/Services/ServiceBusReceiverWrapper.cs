@@ -3,14 +3,9 @@ using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.V1.Services;
 
-public class ServiceBusReceiverWrapper : IServiceBusReceiver
+public class ServiceBusReceiverWrapper(ServiceBusReceiver receiver) : IServiceBusReceiver
 {
-    private readonly ServiceBusReceiver _receiver;
-
-    public ServiceBusReceiverWrapper(ServiceBusReceiver receiver)
-    {
-        _receiver = receiver ?? throw new ArgumentNullException(nameof(receiver));
-    }
+    private readonly ServiceBusReceiver _receiver = receiver ?? throw new ArgumentNullException(nameof(receiver));
 
     public Task<IReadOnlyList<ServiceBusReceivedMessage>> ReceiveMessagesAsync(int maxMessages, TimeSpan? maxWaitTime = null, CancellationToken cancellationToken = default)
     {

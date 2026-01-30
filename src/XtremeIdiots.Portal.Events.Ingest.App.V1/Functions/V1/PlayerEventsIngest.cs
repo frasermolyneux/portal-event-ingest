@@ -16,25 +16,12 @@ using XtremeIdiots.Portal.Repository.Api.Client.V1;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
-public class PlayerEventsIngest
+public class PlayerEventsIngest(
+    ILogger<PlayerEventsIngest> logger,
+    IRepositoryApiClient repositoryApiClient,
+    IMemoryCache memoryCache,
+    TelemetryClient telemetryClient)
 {
-    private readonly ILogger<PlayerEventsIngest> logger;
-    private readonly IRepositoryApiClient repositoryApiClient;
-    private readonly IMemoryCache memoryCache;
-    private readonly TelemetryClient telemetryClient;
-
-    public PlayerEventsIngest(
-        ILogger<PlayerEventsIngest> logger,
-        IRepositoryApiClient repositoryApiClient,
-        IMemoryCache memoryCache,
-        TelemetryClient telemetryClient)
-    {
-        this.logger = logger;
-        this.repositoryApiClient = repositoryApiClient;
-        this.memoryCache = memoryCache;
-        this.telemetryClient = telemetryClient;
-    }
-
     [Function("ProcessOnPlayerConnected")]
     public async Task ProcessOnPlayerConnected(
         [ServiceBusTrigger("player_connected_queue", Connection = "ServiceBusConnection")]
