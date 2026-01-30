@@ -28,14 +28,10 @@ public sealed class ServiceBusClientFactory(IConfiguration configuration) : ISer
     }
 
     public IServiceBusSender CreateSender(string queueOrTopicName)
-    {
-        return new ServiceBusSenderWrapper(_client.CreateSender(queueOrTopicName));
-    }
+        => new ServiceBusSenderWrapper(_client.CreateSender(queueOrTopicName));
 
     public IServiceBusReceiver CreateReceiver(string queueName, ServiceBusReceiverOptions? options = null)
-    {
-        return new ServiceBusReceiverWrapper(_client.CreateReceiver(queueName, options));
-    }
+        => new ServiceBusReceiverWrapper(_client.CreateReceiver(queueName, options));
 
     public async ValueTask DisposeAsync()
     {
