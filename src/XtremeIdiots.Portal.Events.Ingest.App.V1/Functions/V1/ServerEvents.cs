@@ -33,7 +33,7 @@ public class ServerEvents(IServiceBusClientFactory serviceBusClientFactory)
             throw;
         }
 
-        var sender = serviceBusClientFactory.CreateSender("server_connected_queue");
+        await using var sender = serviceBusClientFactory.CreateSender("server_connected_queue");
         await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onServerConnected))).ConfigureAwait(false);
 
         return req.CreateResponse(HttpStatusCode.OK);
@@ -57,7 +57,7 @@ public class ServerEvents(IServiceBusClientFactory serviceBusClientFactory)
             throw;
         }
 
-        var sender = serviceBusClientFactory.CreateSender("map_change_queue");
+        await using var sender = serviceBusClientFactory.CreateSender("map_change_queue");
         await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapChange))).ConfigureAwait(false);
 
         return req.CreateResponse(HttpStatusCode.OK);

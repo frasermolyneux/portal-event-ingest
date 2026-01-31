@@ -33,7 +33,7 @@ public class PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
             throw;
         }
 
-        var sender = serviceBusClientFactory.CreateSender("player_connected_queue");
+        await using var sender = serviceBusClientFactory.CreateSender("player_connected_queue");
         await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onPlayerConnected))).ConfigureAwait(false);
 
         return req.CreateResponse(HttpStatusCode.OK);
@@ -57,7 +57,7 @@ public class PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
             throw;
         }
 
-        var sender = serviceBusClientFactory.CreateSender("chat_message_queue");
+        await using var sender = serviceBusClientFactory.CreateSender("chat_message_queue");
         await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onChatMessage))).ConfigureAwait(false);
 
         return req.CreateResponse(HttpStatusCode.OK);
@@ -81,7 +81,7 @@ public class PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
             throw;
         }
 
-        var sender = serviceBusClientFactory.CreateSender("map_vote_queue");
+        await using var sender = serviceBusClientFactory.CreateSender("map_vote_queue");
         await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapVote))).ConfigureAwait(false);
 
         return req.CreateResponse(HttpStatusCode.OK);

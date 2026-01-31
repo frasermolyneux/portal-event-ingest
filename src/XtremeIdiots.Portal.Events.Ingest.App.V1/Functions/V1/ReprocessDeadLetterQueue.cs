@@ -24,8 +24,8 @@ public class ReprocessDeadLetterQueue(ILogger<ReprocessDeadLetterQueue> logger, 
 
         try
         {
-            var sender = serviceBusClientFactory.CreateSender(queueName);
-            var receiver = serviceBusClientFactory.CreateReceiver(queueName, new ServiceBusReceiverOptions
+            await using var sender = serviceBusClientFactory.CreateSender(queueName);
+            await using var receiver = serviceBusClientFactory.CreateReceiver(queueName, new ServiceBusReceiverOptions
             {
                 SubQueue = SubQueue.DeadLetter,
                 ReceiveMode = ServiceBusReceiveMode.PeekLock
@@ -67,7 +67,5 @@ public class ReprocessDeadLetterQueue(ILogger<ReprocessDeadLetterQueue> logger, 
                 await receiver.CompleteMessageAsync(dlqMessage).ConfigureAwait(false);
             }
         } while (dlqMessages.Count > 0);
-
-        await receiver.CloseAsync().ConfigureAwait(false);
     }
 }
