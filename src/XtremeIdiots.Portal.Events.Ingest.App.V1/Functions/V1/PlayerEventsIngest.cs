@@ -184,7 +184,7 @@ public class PlayerEventsIngest(
         }
     }
 
-    private async Task<Guid> GetPlayerId(GameType gameType, string guid)
+    private async ValueTask<Guid> GetPlayerId(GameType gameType, string guid)
     {
         var cacheKey = $"{gameType}-${guid}";
 
