@@ -31,7 +31,7 @@ public class ReprocessDeadLetterQueue(ILogger<ReprocessDeadLetterQueue> logger, 
                 ReceiveMode = ServiceBusReceiveMode.PeekLock
             });
 
-            await ProcessDeadLetterMessagesAsync(sender, receiver);
+            await ProcessDeadLetterMessagesAsync(sender, receiver).ConfigureAwait(false);
         }
         catch (ServiceBusException ex)
         {
@@ -55,7 +55,7 @@ public class ReprocessDeadLetterQueue(ILogger<ReprocessDeadLetterQueue> logger, 
         IReadOnlyList<ServiceBusReceivedMessage> dlqMessages;
         do
         {
-            dlqMessages = await receiver.ReceiveMessagesAsync(fetchCount);
+            dlqMessages = await receiver.ReceiveMessagesAsync(fetchCount).ConfigureAwait(false);
 
             logger.LogInformation($"dl-count: {dlqMessages.Count}");
 
@@ -63,11 +63,11 @@ public class ReprocessDeadLetterQueue(ILogger<ReprocessDeadLetterQueue> logger, 
             {
                 ServiceBusMessage message = new(dlqMessage);
 
-                await sender.SendMessageAsync(message);
-                await receiver.CompleteMessageAsync(dlqMessage);
+                await sender.SendMessageAsync(message).ConfigureAwait(false);
+                await receiver.CompleteMessageAsync(dlqMessage).ConfigureAwait(false);
             }
         } while (dlqMessages.Count > 0);
 
-        await receiver.CloseAsync();
+        await receiver.CloseAsync().ConfigureAwait(false);
     }
 }

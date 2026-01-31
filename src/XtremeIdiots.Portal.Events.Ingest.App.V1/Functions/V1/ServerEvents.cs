@@ -19,7 +19,7 @@ public class ServerEvents(IServiceBusClientFactory serviceBusClientFactory)
     public async Task<HttpResponseData> OnServerConnected([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/OnServerConnected")] HttpRequestData req, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(OnServerConnected));
-        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        var requestBody = await new StreamReader(req.Body).ReadToEndAsync().ConfigureAwait(false);
 
         OnServerConnected? onServerConnected;
         try
@@ -34,7 +34,7 @@ public class ServerEvents(IServiceBusClientFactory serviceBusClientFactory)
         }
 
         var sender = serviceBusClientFactory.CreateSender("server_connected_queue");
-        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onServerConnected)));
+        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onServerConnected))).ConfigureAwait(false);
 
         return req.CreateResponse(HttpStatusCode.OK);
     }
@@ -43,7 +43,7 @@ public class ServerEvents(IServiceBusClientFactory serviceBusClientFactory)
     public async Task<HttpResponseData> OnMapChange([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/OnMapChange")] HttpRequestData req, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(OnMapChange));
-        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        var requestBody = await new StreamReader(req.Body).ReadToEndAsync().ConfigureAwait(false);
 
         OnMapChange? onMapChange;
         try
@@ -58,7 +58,7 @@ public class ServerEvents(IServiceBusClientFactory serviceBusClientFactory)
         }
 
         var sender = serviceBusClientFactory.CreateSender("map_change_queue");
-        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapChange)));
+        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapChange))).ConfigureAwait(false);
 
         return req.CreateResponse(HttpStatusCode.OK);
     }
