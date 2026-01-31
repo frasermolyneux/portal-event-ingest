@@ -2,8 +2,8 @@
 
 public class OnChatMessage : OnEventBase
 {
-    public required string Username { get; set; }
-    public required string Guid { get; set; }
-    public required string Message { get; set; }
-    public required string Type { get; set; }
+    public required string Username { get; init; }
+    public required string Guid { get; init; }
+    public required string Message { get; init; }
+    public required string Type { get; init; }
 }
