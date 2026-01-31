@@ -10,8 +10,6 @@ public class ServiceBusSenderWrapper(ServiceBusSender sender) : IServiceBusSende
     public Task SendMessageAsync(ServiceBusMessage message, CancellationToken cancellationToken = default)
         => _sender.SendMessageAsync(message, cancellationToken);
 
-    public async ValueTask DisposeAsync()
-    {
-        await _sender.DisposeAsync().ConfigureAwait(false);
-    }
+    public ValueTask DisposeAsync()
+        => _sender.DisposeAsync();
 }
