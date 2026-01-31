@@ -5,7 +5,7 @@ using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.V1.Services;
 
-public sealed class ServiceBusClientFactory(IConfiguration configuration) : IServiceBusClientFactory, IAsyncDisposable, IDisposable
+public sealed class ServiceBusClientFactory(IConfiguration configuration) : IServiceBusClientFactory, IAsyncDisposable
 {
     private readonly ServiceBusClient _client = CreateClient(configuration);
     private int _disposed;
@@ -37,16 +37,7 @@ public sealed class ServiceBusClientFactory(IConfiguration configuration) : ISer
     {
         if (Interlocked.Exchange(ref _disposed, 1) == 0)
         {
-            await _client.DisposeAsync();
-            GC.SuppressFinalize(this);
-        }
-    }
-
-    public void Dispose()
-    {
-        if (Interlocked.Exchange(ref _disposed, 1) == 0)
-        {
-            _client.DisposeAsync().AsTask().GetAwaiter().GetResult();
+            await _client.DisposeAsync().ConfigureAwait(false);
             GC.SuppressFinalize(this);
         }
     }

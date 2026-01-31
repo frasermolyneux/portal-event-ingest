@@ -15,4 +15,7 @@ public class ServiceBusReceiverWrapper(ServiceBusReceiver receiver) : IServiceBu
 
     public Task CloseAsync(CancellationToken cancellationToken = default)
         => _receiver.CloseAsync(cancellationToken);
+
+    public ValueTask DisposeAsync()
+        => _receiver.DisposeAsync();
 }

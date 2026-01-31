@@ -56,7 +56,7 @@ public class PlayerEventsIngest(
         onPlayerConnectedTelemetry.Properties.Add("Guid", onPlayerConnected.Guid);
         telemetryClient.TrackEvent(onPlayerConnectedTelemetry);
 
-        var playerExistsApiResponse = await repositoryApiClient.Players.V1.HeadPlayerByGameType(gameType, onPlayerConnected.Guid);
+        var playerExistsApiResponse = await repositoryApiClient.Players.V1.HeadPlayerByGameType(gameType, onPlayerConnected.Guid).ConfigureAwait(false);
 
         if (playerExistsApiResponse.IsNotFound)
         {
@@ -65,11 +65,11 @@ public class PlayerEventsIngest(
                 IpAddress = onPlayerConnected.IpAddress
             };
 
-            await repositoryApiClient.Players.V1.CreatePlayer(player);
+            await repositoryApiClient.Players.V1.CreatePlayer(player).ConfigureAwait(false);
         }
         else
         {
-            var playerId = await GetPlayerId(gameType, onPlayerConnected.Guid);
+            var playerId = await GetPlayerId(gameType, onPlayerConnected.Guid).ConfigureAwait(false);
             if (playerId != Guid.Empty)
             {
                 var editPlayerDto = new EditPlayerDto(playerId)
@@ -78,7 +78,7 @@ public class PlayerEventsIngest(
                     IpAddress = onPlayerConnected.IpAddress
                 };
 
-                await repositoryApiClient.Players.V1.UpdatePlayer(editPlayerDto);
+                await repositoryApiClient.Players.V1.UpdatePlayer(editPlayerDto).ConfigureAwait(false);
             }
         }
     }
@@ -118,12 +118,12 @@ public class PlayerEventsIngest(
         onChatMessageTelemetry.Properties.Add("Message", onChatMessage.Message);
         telemetryClient.TrackEvent(onChatMessageTelemetry);
 
-        var playerId = await GetPlayerId(gameType, onChatMessage.Guid);
+        var playerId = await GetPlayerId(gameType, onChatMessage.Guid).ConfigureAwait(false);
 
         if (playerId != Guid.Empty)
         {
             var chatMessage = new CreateChatMessageDto(onChatMessage.ServerId, playerId, onChatMessage.Type.ToChatType(), onChatMessage.Username, onChatMessage.Message, onChatMessage.EventGeneratedUtc);
-            await repositoryApiClient.ChatMessages.V1.CreateChatMessage(chatMessage);
+            await repositoryApiClient.ChatMessages.V1.CreateChatMessage(chatMessage).ConfigureAwait(false);
         }
         else
         {
@@ -166,16 +166,16 @@ public class PlayerEventsIngest(
         onMapVoteTelemetry.Properties.Add("Like", onMapVote.Like.ToString());
         telemetryClient.TrackEvent(onMapVoteTelemetry);
 
-        var playerId = await GetPlayerId(gameType, onMapVote.Guid);
+        var playerId = await GetPlayerId(gameType, onMapVote.Guid).ConfigureAwait(false);
 
         if (playerId != Guid.Empty)
         {
-            var mapApiResponse = await repositoryApiClient.Maps.V1.GetMap(gameType, onMapVote.MapName);
+            var mapApiResponse = await repositoryApiClient.Maps.V1.GetMap(gameType, onMapVote.MapName).ConfigureAwait(false);
 
             if (mapApiResponse.IsSuccess && mapApiResponse.Result?.Data != null)
             {
                 var upsertMapVoteDto = new UpsertMapVoteDto(mapApiResponse.Result.Data.MapId, playerId, onMapVote.ServerId, onMapVote.Like);
-                await repositoryApiClient.Maps.V1.UpsertMapVote(upsertMapVoteDto);
+                await repositoryApiClient.Maps.V1.UpsertMapVote(upsertMapVoteDto).ConfigureAwait(false);
             }
         }
         else
@@ -184,14 +184,14 @@ public class PlayerEventsIngest(
         }
     }
 
-    private async Task<Guid> GetPlayerId(GameType gameType, string guid)
+    private async ValueTask<Guid> GetPlayerId(GameType gameType, string guid)
     {
         var cacheKey = $"{gameType}-${guid}";
 
         if (memoryCache.TryGetValue(cacheKey, out Guid playerId))
             return playerId;
 
-        var playerDtoApiResponse = await repositoryApiClient.Players.V1.GetPlayerByGameType(gameType, guid, PlayerEntityOptions.None);
+        var playerDtoApiResponse = await repositoryApiClient.Players.V1.GetPlayerByGameType(gameType, guid, PlayerEntityOptions.None).ConfigureAwait(false);
 
         if (playerDtoApiResponse.IsSuccess && playerDtoApiResponse.Result?.Data != null)
         {

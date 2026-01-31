@@ -19,7 +19,7 @@ public class PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
     public async Task<HttpResponseData> OnPlayerConnected([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/OnPlayerConnected")] HttpRequestData req, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(OnPlayerConnected));
-        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        var requestBody = await new StreamReader(req.Body).ReadToEndAsync().ConfigureAwait(false);
 
         OnPlayerConnected? onPlayerConnected;
         try
@@ -33,8 +33,8 @@ public class PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
             throw;
         }
 
-        var sender = serviceBusClientFactory.CreateSender("player_connected_queue");
-        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onPlayerConnected)));
+        await using var sender = serviceBusClientFactory.CreateSender("player_connected_queue");
+        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onPlayerConnected))).ConfigureAwait(false);
 
         return req.CreateResponse(HttpStatusCode.OK);
     }
@@ -43,7 +43,7 @@ public class PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
     public async Task<HttpResponseData> OnChatMessage([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/OnChatMessage")] HttpRequestData req, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(OnChatMessage));
-        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        var requestBody = await new StreamReader(req.Body).ReadToEndAsync().ConfigureAwait(false);
 
         OnChatMessage? onChatMessage;
         try
@@ -57,8 +57,8 @@ public class PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
             throw;
         }
 
-        var sender = serviceBusClientFactory.CreateSender("chat_message_queue");
-        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onChatMessage)));
+        await using var sender = serviceBusClientFactory.CreateSender("chat_message_queue");
+        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onChatMessage))).ConfigureAwait(false);
 
         return req.CreateResponse(HttpStatusCode.OK);
     }
@@ -67,7 +67,7 @@ public class PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
     public async Task<HttpResponseData> OnMapVote([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/OnMapVote")] HttpRequestData req, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(OnMapVote));
-        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        var requestBody = await new StreamReader(req.Body).ReadToEndAsync().ConfigureAwait(false);
 
         OnMapVote? onMapVote;
         try
@@ -81,8 +81,8 @@ public class PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
             throw;
         }
 
-        var sender = serviceBusClientFactory.CreateSender("map_vote_queue");
-        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapVote)));
+        await using var sender = serviceBusClientFactory.CreateSender("map_vote_queue");
+        await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(onMapVote))).ConfigureAwait(false);
 
         return req.CreateResponse(HttpStatusCode.OK);
     }
