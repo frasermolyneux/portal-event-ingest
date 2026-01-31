@@ -9,17 +9,8 @@ using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
-public class ReprocessDeadLetterQueue
+public class ReprocessDeadLetterQueue(ILogger<ReprocessDeadLetterQueue> logger, IServiceBusClientFactory serviceBusClientFactory)
 {
-    private readonly ILogger<ReprocessDeadLetterQueue> logger;
-    private readonly IServiceBusClientFactory serviceBusClientFactory;
-
-    public ReprocessDeadLetterQueue(ILogger<ReprocessDeadLetterQueue> logger, IServiceBusClientFactory serviceBusClientFactory)
-    {
-        this.logger = logger;
-        this.serviceBusClientFactory = serviceBusClientFactory;
-    }
-
     [Function(nameof(ReprocessDeadLetterQueue))]
     public async Task<HttpResponseData> RunReprocessDeadLetterQueue([HttpTrigger(AuthorizationLevel.Function, "post", Route = "api/v1/ReprocessDeadLetterQueue")] HttpRequestData req, FunctionContext executionContext)
     {
@@ -68,16 +59,12 @@ public class ReprocessDeadLetterQueue
 
             logger.LogInformation($"dl-count: {dlqMessages.Count}");
 
-            int i = 1;
-
             foreach (var dlqMessage in dlqMessages)
             {
                 ServiceBusMessage message = new(dlqMessage);
 
                 await sender.SendMessageAsync(message);
                 await receiver.CompleteMessageAsync(dlqMessage);
-
-                i++;
             }
         } while (dlqMessages.Count > 0);
 

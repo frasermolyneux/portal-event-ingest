@@ -9,19 +9,10 @@ using XtremeIdiots.Portal.Repository.Api.Client.V1;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
-public class ServerEventsIngest
+public class ServerEventsIngest(
+    ILogger<ServerEventsIngest> logger,
+    IRepositoryApiClient repositoryApiClient)
 {
-    private readonly ILogger<ServerEventsIngest> logger;
-    private readonly IRepositoryApiClient repositoryApiClient;
-
-    public ServerEventsIngest(
-        ILogger<ServerEventsIngest> logger,
-        IRepositoryApiClient repositoryApiClient)
-    {
-        this.logger = logger;
-        this.repositoryApiClient = repositoryApiClient;
-    }
-
     [Function("ProcessOnServerConnected")]
     public async Task ProcessOnServerConnected(
         [ServiceBusTrigger("server_connected_queue", Connection = "ServiceBusConnection")]
@@ -38,11 +29,11 @@ public class ServerEventsIngest
             throw;
         }
 
-        if (onServerConnected == null)
-            throw new Exception("OnServerConnected event was null");
+        if (onServerConnected is null)
+            throw new InvalidOperationException("OnServerConnected event was null");
 
         if (!Guid.TryParse(onServerConnected.Id, out Guid gameServerId))
-            throw new Exception("OnServerConnected event contained null or empty 'onServerConnected'");
+            throw new ArgumentException("OnServerConnected event contained invalid or empty 'Id'", nameof(onServerConnected));
 
         logger.LogInformation(
             $"OnServerConnected :: Id: '{onServerConnected.Id}', GameType: '{onServerConnected.GameType}'");
@@ -67,11 +58,11 @@ public class ServerEventsIngest
             throw;
         }
 
-        if (onMapChange == null)
-            throw new Exception("OnMapChange event was null");
+        if (onMapChange is null)
+            throw new InvalidOperationException("OnMapChange event was null");
 
         if (onMapChange.ServerId == Guid.Empty)
-            throw new Exception("OnMapChange event contained null or empty 'ServerId'");
+            throw new ArgumentException("OnMapChange event contained null or empty 'ServerId'", nameof(onMapChange));
 
         logger.LogInformation(
             $"ProcessOnMapChange :: GameName: '{onMapChange.GameName}', GameType: '{onMapChange.GameType}', MapName: '{onMapChange.MapName}'");

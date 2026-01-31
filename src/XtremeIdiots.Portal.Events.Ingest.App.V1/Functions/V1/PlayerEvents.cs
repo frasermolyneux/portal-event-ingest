@@ -13,15 +13,8 @@ using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
-public class PlayerEvents
+public class PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
 {
-    private readonly IServiceBusClientFactory serviceBusClientFactory;
-
-    public PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
-    {
-        this.serviceBusClientFactory = serviceBusClientFactory;
-    }
-
     [Function(nameof(OnPlayerConnected))]
     public async Task<HttpResponseData> OnPlayerConnected([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/OnPlayerConnected")] HttpRequestData req, FunctionContext executionContext)
     {
