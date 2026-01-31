@@ -2,6 +2,6 @@
 
 public class OnServerConnected
 {
-    public required string Id { get; set; }
-    public required string GameType { get; set; }
+    public required string Id { get; init; }
+    public required string GameType { get; init; }
 }

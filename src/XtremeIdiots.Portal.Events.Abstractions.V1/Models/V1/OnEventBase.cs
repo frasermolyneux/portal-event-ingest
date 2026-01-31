@@ -2,7 +2,7 @@
 
 public class OnEventBase
 {
-    public required DateTime EventGeneratedUtc { get; set; }
-    public required string GameType { get; set; }
-    public required Guid ServerId { get; set; }
+    public required DateTime EventGeneratedUtc { get; init; }
+    public required string GameType { get; init; }
+    public required Guid ServerId { get; init; }
 }

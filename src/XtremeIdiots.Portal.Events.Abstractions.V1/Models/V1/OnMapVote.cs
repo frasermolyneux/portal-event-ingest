@@ -2,7 +2,7 @@
 
 public class OnMapVote : OnEventBase
 {
-    public required string MapName { get; set; }
-    public required string Guid { get; set; }
-    public required bool Like { get; set; }
+    public required string MapName { get; init; }
+    public required string Guid { get; init; }
+    public required bool Like { get; init; }
 }
