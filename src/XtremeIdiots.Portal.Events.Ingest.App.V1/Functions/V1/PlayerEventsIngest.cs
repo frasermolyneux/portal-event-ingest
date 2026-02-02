@@ -50,10 +50,15 @@ public class PlayerEventsIngest(
         if (!Enum.TryParse(onPlayerConnected.GameType, out GameType gameType))
             throw new ArgumentException($"OnPlayerConnected event contained invalid 'GameType': {onPlayerConnected.GameType}", nameof(onPlayerConnected));
 
-        var onPlayerConnectedTelemetry = new EventTelemetry("OnPlayerConnected");
-        onPlayerConnectedTelemetry.Properties.Add("GameType", onPlayerConnected.GameType);
-        onPlayerConnectedTelemetry.Properties.Add("Username", onPlayerConnected.Username);
-        onPlayerConnectedTelemetry.Properties.Add("Guid", onPlayerConnected.Guid);
+        var onPlayerConnectedTelemetry = new EventTelemetry("OnPlayerConnected")
+        {
+            Properties =
+            {
+                ["GameType"] = onPlayerConnected.GameType,
+                ["Username"] = onPlayerConnected.Username,
+                ["Guid"] = onPlayerConnected.Guid
+            }
+        };
         telemetryClient.TrackEvent(onPlayerConnectedTelemetry);
 
         var playerExistsApiResponse = await repositoryApiClient.Players.V1.HeadPlayerByGameType(gameType, onPlayerConnected.Guid).ConfigureAwait(false);
@@ -111,11 +116,16 @@ public class PlayerEventsIngest(
         if (!Enum.TryParse(onChatMessage.GameType, out GameType gameType))
             throw new ArgumentException($"OnChatMessage event contained invalid 'GameType': {onChatMessage.GameType}", nameof(onChatMessage));
 
-        var onChatMessageTelemetry = new EventTelemetry("OnChatMessage");
-        onChatMessageTelemetry.Properties.Add("GameType", onChatMessage.GameType);
-        onChatMessageTelemetry.Properties.Add("Username", onChatMessage.Username);
-        onChatMessageTelemetry.Properties.Add("Guid", onChatMessage.Guid);
-        onChatMessageTelemetry.Properties.Add("Message", onChatMessage.Message);
+        var onChatMessageTelemetry = new EventTelemetry("OnChatMessage")
+        {
+            Properties =
+            {
+                ["GameType"] = onChatMessage.GameType,
+                ["Username"] = onChatMessage.Username,
+                ["Guid"] = onChatMessage.Guid,
+                ["Message"] = onChatMessage.Message
+            }
+        };
         telemetryClient.TrackEvent(onChatMessageTelemetry);
 
         var playerId = await GetPlayerId(gameType, onChatMessage.Guid).ConfigureAwait(false);
@@ -159,11 +169,16 @@ public class PlayerEventsIngest(
         if (!Enum.TryParse(onMapVote.GameType, out GameType gameType))
             throw new ArgumentException($"OnMapVote event contained invalid 'GameType': {onMapVote.GameType}", nameof(onMapVote));
 
-        var onMapVoteTelemetry = new EventTelemetry("OnMapVote");
-        onMapVoteTelemetry.Properties.Add("GameType", onMapVote.GameType);
-        onMapVoteTelemetry.Properties.Add("Guid", onMapVote.Guid);
-        onMapVoteTelemetry.Properties.Add("MapName", onMapVote.MapName);
-        onMapVoteTelemetry.Properties.Add("Like", onMapVote.Like.ToString());
+        var onMapVoteTelemetry = new EventTelemetry("OnMapVote")
+        {
+            Properties =
+            {
+                ["GameType"] = onMapVote.GameType,
+                ["Guid"] = onMapVote.Guid,
+                ["MapName"] = onMapVote.MapName,
+                ["Like"] = onMapVote.Like.ToString()
+            }
+        };
         telemetryClient.TrackEvent(onMapVoteTelemetry);
 
         var playerId = await GetPlayerId(gameType, onMapVote.Guid).ConfigureAwait(false);

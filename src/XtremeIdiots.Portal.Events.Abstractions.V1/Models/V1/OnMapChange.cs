@@ -2,6 +2,6 @@
 
 public class OnMapChange : OnEventBase
 {
-    public required string GameName { get; set; }
-    public required string MapName { get; set; }
+    public required string GameName { get; init; }
+    public required string MapName { get; init; }
 }
