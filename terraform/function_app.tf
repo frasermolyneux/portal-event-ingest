@@ -49,6 +49,7 @@ resource "azurerm_linux_function_app" "function_app" {
 
     require_authentication = true
     unauthenticated_action = "Return401"
+    excluded_paths         = ["/api/health"]
     require_https          = true
     http_route_api_prefix  = "/api"
 
