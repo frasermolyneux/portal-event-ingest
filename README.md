@@ -1,12 +1,16 @@
 # XtremeIdiots Portal - Event Ingest
 
-| Stage                   | Status                                                                                                                                                                                                                                           |
+| Workflow                | Status                                                                                                                                                                                                                                           |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | DevOps Secure Scanning  | [![DevOps Secure Scanning](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/devops-secure-scanning.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/devops-secure-scanning.yml)    |
 | Code Quality            | [![Code Quality](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/codequality.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/codequality.yml)                                    |
-| Feature Development     | [![Feature Development](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/feature-development.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/feature-development.yml)             |
-| Pull Request Validation | [![Pull Request Validation](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/pull-request-validation.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/pull-request-validation.yml) |
-| Release to Production   | [![Release to Production](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/release-to-production.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/release-to-production.yml)       |
+| PR Verification         | [![PR Verify](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/pr-verify.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/pr-verify.yml)                                            |
+| Deploy to Dev           | [![Deploy Dev](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-dev.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-dev.yml)                                         |
+| Deploy to Prd           | [![Deploy PRD](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-prd.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-prd.yml)                                         |
+
+## Documentation
+
+* [Development Workflows](/docs/development-workflows.md) - Branch strategy, CI/CD triggers, and development flows
 
 ---
 
