@@ -1,12 +1,12 @@
 # XtremeIdiots Portal - Event Ingest
 
-| Workflow                | Status                                                                                                                                                                                                                                           |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| DevOps Secure Scanning  | [![DevOps Secure Scanning](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/devops-secure-scanning.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/devops-secure-scanning.yml)    |
-| Code Quality            | [![Code Quality](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/codequality.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/codequality.yml)                                    |
-| PR Verification         | [![PR Verify](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/pr-verify.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/pr-verify.yml)                                            |
-| Deploy to Dev           | [![Deploy Dev](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-dev.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-dev.yml)                                         |
-| Deploy to Prd           | [![Deploy PRD](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-prd.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-prd.yml)                                         |
+| Workflow               | Status                                                                                                                                                                                                                                        |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DevOps Secure Scanning | [![DevOps Secure Scanning](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/devops-secure-scanning.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/devops-secure-scanning.yml) |
+| Code Quality           | [![Code Quality](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/codequality.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/codequality.yml)                                 |
+| PR Verification        | [![PR Verify](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/pr-verify.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/pr-verify.yml)                                        |
+| Deploy to Dev          | [![Deploy Dev](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-dev.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-dev.yml)                                     |
+| Deploy to Prd          | [![Deploy PRD](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-prd.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-prd.yml)                                     |
 
 ## Documentation
 
