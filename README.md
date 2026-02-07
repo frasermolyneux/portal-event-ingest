@@ -1,6 +1,5 @@
 # XtremeIdiots Portal - Event Ingest
 
-[![DevOps Secure Scanning](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/devops-secure-scanning.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/devops-secure-scanning.yml)
 [![Code Quality](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/codequality.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/codequality.yml)
 [![PR Verify](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/pr-verify.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/pr-verify.yml)
 [![Deploy Dev](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-dev.yml/badge.svg)](https://github.com/frasermolyneux/portal-event-ingest/actions/workflows/deploy-dev.yml)
