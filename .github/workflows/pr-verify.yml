@@ -35,7 +35,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    if: github.event.pull_request.draft == false && github.event.pull_request.user.login != 'dependabot[bot]'
+    if: github.event.pull_request.draft == false && github.event.pull_request.user.login != 'dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'deploy-dev')
     needs: build-and-test
     environment: Development
     runs-on: ubuntu-latest
@@ -56,7 +56,7 @@ jobs:
       contents: read
       id-token: write
     if: github.event.pull_request.draft == false && github.event.pull_request.user.login != 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'deploy-dev')
-    needs: terraform-plan-dev
+    needs: build-and-test
     environment: Development
     runs-on: ubuntu-latest
     concurrency:
