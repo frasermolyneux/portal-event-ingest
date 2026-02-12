@@ -1,19 +1,61 @@
 # Copilot Instructions
 
-- **Architecture**: .NET 9 isolated Azure Functions app. Entry wiring in src/XtremeIdiots.Portal.Events.Ingest.App.V1/Program.cs registers Application Insights, the repository API client, Service Bus client factory, memory cache, and health checks.
-- **HTTP ingress**: src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/PlayerEvents.cs and ServerEvents.cs expose /v1/OnPlayerConnected, /v1/OnChatMessage, /v1/OnMapVote, /v1/OnServerConnected, /v1/OnMapChange (anonymous). Each deserializes DTOs and enqueues to player_connected_queue, chat_message_queue, map_vote_queue, server_connected_queue, map_change_queue.
-- **Queue processors**: PlayerEventsIngest.cs and ServerEventsIngest.cs consume those queues, validate payloads, fetch/update players/maps via the Portal Repository API, cache player IDs with IMemoryCache, and emit EventTelemetry for key events.
-- **Dead-letter replay**: ReprocessDeadLetterQueue.cs (Function auth) replays DLQ messages for a given queueName via /api/v1/ReprocessDeadLetterQueue; it sends messages back to the active queue using SubQueue.DeadLetter and completes originals.
-- **Contracts/OpenAPI**: Shared DTOs live in XtremeIdiots.Portal.Events.Abstractions.V1/Models/V1; HTTP surface is mirrored in openapi/openapi-v1.json (see EventIngest.openapi+json.json for source snapshot).
-- **Service Bus abstraction**: Use IServiceBusClientFactory/IServiceBusSender/IServiceBusReceiver wrappers; await using senders/receivers is required to dispose connections and keep functions testable.
-- **Telemetry**: TelemetryInitializer sets cloud role name; host.json configures sampling with exceptions excluded. Prefer EventTelemetry for domain actions and leave dependency telemetry to SDK defaults.
-- **Configuration**: local.settings.json defaults to Azurite + Service Bus emulator (sb://localhost:10002/, entity path events). Required: RepositoryApi:BaseUrl, RepositoryApi:ApplicationAudience, ServiceBusConnection:fullyQualifiedNamespace. Optional: ServiceBusConnection:ManagedIdentityClientId/AZURE_CLIENT_ID for MI auth, ApplicationInsights keys for live telemetry.
-- **Local dev loop**: dotnet clean src/XtremeIdiots.Portal.Events.Ingest.App.V1/XtremeIdiots.Portal.Events.Ingest.App.V1.csproj && dotnet build src/XtremeIdiots.Portal.Events.Ingest.App.V1/XtremeIdiots.Portal.Events.Ingest.App.V1.csproj && dotnet test src --filter "FullyQualifiedName!~IntegrationTests".
-- **Testing**: Unit tests in src/XtremeIdiots.Portal.Events.Ingest.App.V1.Tests (xUnit + Moq); focus on Service Bus wrappers—inject IServiceBusClientFactory instead of new ServiceBusClient.
-- **CI/CD workflows**: build-and-test on feature/bugfix/hotfix pushes; pr-verify on PRs (dev TF plan by default, skips dependabot/copilot/* unless labeled run-dev-plan; prd plan gated by run-prd-plan); deploy-prd on main + weekly schedule (build, apply TF, deploy Dev then Prd); deploy-dev manual; codequality weekly + PR/main; copilot-setup-steps validates workflow changes; destroy-development/environment handle teardown.
-- **Reusable actions**: Workflows rely on composites from frasermolyneux/actions (dotnet-func-ci, terraform-plan, terraform-plan-and-apply, deploy-function-app).
-- **Terraform**: terraform/ contains dev/prd tfvars and backend configs; pulls remote state from platform-workloads, platform-monitoring, portal-environments, portal-core; provisions Function App, Service Bus namespace/queues, APIM artifacts, dashboards, alerts, identities. Concurrency groups serialize Dev/Prd applies.
-- **Operational notes**: Queue names must stay in sync across producers/consumers; health endpoint uses HealthCheckService with warning-level logging; prefer managed identity over connection strings.
-- **References**: docs/development-workflows.md for branch/CI rules; src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1 for endpoints/processors; terraform/ for infra definitions.
+## Architecture
 
-If any workflow or config nuance is unclear, call it out and we can extend these notes.
+.NET 9 isolated Azure Functions app (v4). Entry point is `src/XtremeIdiots.Portal.Events.Ingest.App.V1/Program.cs` which registers Application Insights, the Portal Repository API client, Service Bus client factory, memory cache, and health checks.
+
+## Key Source Paths
+
+- `src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/` — HTTP triggers and queue processors
+- `src/XtremeIdiots.Portal.Events.Abstractions.V1/Models/V1/` — shared DTOs
+- `src/XtremeIdiots.Portal.Events.Ingest.App.V1/Services/` — Service Bus wrappers
+- `src/XtremeIdiots.Portal.Events.Ingest.App.V1.Tests/` — unit tests (xUnit + Moq)
+- `terraform/` — infrastructure (Function App, Service Bus, APIM, dashboards, alerts)
+
+## HTTP Ingress
+
+PlayerEvents.cs and ServerEvents.cs expose anonymous endpoints: `/v1/OnPlayerConnected`, `/v1/OnChatMessage`, `/v1/OnMapVote`, `/v1/OnServerConnected`, `/v1/OnMapChange`. Each deserializes DTOs and enqueues to the corresponding Service Bus queue (`player_connected_queue`, `chat_message_queue`, etc.).
+
+## Queue Processors
+
+PlayerEventsIngest.cs and ServerEventsIngest.cs consume queues, validate payloads, fetch/update players and maps via the Portal Repository API, cache player IDs with `IMemoryCache`, and emit `EventTelemetry`. ReprocessDeadLetterQueue.cs replays DLQ messages back to the active queue.
+
+## Service Bus
+
+Use `IServiceBusClientFactory`/`IServiceBusSender`/`IServiceBusReceiver` wrappers. Always `await using` senders and receivers to dispose connections. Inject `IServiceBusClientFactory` in tests instead of creating `ServiceBusClient` directly. Queue names must stay in sync across producers and consumers.
+
+## Configuration
+
+Required settings: `RepositoryApi:BaseUrl`, `RepositoryApi:ApplicationAudience`, `ServiceBusConnection:fullyQualifiedNamespace`. Optional: `ServiceBusConnection:ManagedIdentityClientId`, `AZURE_CLIENT_ID` for managed identity, Application Insights keys. Local dev defaults to Azurite and Service Bus emulator.
+
+## Telemetry
+
+`TelemetryInitializer` sets cloud role name. `host.json` configures sampling with exceptions excluded. Use `EventTelemetry` for domain actions; leave dependency telemetry to SDK defaults.
+
+## Local Development
+
+```bash
+dotnet clean src/XtremeIdiots.Portal.Events.Ingest.App.V1/XtremeIdiots.Portal.Events.Ingest.App.V1.csproj
+dotnet build src/XtremeIdiots.Portal.Events.Ingest.App.V1/XtremeIdiots.Portal.Events.Ingest.App.V1.csproj
+dotnet test src --filter "FullyQualifiedName!~IntegrationTests"
+```
+
+## CI/CD
+
+- **build-and-test**: runs on feature/bugfix/hotfix pushes
+- **pr-verify**: runs on PRs; dev TF plan by default (skips dependabot/copilot/* unless labeled `run-dev-plan`; prd plan requires `run-prd-plan`)
+- **deploy-prd**: runs on main push + weekly schedule; builds, applies TF, deploys Dev then Prd
+- **deploy-dev**: manual dispatch
+- **codequality**: weekly + PR/push to main (SonarCloud)
+- Workflows use composites from `frasermolyneux/actions` (dotnet-func-ci, terraform-plan, terraform-plan-and-apply, deploy-function-app)
+
+## Terraform
+
+`terraform/` contains dev/prd tfvars and backend configs. Pulls remote state from platform-workloads, platform-monitoring, portal-environments, and portal-core. Provisions Function App, Service Bus namespace/queues, APIM artifacts, dashboards, alerts, and role assignments. Concurrency groups serialize Dev/Prd applies.
+
+## Conventions
+
+- Prefer managed identity over connection strings
+- Health endpoint uses `HealthCheckService` with warning-level logging
+- OpenAPI spec in `openapi/openapi-v1.json`; source snapshot in `EventIngest.openapi+json.json`
+- See `docs/development-workflows.md` for branch strategy and CI/CD flow details
