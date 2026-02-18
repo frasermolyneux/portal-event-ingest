@@ -1,0 +1,7 @@
+# Chat Moderation Word List
+# Format: [Category] header followed by one term per line
+# Lines starting with # are comments
+# Populate this file with terms appropriate for your community
+
+[Placeholder]
+example-placeholder-term

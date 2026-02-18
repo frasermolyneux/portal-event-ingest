@@ -2,13 +2,17 @@ using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.FeatureManagement;
 
 using Newtonsoft.Json;
 
 using XtremeIdiots.Portal.Events.Abstractions.Models.V1;
+using XtremeIdiots.Portal.Events.Ingest.App.V1.Moderation;
 using XtremeIdiots.Portal.Repository.Abstractions.Constants.V1;
 using XtremeIdiots.Portal.Repository.Abstractions.Extensions.V1;
+using XtremeIdiots.Portal.Repository.Abstractions.Models.V1.AdminActions;
 using XtremeIdiots.Portal.Repository.Abstractions.Models.V1.ChatMessages;
 using XtremeIdiots.Portal.Repository.Abstractions.Models.V1.Maps;
 using XtremeIdiots.Portal.Repository.Abstractions.Models.V1.Players;
@@ -20,7 +24,11 @@ public class PlayerEventsIngest(
     ILogger<PlayerEventsIngest> logger,
     IRepositoryApiClient repositoryApiClient,
     IMemoryCache memoryCache,
-    TelemetryClient telemetryClient)
+    TelemetryClient telemetryClient,
+    IConfiguration configuration,
+    IFeatureManager featureManager,
+    ILocalWordListFilter localWordListFilter,
+    IChatModerationService chatModerationService)
 {
     [Function("ProcessOnPlayerConnected")]
     public async Task ProcessOnPlayerConnected(
@@ -128,12 +136,17 @@ public class PlayerEventsIngest(
         };
         telemetryClient.TrackEvent(onChatMessageTelemetry);
 
-        var playerId = await GetPlayerId(gameType, onChatMessage.Guid).ConfigureAwait(false);
+        var playerContext = await GetPlayerContext(gameType, onChatMessage.Guid).ConfigureAwait(false);
 
-        if (playerId != Guid.Empty)
+        if (playerContext is not null)
         {
-            var chatMessage = new CreateChatMessageDto(onChatMessage.ServerId, playerId, onChatMessage.Type.ToChatType(), onChatMessage.Username, onChatMessage.Message, onChatMessage.EventGeneratedUtc);
+            var chatMessage = new CreateChatMessageDto(onChatMessage.ServerId, playerContext.PlayerId, onChatMessage.Type.ToChatType(), onChatMessage.Username, onChatMessage.Message, onChatMessage.EventGeneratedUtc);
             await repositoryApiClient.ChatMessages.V1.CreateChatMessage(chatMessage).ConfigureAwait(false);
+
+            if (await featureManager.IsEnabledAsync("ChatToxicityDetection"))
+            {
+                await RunModerationPipeline(onChatMessage, playerContext, gameType).ConfigureAwait(false);
+            }
         }
         else
         {
@@ -201,21 +214,105 @@ public class PlayerEventsIngest(
 
     private async ValueTask<Guid> GetPlayerId(GameType gameType, string guid)
     {
-        var cacheKey = $"{gameType}-${guid}";
+        var ctx = await GetPlayerContext(gameType, guid).ConfigureAwait(false);
+        return ctx?.PlayerId ?? Guid.Empty;
+    }
 
-        if (memoryCache.TryGetValue(cacheKey, out Guid playerId))
-            return playerId;
+    private async ValueTask<PlayerContext?> GetPlayerContext(GameType gameType, string guid)
+    {
+        var cacheKey = $"player-ctx-{gameType}-{guid}";
 
-        var playerDtoApiResponse = await repositoryApiClient.Players.V1.GetPlayerByGameType(gameType, guid, PlayerEntityOptions.None).ConfigureAwait(false);
+        if (memoryCache.TryGetValue(cacheKey, out PlayerContext? cached))
+            return cached;
 
-        if (playerDtoApiResponse.IsSuccess && playerDtoApiResponse.Result?.Data != null)
+        var playerDtoApiResponse = await repositoryApiClient.Players.V1
+            .GetPlayerByGameType(gameType, guid, PlayerEntityOptions.Tags).ConfigureAwait(false);
+
+        if (!playerDtoApiResponse.IsSuccess || playerDtoApiResponse.Result?.Data is null)
+            return null;
+
+        var player = playerDtoApiResponse.Result.Data;
+        var moderateTagName = configuration["ContentSafety:ModerateChatTagName"] ?? "Moderate Chat";
+        var hasTag = player.Tags.Any(t =>
+            string.Equals(t.Tag?.Name, moderateTagName, StringComparison.OrdinalIgnoreCase));
+
+        var ctx = new PlayerContext(player.PlayerId, player.FirstSeen, hasTag);
+
+        memoryCache.Set(cacheKey, ctx,
+            new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(15)));
+
+        return ctx;
+    }
+
+    private async Task RunModerationPipeline(
+        OnChatMessage chatMessage, PlayerContext player, GameType gameType)
+    {
+        var minLength = int.Parse(configuration["ContentSafety:MinMessageLength"] ?? "5");
+
+        if (chatMessage.Message.Length < minLength) return;
+        if (chatMessage.Message.StartsWith("QUICKMESSAGE_", StringComparison.OrdinalIgnoreCase)) return;
+
+        // Tier 1: Local word list (free, always runs)
+        var localMatch = localWordListFilter.Check(chatMessage.Message);
+        if (localMatch is not null)
         {
-            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(15));
-            memoryCache.Set(cacheKey, playerDtoApiResponse.Result.Data.PlayerId, cacheEntryOptions);
-
-            return playerDtoApiResponse.Result.Data.PlayerId;
+            await CreateModerationAdminAction(
+                player.PlayerId, gameType, chatMessage,
+                source: "Word Filter",
+                reason: $"[Word Filter] {localMatch.MatchedCategory} detected. " +
+                        $"Message: \"{Truncate(chatMessage.Message, 200)}\"");
+            return;
         }
 
-        return Guid.Empty;
+        // Tier 2: Content Safety API (paid, only for qualifying players)
+        var newPlayerDays = int.Parse(configuration["ContentSafety:NewPlayerWindowDays"] ?? "7");
+        var isNewPlayer = newPlayerDays > 0
+            && player.FirstSeen > DateTime.UtcNow.AddDays(-newPlayerDays);
+
+        if (!isNewPlayer && !player.HasModerateChatTag)
+            return;
+
+        var result = await chatModerationService.AnalyseAsync(chatMessage.Message).ConfigureAwait(false);
+        var threshold = int.Parse(configuration["ContentSafety:SeverityThreshold"] ?? "4");
+
+        if (result is null || result.MaxSeverity < threshold)
+            return;
+
+        await CreateModerationAdminAction(
+            player.PlayerId, gameType, chatMessage,
+            source: "AI Content Safety",
+            reason: $"[AI Content Safety] {result.Category} (severity {result.MaxSeverity}/6). " +
+                    $"Message: \"{Truncate(chatMessage.Message, 200)}\" | " +
+                    $"Scores: Hate={result.HateSeverity}, Violence={result.ViolenceSeverity}, " +
+                    $"Sexual={result.SexualSeverity}, SelfHarm={result.SelfHarmSeverity}");
     }
+
+    private async Task CreateModerationAdminAction(
+        Guid playerId, GameType gameType, OnChatMessage chatMessage,
+        string source, string reason)
+    {
+        telemetryClient.TrackEvent("ChatModerationTriggered", new Dictionary<string, string>
+        {
+            ["GameType"] = gameType.ToString(),
+            ["ServerId"] = chatMessage.ServerId.ToString(),
+            ["Source"] = source,
+            ["Username"] = chatMessage.Username
+        });
+
+        var botAdminId = configuration["ContentSafety:BotAdminId"];
+
+        var adminAction = new CreateAdminActionDto(playerId, AdminActionType.Observation, reason)
+        {
+            AdminId = botAdminId
+        };
+
+        await repositoryApiClient.AdminActions.V1.CreateAdminAction(adminAction).ConfigureAwait(false);
+
+        logger.LogInformation(
+            "Chat moderation triggered for player {PlayerId} via {Source}",
+            playerId, source);
+    }
+
+    private static string Truncate(string value, int maxLength)
+        => value.Length <= maxLength ? value : value[..maxLength] + "...";
 }
