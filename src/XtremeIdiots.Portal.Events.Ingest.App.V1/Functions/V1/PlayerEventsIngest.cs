@@ -232,7 +232,7 @@ public class PlayerEventsIngest(
             return null;
 
         var player = playerDtoApiResponse.Result.Data;
-        var moderateTagName = configuration["ContentSafety:ModerateChatTagName"] ?? "Moderate Chat";
+        var moderateTagName = configuration["ContentSafety:ModerateChatTagName"] ?? "moderate-chat";
         var hasTag = player.Tags.Any(t =>
             string.Equals(t.Tag?.Name, moderateTagName, StringComparison.OrdinalIgnoreCase));
 
