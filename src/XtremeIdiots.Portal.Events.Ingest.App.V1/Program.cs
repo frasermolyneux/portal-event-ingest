@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json;
 
 using Azure.AI.ContentSafety;
 using Azure.Identity;
@@ -21,7 +22,13 @@ var host = new HostBuilder()
     {
         builder.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
     })
-    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureFunctionsWorkerDefaults(builder =>
+    {
+        builder.Services.Configure<JsonSerializerOptions>(options =>
+        {
+            options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        });
+    })
     .ConfigureServices((context, services) =>
     {
         var configuration = context.Configuration;

@@ -136,7 +136,7 @@ jobs:
         shell: bash
         run: |
           az apim api import \
-            --resource-group "${{ needs.terraform-plan-and-apply-dev.outputs.api_management_resource_group_name }}" \
+            --resource-group "${{ needs.terraform-plan-and-apply-dev.outputs.api_management_resource_group_name }}"\
             --service-name "${{ needs.terraform-plan-and-apply-dev.outputs.api_management_name }}" \
             --api-id event-ingest-api-v1 \
             --display-name "Event Ingest API" \
@@ -278,7 +278,7 @@ jobs:
         shell: bash
         run: |
           az apim api import \
-            --resource-group "${{ needs.terraform-plan-and-apply-prd.outputs.api_management_resource_group_name }}" \
+            --resource-group "${{ needs.terraform-plan-and-apply-prd.outputs.api_management_resource_group_name }}"\
             --service-name "${{ needs.terraform-plan-and-apply-prd.outputs.api_management_name }}" \
             --api-id event-ingest-api-v1 \
             --display-name "Event Ingest API" \
