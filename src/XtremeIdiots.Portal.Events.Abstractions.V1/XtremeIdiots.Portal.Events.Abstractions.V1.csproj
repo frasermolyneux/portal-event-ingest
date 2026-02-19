@@ -7,20 +7,17 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<PackageId>XtremeIdiots.Portal.Events.Abstractions.V1</PackageId>
-		<Authors>Fraser Molyneux</Authors>
-		<Company>XtremeIdiots</Company>
 		<Product>XtremeIdiots Portal</Product>
 		<Title>XtremeIdiots Portal Events Ingest Abstractions</Title>
 		<Description>Event contracts and helpers shared by the XtremeIdiots Portal event ingest functions.</Description>
 		<PackageProjectUrl>https://github.com/frasermolyneux/portal-event-ingest</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/frasermolyneux/portal-event-ingest</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
 </Project>
