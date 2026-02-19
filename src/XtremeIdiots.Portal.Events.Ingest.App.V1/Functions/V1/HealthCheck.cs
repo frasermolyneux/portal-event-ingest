@@ -9,12 +9,26 @@ namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 public class HealthCheck(HealthCheckService healthCheck)
 {
     [Function(nameof(HealthCheck))]
-    public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "health")] HttpRequestData req,
+    public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/health")] HttpRequestData req,
         FunctionContext context)
     {
-        var healthStatus = await healthCheck.CheckHealthAsync().ConfigureAwait(false);
-        var response = req.CreateResponse(HttpStatusCode.OK);
-        await response.WriteStringAsync(healthStatus.Status.ToString());
+        var result = await healthCheck.CheckHealthAsync().ConfigureAwait(false);
+
+        var statusCode = result.Status == HealthStatus.Healthy
+            ? HttpStatusCode.OK
+            : HttpStatusCode.ServiceUnavailable;
+
+        var response = req.CreateResponse(statusCode);
+        await response.WriteAsJsonAsync(new
+        {
+            status = result.Status.ToString(),
+            checks = result.Entries.Select(e => new
+            {
+                name = e.Key,
+                status = e.Value.Status.ToString(),
+                description = e.Value.Description
+            })
+        });
         return response;
     }
 }

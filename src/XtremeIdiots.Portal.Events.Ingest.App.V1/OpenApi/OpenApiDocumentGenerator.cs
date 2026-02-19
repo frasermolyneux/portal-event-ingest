@@ -76,8 +76,6 @@ public static class OpenApiDocumentGenerator
 
                 if (httpTrigger.AuthLevel == AuthorizationLevel.Function) continue;
                 var route = httpTrigger.Route ?? functionAttr.Name;
-                if (route.StartsWith("health", StringComparison.OrdinalIgnoreCase)) continue;
-                if (route.StartsWith("v1/info", StringComparison.OrdinalIgnoreCase)) continue;
                 if (route.StartsWith("openapi", StringComparison.OrdinalIgnoreCase)) continue;
 
                 var httpMethods = httpTrigger.Methods ?? ["get"];
