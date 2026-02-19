@@ -8,7 +8,13 @@ namespace XtremeIdiots.Portal.Events.Ingest.App.V1.OpenApi;
 
 public static class OpenApiDocumentGenerator
 {
-    public static async Task<string> GenerateAsync()
+    public static Task<string> GenerateAsync()
+    {
+        var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+        return GenerateAsync(assembly);
+    }
+
+    public static async Task<string> GenerateAsync(Assembly assembly)
     {
         var document = new OpenApiDocument
         {
@@ -42,7 +48,7 @@ public static class OpenApiDocumentGenerator
             }
         ];
 
-        DiscoverHttpTriggers(document);
+        DiscoverHttpTriggers(document, assembly);
 
         using var stream = new MemoryStream();
         var writer = new OpenApiJsonWriter(new StreamWriter(stream));
@@ -53,10 +59,8 @@ public static class OpenApiDocumentGenerator
         return await reader.ReadToEndAsync();
     }
 
-    private static void DiscoverHttpTriggers(OpenApiDocument document)
+    private static void DiscoverHttpTriggers(OpenApiDocument document, Assembly assembly)
     {
-        var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
-
         foreach (var type in assembly.GetTypes())
         {
             foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance))
@@ -86,7 +90,7 @@ public static class OpenApiDocumentGenerator
                 var bodyType = FindRequestBodyType(functionAttr.Name);
 
                 if (!document.Paths.TryGetValue(path, out var pathItem))
-                    pathItem = new OpenApiPathItem();
+                    pathItem = new OpenApiPathItem { Operations = new Dictionary<HttpMethod, OpenApiOperation>() };
 
                 foreach (var httpMethod in httpMethods)
                 {
