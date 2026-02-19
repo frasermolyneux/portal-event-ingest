@@ -44,18 +44,29 @@ dotnet test src --filter "FullyQualifiedName!~IntegrationTests"
 
 - **build-and-test**: runs on feature/bugfix/hotfix pushes
 - **pr-verify**: runs on PRs; dev TF plan by default (skips dependabot/copilot/* unless labeled `run-dev-plan`; prd plan requires `run-prd-plan`)
-- **deploy-prd**: runs on main push + weekly schedule; builds, applies TF, deploys Dev then Prd
-- **deploy-dev**: manual dispatch
+- **deploy-prd**: runs on main push + weekly schedule; builds, applies TF, deploys Dev then Prd, verifies deployed version via `/api/v1/info`, imports OpenAPI specs into APIM from live endpoints
+- **deploy-dev**: manual dispatch; same pattern as deploy-prd but dev-only
 - **codequality**: weekly + PR/push to main (SonarCloud)
+- **release-version-and-tag**: runs on main push (src/** changes); uses Nerdbank.GitVersioning (`nbgv`) to calculate SemVer2, builds with `BUILD_VERSION_OVERRIDE`, creates git tag on public releases
+- **release-publish-nuget**: triggered after release-version-and-tag completes; publishes Abstractions NuGet package and creates GitHub release
 - Workflows use composites from `frasermolyneux/actions` (dotnet-func-ci, terraform-plan, terraform-plan-and-apply, deploy-function-app)
+
+## Versioning
+
+Nerdbank.GitVersioning (`version.json`) drives all versioning. `Directory.Build.props` at repo root sets C# 13 and includes the NBGV package globally. The CI job outputs `build_version` which flows through deploy workflows for version verification.
+
+## OpenAPI & APIM Integration
+
+The OpenAPI spec is generated at runtime by `OpenApiDocumentGenerator` (using `Microsoft.OpenApi` v2.1.0) which reflects over `[Function]`+`[HttpTrigger]` attributes and Abstractions DTOs to build the spec dynamically. It is served at `/api/openapi/v1.json` by the `OpenApi` function. Deploy workflows import specs into APIM from live endpoints via `az apim api import --specification-url`. APIM API definitions are **not** managed by Terraform — Terraform manages only the version set, product, and product policy. The `ApiInfo` function at `/api/v1/info` returns `{ buildVersion }` for deploy-time version verification.
 
 ## Terraform
 
-`terraform/` contains dev/prd tfvars and backend configs. Pulls remote state from platform-workloads, platform-monitoring, portal-environments, and portal-core. Provisions Function App, Service Bus namespace/queues, APIM artifacts, dashboards, alerts, and role assignments. Concurrency groups serialize Dev/Prd applies.
+`terraform/` contains dev/prd tfvars and backend configs. Pulls remote state from platform-workloads, platform-monitoring, portal-environments, and portal-core. Provisions Function App, Service Bus namespace/queues, APIM version set/product/product policy, dashboards, alerts, and role assignments. APIM API definitions are managed by deploy workflows, not Terraform. Concurrency groups serialize Dev/Prd applies.
 
 ## Conventions
 
 - Prefer managed identity over connection strings
 - Health endpoint uses `HealthCheckService` with warning-level logging
-- OpenAPI spec in `openapi/openapi-v1.json`; source snapshot in `EventIngest.openapi+json.json`
+- OpenAPI spec generated at runtime by `OpenApiDocumentGenerator` (reflection-based), served at `/api/openapi/v1.json`
+- `ApiInfo` function at `/api/v1/info` returns assembly version for deploy verification
 - See `docs/development-workflows.md` for branch strategy and CI/CD flow details

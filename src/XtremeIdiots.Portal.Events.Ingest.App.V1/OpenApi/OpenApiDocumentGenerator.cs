@@ -1,0 +1,197 @@
+using System.Reflection;
+
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.OpenApi;
+
+namespace XtremeIdiots.Portal.Events.Ingest.App.V1.OpenApi;
+
+public static class OpenApiDocumentGenerator
+{
+    public static async Task<string> GenerateAsync()
+    {
+        var document = new OpenApiDocument
+        {
+            Info = new OpenApiInfo
+            {
+                Title = "Event Ingest API",
+                Description = "Event Ingest API v1",
+                Version = "1.0"
+            },
+            Paths = new OpenApiPaths(),
+            Components = new OpenApiComponents
+            {
+                Schemas = new Dictionary<string, IOpenApiSchema>(),
+                SecuritySchemes = new Dictionary<string, IOpenApiSecurityScheme>
+                {
+                    ["bearer"] = new OpenApiSecurityScheme
+                    {
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "bearer",
+                        BearerFormat = "JWT"
+                    }
+                }
+            }
+        };
+
+        document.Security =
+        [
+            new OpenApiSecurityRequirement
+            {
+                [new OpenApiSecuritySchemeReference("bearer", document)] = new List<string>()
+            }
+        ];
+
+        DiscoverHttpTriggers(document);
+
+        using var stream = new MemoryStream();
+        var writer = new OpenApiJsonWriter(new StreamWriter(stream));
+        document.SerializeAsV3(writer);
+        await writer.FlushAsync();
+        stream.Position = 0;
+        using var reader = new StreamReader(stream);
+        return await reader.ReadToEndAsync();
+    }
+
+    private static void DiscoverHttpTriggers(OpenApiDocument document)
+    {
+        var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+
+        foreach (var type in assembly.GetTypes())
+        {
+            foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance))
+            {
+                var functionAttr = method.GetCustomAttribute<FunctionAttribute>();
+                if (functionAttr == null) continue;
+
+                var httpTriggerParam = method.GetParameters()
+                    .FirstOrDefault(p => p.GetCustomAttribute<HttpTriggerAttribute>() != null);
+                if (httpTriggerParam == null) continue;
+
+                var httpTrigger = httpTriggerParam.GetCustomAttribute<HttpTriggerAttribute>()!;
+
+                if (httpTrigger.AuthLevel == AuthorizationLevel.Function) continue;
+                var route = httpTrigger.Route ?? functionAttr.Name;
+                if (route.StartsWith("health", StringComparison.OrdinalIgnoreCase)) continue;
+                if (route.StartsWith("v1/info", StringComparison.OrdinalIgnoreCase)) continue;
+                if (route.StartsWith("openapi", StringComparison.OrdinalIgnoreCase)) continue;
+
+                var httpMethods = httpTrigger.Methods ?? ["get"];
+
+                var cleanRoute = route;
+                if (cleanRoute.StartsWith("v1/", StringComparison.OrdinalIgnoreCase))
+                    cleanRoute = cleanRoute.Substring(3);
+                var path = "/" + cleanRoute.TrimStart('/');
+
+                var bodyType = FindRequestBodyType(functionAttr.Name);
+
+                if (!document.Paths.TryGetValue(path, out var pathItem))
+                    pathItem = new OpenApiPathItem();
+
+                foreach (var httpMethod in httpMethods)
+                {
+                    var operation = new OpenApiOperation
+                    {
+                        Summary = functionAttr.Name,
+                        OperationId = functionAttr.Name,
+                        Responses = new OpenApiResponses
+                        {
+                            ["200"] = new OpenApiResponse { Description = "Success" }
+                        }
+                    };
+
+                    if (bodyType != null)
+                    {
+                        var schemaName = bodyType.Name;
+                        if (!document.Components!.Schemas!.ContainsKey(schemaName))
+                        {
+                            document.Components!.Schemas![schemaName] = BuildSchema(bodyType);
+                        }
+
+                        operation.RequestBody = new OpenApiRequestBody
+                        {
+                            Required = true,
+                            Content = new Dictionary<string, OpenApiMediaType>
+                            {
+                                ["application/json"] = new()
+                                {
+                                    Schema = new OpenApiSchemaReference(schemaName, document)
+                                }
+                            }
+                        };
+                    }
+
+                    var httpMethodObj = httpMethod.ToUpperInvariant() switch
+                    {
+                        "GET" => HttpMethod.Get,
+                        "POST" => HttpMethod.Post,
+                        "PUT" => HttpMethod.Put,
+                        "DELETE" => HttpMethod.Delete,
+                        "PATCH" => HttpMethod.Patch,
+                        "HEAD" => HttpMethod.Head,
+                        _ => HttpMethod.Get
+                    };
+
+                    pathItem!.Operations![httpMethodObj] = operation;
+                }
+
+                document.Paths[path] = pathItem;
+            }
+        }
+    }
+
+    private static Type? FindRequestBodyType(string functionName)
+    {
+        var abstractionsAssembly = AppDomain.CurrentDomain.GetAssemblies()
+            .FirstOrDefault(a => a.GetName().Name == "XtremeIdiots.Portal.Events.Abstractions.V1");
+
+        if (abstractionsAssembly == null) return null;
+
+        return abstractionsAssembly.GetTypes()
+            .FirstOrDefault(t => string.Equals(t.Name, functionName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static OpenApiSchema BuildSchema(Type type)
+    {
+        var properties = new Dictionary<string, IOpenApiSchema>();
+        var required = new HashSet<string>();
+
+        foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        {
+            var propName = char.ToLowerInvariant(prop.Name[0]) + prop.Name[1..];
+            properties[propName] = MapPropertyType(prop.PropertyType);
+
+            if (prop.GetCustomAttribute<System.Runtime.CompilerServices.RequiredMemberAttribute>() != null)
+            {
+                required.Add(propName);
+            }
+        }
+
+        return new OpenApiSchema
+        {
+            Type = JsonSchemaType.Object,
+            Properties = properties,
+            Required = required
+        };
+    }
+
+    private static OpenApiSchema MapPropertyType(Type type)
+    {
+        var underlying = Nullable.GetUnderlyingType(type) ?? type;
+
+        if (underlying == typeof(string))
+            return new OpenApiSchema { Type = JsonSchemaType.String };
+        if (underlying == typeof(int) || underlying == typeof(long))
+            return new OpenApiSchema { Type = JsonSchemaType.Integer };
+        if (underlying == typeof(float) || underlying == typeof(double) || underlying == typeof(decimal))
+            return new OpenApiSchema { Type = JsonSchemaType.Number };
+        if (underlying == typeof(bool))
+            return new OpenApiSchema { Type = JsonSchemaType.Boolean };
+        if (underlying == typeof(DateTime) || underlying == typeof(DateTimeOffset))
+            return new OpenApiSchema { Type = JsonSchemaType.String, Format = "date-time" };
+        if (underlying == typeof(Guid))
+            return new OpenApiSchema { Type = JsonSchemaType.String, Format = "uuid" };
+
+        return new OpenApiSchema { Type = JsonSchemaType.String };
+    }
+}
