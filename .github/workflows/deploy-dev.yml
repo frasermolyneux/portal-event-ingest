@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: ci
-        uses: frasermolyneux/actions/dotnet-func-ci@main
+        uses: frasermolyneux/actions/dotnet-func-ci@dotnet-func-ci/v1.3.1
         with:
           dotnet-project: "XtremeIdiots.Portal.Events.Ingest.App.V1"
           dotnet-version: 9.0.x
@@ -32,7 +32,7 @@ jobs:
     concurrency:
       group: ${{ github.repository }}-dev
     steps:
-      - uses: frasermolyneux/actions/terraform-plan-and-apply@main
+      - uses: frasermolyneux/actions/terraform-plan-and-apply@terraform-plan-and-apply/v1.3.1
         with:
           terraform-folder: "terraform"
           terraform-var-file: "tfvars/dev.tfvars"
@@ -78,7 +78,7 @@ jobs:
     concurrency:
       group: ${{ github.repository }}-dev
     steps:
-      - uses: frasermolyneux/actions/deploy-function-app@main
+      - uses: frasermolyneux/actions/deploy-function-app@deploy-function-app/v1.1.4
         with:
           function-app-artifact-name: "XtremeIdiots.Portal.Events.Ingest.App.V1"
           function-app-name: ${{ needs.terraform-plan-and-apply-dev.outputs.function_app_name }}
