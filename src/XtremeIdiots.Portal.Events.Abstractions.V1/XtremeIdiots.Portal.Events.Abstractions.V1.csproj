@@ -17,6 +17,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="MX.Api.Abstractions" Version="2.3.25" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 

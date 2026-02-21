@@ -4,7 +4,7 @@ using System.Reflection;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
-using XtremeIdiots.Portal.Events.Ingest.App.Models;
+using XtremeIdiots.Portal.Events.Abstractions.Models;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
