@@ -39,7 +39,7 @@ resource "azurerm_linux_function_app" "function_app" {
     always_on           = true
     minimum_tls_version = "1.2"
 
-    health_check_path                 = "/api/health"
+    health_check_path                 = "/api/v1/health"
     health_check_eviction_time_in_min = 5
   }
 
@@ -49,7 +49,7 @@ resource "azurerm_linux_function_app" "function_app" {
 
     require_authentication = true
     unauthenticated_action = "Return401"
-    excluded_paths         = ["/api/health", "/api/v1/info", "/api/openapi/*"]
+    excluded_paths         = ["/api/v1/health", "/api/v1/info", "/api/openapi/*"]
     require_https          = true
     http_route_api_prefix  = "/api"
 
