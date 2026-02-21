@@ -7,7 +7,10 @@
 ## Key Source Paths
 
 - `src/XtremeIdiots.Portal.Events.Ingest.App.V1/Functions/V1/` — HTTP triggers and queue processors
-- `src/XtremeIdiots.Portal.Events.Abstractions.V1/Models/V1/` — shared DTOs
+- `src/XtremeIdiots.Portal.Events.Abstractions.V1/` — shared DTOs, API client interfaces (`IPlayerEventsApi`, `IServerEventsApi`, `IApiHealthApi`, `IApiInfoApi`), and versioned wrappers
+- `src/XtremeIdiots.Portal.Events.Ingest.Api.Client.V1/` — typed HTTP client (NuGet package)
+- `src/XtremeIdiots.Portal.Events.Ingest.Api.Client.Testing/` — in-memory fakes, DTO factory, DI extensions for consumer tests
+- `src/XtremeIdiots.Portal.Events.Ingest.Api.Client.Testing.Tests/` — self-validation tests for the testing package
 - `src/XtremeIdiots.Portal.Events.Ingest.App.V1/Services/` — Service Bus wrappers
 - `src/XtremeIdiots.Portal.Events.Ingest.App.V1.Tests/` — unit tests (xUnit + Moq)
 - `terraform/` — infrastructure (Function App, Service Bus, APIM, dashboards, alerts)
@@ -48,7 +51,7 @@ dotnet test src --filter "FullyQualifiedName!~IntegrationTests"
 - **deploy-dev**: manual dispatch; same pattern as deploy-prd but dev-only
 - **codequality**: weekly + PR/push to main (SonarCloud)
 - **release-version-and-tag**: runs on main push (src/** changes); uses Nerdbank.GitVersioning (`nbgv`) to calculate SemVer2, builds with `BUILD_VERSION_OVERRIDE`, creates git tag on public releases
-- **release-publish-nuget**: triggered after release-version-and-tag completes; publishes Abstractions NuGet package and creates GitHub release
+- **release-publish-nuget**: triggered after release-version-and-tag completes; publishes Abstractions, Api.Client.V1, and Api.Client.Testing NuGet packages and creates GitHub release
 - Workflows use composites from `frasermolyneux/actions` (dotnet-func-ci, terraform-plan, terraform-plan-and-apply, deploy-function-app)
 
 ## Versioning
@@ -62,6 +65,17 @@ The OpenAPI spec is generated at runtime by `OpenApiDocumentGenerator` (using `M
 ## Terraform
 
 `terraform/` contains dev/prd tfvars and backend configs. Pulls remote state from platform-workloads, platform-monitoring, portal-environments, and portal-core. Provisions Function App, Service Bus namespace/queues, APIM version set/product/product policy, dashboards, alerts, and role assignments. APIM API definitions are managed by deploy workflows, not Terraform. Concurrency groups serialize Dev/Prd applies.
+
+## API Clients
+
+`Api.Client.V1` provides a typed HTTP client (`IEventIngestApiClient`) published as a NuGet package. It follows the same IVersioned pattern as portal-repository and geo-location:
+
+- `client.ApiHealth.V1.CheckHealth()` — health check
+- `client.ApiInfo.V1.GetApiInfo()` — build/version info
+- `client.PlayerEvents.V1.OnPlayerConnected(...)` / `.OnChatMessage(...)` / `.OnMapVote(...)`
+- `client.ServerEvents.V1.OnServerConnected(...)` / `.OnMapChange(...)`
+
+`Api.Client.Testing` provides in-memory fakes and `EventIngestDtoFactory` for consumer test projects.
 
 ## Conventions
 
