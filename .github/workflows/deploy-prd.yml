@@ -30,6 +30,7 @@ jobs:
             terraform:terraform/**
 
   terraform-state-check-dev:
+    if: github.event_name != 'schedule'
     permissions:
       contents: read
       id-token: write
@@ -55,7 +56,7 @@ jobs:
     needs:
       - detect-changes
       - terraform-state-check-dev
-    if: needs.detect-changes.outputs.src == 'true' || needs.terraform-state-check-dev.outputs.has_resources != 'true'
+    if: "!failure() && !cancelled() && (needs.detect-changes.outputs.src == 'true' || needs.terraform-state-check-dev.outputs.has_resources != 'true')"
     runs-on: ubuntu-latest
     steps:
       - id: ci
@@ -69,6 +70,7 @@ jobs:
       build_version: ${{ steps.ci.outputs.build_version }}
 
   terraform-plan-and-apply-dev:
+    if: github.event_name != 'schedule'
     permissions:
       contents: read
       id-token: write
@@ -142,6 +144,7 @@ jobs:
       group: ${{ github.repository }}-dev
     if: |
       !failure() && !cancelled() &&
+      github.event_name != 'schedule' &&
       (needs.detect-changes.outputs.src == 'true' || needs.terraform-state-check-dev.outputs.has_resources != 'true')
     steps:
       - uses: frasermolyneux/actions/deploy-function-app@deploy-function-app/v1.2
@@ -169,6 +172,7 @@ jobs:
       group: ${{ github.repository }}-dev
     if: |
       !failure() && !cancelled() &&
+      github.event_name != 'schedule' &&
       (needs.detect-changes.outputs.src == 'true' || needs.terraform-state-check-dev.outputs.has_resources != 'true')
     steps:
       - name: Azure Login
@@ -239,7 +243,7 @@ jobs:
       group: ${{ github.repository }}-prd
     if: |
       !failure() && !cancelled() &&
-      needs.terraform-plan-and-apply-dev.result == 'success'
+      (needs.terraform-plan-and-apply-dev.result == 'success' || github.event_name == 'schedule')
     steps:
       - uses: frasermolyneux/actions/terraform-plan-and-apply@terraform-plan-and-apply/v1.4
         if: needs.detect-changes.outputs.terraform == 'true'
