@@ -7,6 +7,7 @@ using Azure.Identity;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.FeatureManagement;
@@ -21,6 +22,30 @@ var host = new HostBuilder()
     .ConfigureAppConfiguration(builder =>
     {
         builder.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
+
+        var builtConfig = builder.Build();
+        var appConfigEndpoint = builtConfig["AzureAppConfiguration:Endpoint"];
+
+        if (!string.IsNullOrWhiteSpace(appConfigEndpoint))
+        {
+            var managedIdentityClientId = builtConfig["AzureAppConfiguration:ManagedIdentityClientId"];
+            var environmentLabel = builtConfig["AzureAppConfiguration:Environment"];
+
+            var credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
+            {
+                ManagedIdentityClientId = managedIdentityClientId,
+            });
+
+            builder.AddAzureAppConfiguration(options =>
+            {
+                options.Connect(new Uri(appConfigEndpoint), credential)
+                    .Select("RepositoryApi:*", environmentLabel)
+                    .Select("ContentSafety:*", environmentLabel)
+                    .Select("FeatureManagement:*", environmentLabel);
+
+                options.ConfigureKeyVault(kv => kv.SetCredential(credential));
+            });
+        }
     })
     .ConfigureFunctionsWorkerDefaults(builder =>
     {

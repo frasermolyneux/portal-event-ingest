@@ -2,7 +2,7 @@
 
 ## Architecture
 
-.NET 9 isolated Azure Functions app (v4). Entry point is `src/XtremeIdiots.Portal.Events.Ingest.App.V1/Program.cs` which registers Application Insights, the Portal Repository API client, Service Bus client factory, memory cache, and health checks.
+.NET 9 isolated Azure Functions app (v4). Entry point is `src/XtremeIdiots.Portal.Events.Ingest.App.V1/Program.cs` which loads settings from Azure App Configuration, then registers Application Insights, the Portal Repository API client, Service Bus client factory, memory cache, feature management, Content Safety client, chat moderation services, and health checks.
 
 ## Key Source Paths
 
@@ -29,7 +29,7 @@ Use `IServiceBusClientFactory`/`IServiceBusSender`/`IServiceBusReceiver` wrapper
 
 ## Configuration
 
-Required settings: `RepositoryApi:BaseUrl`, `RepositoryApi:ApplicationAudience`, `ServiceBusConnection:fullyQualifiedNamespace`. Optional: `ServiceBusConnection:ManagedIdentityClientId`, `AZURE_CLIENT_ID` for managed identity, Application Insights keys. Local dev defaults to Azurite and Service Bus emulator.
+App-level bootstrap settings (Function App app_settings): `AzureAppConfiguration:Endpoint`, `AzureAppConfiguration:ManagedIdentityClientId`, `AzureAppConfiguration:Environment`, `ServiceBusConnection:fullyQualifiedNamespace`. Settings loaded from Azure App Configuration (with environment label): `RepositoryApi:*` (BaseUrl, ApplicationAudience), `ContentSafety:*` (Endpoint), `FeatureManagement:*`. Optional: `ServiceBusConnection:ManagedIdentityClientId`, `AZURE_CLIENT_ID` for managed identity, Application Insights keys. Local dev defaults to Azurite and Service Bus emulator.
 
 ## Telemetry
 
