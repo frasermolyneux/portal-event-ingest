@@ -42,14 +42,25 @@ var host = new HostBuilder()
                 options.Connect(new Uri(appConfigEndpoint), credential)
                     .Select("RepositoryApi:*", environmentLabel)
                     .Select("ContentSafety:*", environmentLabel)
-                    .Select("FeatureManagement:*", environmentLabel);
+                    .Select("FeatureManagement:*", environmentLabel)
+                    .ConfigureRefresh(refresh =>
+                    {
+                        refresh.Register("Sentinel", environmentLabel, refreshAll: true)
+                               .SetRefreshInterval(TimeSpan.FromMinutes(5));
+                    });
 
-                options.ConfigureKeyVault(kv => kv.SetCredential(credential));
+                options.ConfigureKeyVault(kv =>
+                {
+                    kv.SetCredential(credential);
+                    kv.SetSecretRefreshInterval(TimeSpan.FromHours(1));
+                });
             });
         }
     })
     .ConfigureFunctionsWorkerDefaults(builder =>
     {
+        builder.UseAzureAppConfiguration();
+
         builder.Services.Configure<JsonSerializerOptions>(options =>
         {
             options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
@@ -59,6 +70,7 @@ var host = new HostBuilder()
     {
         var configuration = context.Configuration;
 
+        services.AddAzureAppConfiguration();
         services.AddLogging();
         services.AddSingleton<ITelemetryInitializer, TelemetryInitializer>();
         services.AddApplicationInsightsTelemetryWorkerService();

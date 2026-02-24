@@ -17,6 +17,7 @@
 	<PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="2.50.0" />
 	<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.3" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="8.1.2" />
+	<PackageReference Include="Microsoft.Azure.AppConfiguration.Functions.Worker" Version="8.1.2" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.3" />
 	<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="10.0.3" />
 	<PackageReference Include="Microsoft.OpenApi" Version="2.6.1" />
