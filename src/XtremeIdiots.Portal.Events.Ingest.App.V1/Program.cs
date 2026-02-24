@@ -59,6 +59,7 @@ var host = new HostBuilder()
     })
     .ConfigureFunctionsWorkerDefaults(builder =>
     {
+        builder.Services.AddAzureAppConfiguration();
         builder.UseAzureAppConfiguration();
 
         builder.Services.Configure<JsonSerializerOptions>(options =>
@@ -70,7 +71,6 @@ var host = new HostBuilder()
     {
         var configuration = context.Configuration;
 
-        services.AddAzureAppConfiguration();
         services.AddLogging();
         services.AddSingleton<ITelemetryInitializer, TelemetryInitializer>();
         services.AddApplicationInsightsTelemetryWorkerService();
