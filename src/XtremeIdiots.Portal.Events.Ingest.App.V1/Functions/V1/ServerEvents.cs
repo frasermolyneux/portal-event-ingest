@@ -28,9 +28,23 @@ public class ServerEvents(IServiceBusClientFactory serviceBusClientFactory)
         }
         catch (Exception ex)
         {
-            logger.LogError($"OnServerConnected Raw Input: '{requestBody}'");
-            logger.LogError(ex, "OnServerConnected was not in expected format");
-            throw;
+            logger.LogWarning(ex, "OnServerConnected was not in expected format. Raw input: {RawInput}", requestBody);
+            var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+            await badRequest.WriteStringAsync("Invalid JSON format").ConfigureAwait(false);
+            return badRequest;
+        }
+
+        var errors = new List<string>();
+        if (string.IsNullOrWhiteSpace(onServerConnected?.Id) || !System.Guid.TryParse(onServerConnected.Id, out _))
+            errors.Add("'Id' is required and must be a valid GUID");
+        if (string.IsNullOrWhiteSpace(onServerConnected?.GameType))
+            errors.Add("'GameType' is required");
+
+        if (errors.Count > 0)
+        {
+            var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+            await badRequest.WriteStringAsync(string.Join("; ", errors)).ConfigureAwait(false);
+            return badRequest;
         }
 
         await using var sender = serviceBusClientFactory.CreateSender("server_connected_queue");
@@ -52,9 +66,25 @@ public class ServerEvents(IServiceBusClientFactory serviceBusClientFactory)
         }
         catch (Exception ex)
         {
-            logger.LogError($"OnMapChange Raw Input: '{requestBody}'");
-            logger.LogError(ex, "OnMapChange was not in expected format");
-            throw;
+            logger.LogWarning(ex, "OnMapChange was not in expected format. Raw input: {RawInput}", requestBody);
+            var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+            await badRequest.WriteStringAsync("Invalid JSON format").ConfigureAwait(false);
+            return badRequest;
+        }
+
+        var errors = new List<string>();
+        if (onMapChange == null || onMapChange.ServerId == System.Guid.Empty)
+            errors.Add("'ServerId' is required and must not be empty");
+        if (string.IsNullOrWhiteSpace(onMapChange?.GameName))
+            errors.Add("'GameName' is required");
+        if (string.IsNullOrWhiteSpace(onMapChange?.MapName))
+            errors.Add("'MapName' is required");
+
+        if (errors.Count > 0)
+        {
+            var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+            await badRequest.WriteStringAsync(string.Join("; ", errors)).ConfigureAwait(false);
+            return badRequest;
         }
 
         await using var sender = serviceBusClientFactory.CreateSender("map_change_queue");

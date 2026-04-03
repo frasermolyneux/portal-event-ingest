@@ -17,15 +17,31 @@
 
 ## HTTP Ingress
 
-PlayerEvents.cs and ServerEvents.cs expose anonymous endpoints: `/v1/OnPlayerConnected`, `/v1/OnChatMessage`, `/v1/OnMapVote`, `/v1/OnServerConnected`, `/v1/OnMapChange`. Each deserializes DTOs and enqueues to the corresponding Service Bus queue (`player_connected_queue`, `chat_message_queue`, etc.).
+PlayerEvents.cs and ServerEvents.cs expose anonymous endpoints: `/v1/OnPlayerConnected`, `/v1/OnChatMessage`, `/v1/OnMapVote`, `/v1/OnServerConnected`, `/v1/OnMapChange`. Each validates required fields and enums (returns 400 for invalid payloads), then deserializes DTOs and enqueues to the corresponding Service Bus queue (`player_connected_queue`, `chat_message_queue`, etc.).
 
 ## Queue Processors
 
-PlayerEventsIngest.cs and ServerEventsIngest.cs consume queues, validate payloads, fetch/update players and maps via the Portal Repository API, cache player IDs with `IMemoryCache`, and emit `EventTelemetry`. ReprocessDeadLetterQueue.cs replays DLQ messages back to the active queue.
+PlayerEventsIngest.cs and ServerEventsIngest.cs consume queues with a two-phase error handling strategy:
+- **Validation phase**: deserialization + field checks. Invalid messages are logged (warning with full payload) and discarded (return without throwing). Never reach the DLQ.
+- **Processing phase**: Repository API calls, moderation, etc. Transient failures propagate as exceptions for Service Bus retry → DLQ after `max_delivery_count` attempts.
+
+Special cases: `CreatePlayer` 409 conflict is treated as success (falls through to update). Moderation pipeline failures are caught and logged (chat message already persisted). Player-not-found throws for retry (player may be created by concurrent event).
+
+ReprocessDeadLetterQueue.cs replays DLQ messages back to the active queue with rate limiting (`maxMessages`, batch throttling) and a `dryRun` mode for inspection.
 
 ## Service Bus
 
 Use `IServiceBusClientFactory`/`IServiceBusSender`/`IServiceBusReceiver` wrappers. Always `await using` senders and receivers to dispose connections. Inject `IServiceBusClientFactory` in tests instead of creating `ServiceBusClient` directly. Queue names must stay in sync across producers and consumers.
+
+Queue configuration: `max_delivery_count = 5`, `lock_duration = PT5M`. Trigger settings in `host.json`: `maxConcurrentCalls = 8`, `maxAutoLockRenewalDuration = 00:10:00`, `autoCompleteMessages = true`.
+
+## Monitoring & Alerting
+
+Alerts configured in Terraform (`monitor_metric_alerts.tf`): dead-lettered messages > 10 (high), active message backlog > 1000 (high), processor failure rate > 50/5min (high, prd only), missing OnChatMessage events for 6h (critical, prd only). See `docs/monitoring-and-alerting.md` for full details.
+
+## Resilience
+
+The Repository API client (`api-client-abstractions` / `BaseApi`) provides built-in retry with exponential backoff (3 attempts). Circuit breaker is not yet available (requires `api-client-abstractions` uplift).
 
 ## Configuration
 

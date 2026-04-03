@@ -42,21 +42,33 @@ public class PlayerEventsIngest(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "OnPlayerConnected was not in expected format");
-            throw;
+            logger.LogWarning(ex, "OnPlayerConnected was not in expected format. Payload: {Payload}", myQueueItem);
+            return;
         }
 
         if (onPlayerConnected is null)
-            throw new InvalidOperationException("OnPlayerConnected event was null");
+        {
+            logger.LogWarning("OnPlayerConnected deserialized to null. Payload: {Payload}", myQueueItem);
+            return;
+        }
 
         if (string.IsNullOrWhiteSpace(onPlayerConnected.GameType))
-            throw new ArgumentException("OnPlayerConnected event contained null or empty 'GameType'", nameof(onPlayerConnected));
+        {
+            logger.LogWarning("OnPlayerConnected event contained null or empty 'GameType'. Payload: {Payload}", myQueueItem);
+            return;
+        }
 
         if (string.IsNullOrWhiteSpace(onPlayerConnected.Guid))
-            throw new ArgumentException("OnPlayerConnected event contained null or empty 'Guid'", nameof(onPlayerConnected));
+        {
+            logger.LogWarning("OnPlayerConnected event contained null or empty 'Guid'. Payload: {Payload}", myQueueItem);
+            return;
+        }
 
         if (!Enum.TryParse(onPlayerConnected.GameType, out GameType gameType))
-            throw new ArgumentException($"OnPlayerConnected event contained invalid 'GameType': {onPlayerConnected.GameType}", nameof(onPlayerConnected));
+        {
+            logger.LogWarning("OnPlayerConnected event contained invalid 'GameType': {GameType}. Payload: {Payload}", onPlayerConnected.GameType, myQueueItem);
+            return;
+        }
 
         var onPlayerConnectedTelemetry = new EventTelemetry("OnPlayerConnected")
         {
@@ -78,21 +90,33 @@ public class PlayerEventsIngest(
                 IpAddress = onPlayerConnected.IpAddress
             };
 
-            await repositoryApiClient.Players.V1.CreatePlayer(player).ConfigureAwait(false);
-        }
-        else
-        {
-            var playerId = await GetPlayerId(gameType, onPlayerConnected.Guid).ConfigureAwait(false);
-            if (playerId != Guid.Empty)
-            {
-                var editPlayerDto = new EditPlayerDto(playerId)
-                {
-                    Username = onPlayerConnected.Username,
-                    IpAddress = onPlayerConnected.IpAddress
-                };
+            var createResult = await repositoryApiClient.Players.V1.CreatePlayer(player).ConfigureAwait(false);
 
-                await repositoryApiClient.Players.V1.UpdatePlayer(editPlayerDto).ConfigureAwait(false);
+            if (createResult.IsConflict)
+            {
+                // Player was created by another event between the HEAD check and CreatePlayer call.
+                // Fall through to update path.
             }
+            else if (createResult.IsSuccess)
+            {
+                return;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Failed to create player for Guid '{onPlayerConnected.Guid}'. API returned {createResult.StatusCode}.");
+            }
+        }
+
+        var playerId = await GetPlayerId(gameType, onPlayerConnected.Guid).ConfigureAwait(false);
+        if (playerId != Guid.Empty)
+        {
+            var editPlayerDto = new EditPlayerDto(playerId)
+            {
+                Username = onPlayerConnected.Username,
+                IpAddress = onPlayerConnected.IpAddress
+            };
+
+            await repositoryApiClient.Players.V1.UpdatePlayer(editPlayerDto).ConfigureAwait(false);
         }
     }
 
@@ -108,21 +132,33 @@ public class PlayerEventsIngest(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "OnChatMessage was not in expected format");
-            throw;
+            logger.LogWarning(ex, "OnChatMessage was not in expected format. Payload: {Payload}", myQueueItem);
+            return;
         }
 
         if (onChatMessage is null)
-            throw new InvalidOperationException("OnChatMessage event was null");
+        {
+            logger.LogWarning("OnChatMessage deserialized to null. Payload: {Payload}", myQueueItem);
+            return;
+        }
 
         if (string.IsNullOrWhiteSpace(onChatMessage.GameType))
-            throw new ArgumentException("OnChatMessage event contained null or empty 'GameType'", nameof(onChatMessage));
+        {
+            logger.LogWarning("OnChatMessage event contained null or empty 'GameType'. Payload: {Payload}", myQueueItem);
+            return;
+        }
 
         if (string.IsNullOrWhiteSpace(onChatMessage.Guid))
-            throw new ArgumentException("OnChatMessage event contained null or empty 'Guid'", nameof(onChatMessage));
+        {
+            logger.LogWarning("OnChatMessage event contained null or empty 'Guid'. Payload: {Payload}", myQueueItem);
+            return;
+        }
 
         if (!Enum.TryParse(onChatMessage.GameType, out GameType gameType))
-            throw new ArgumentException($"OnChatMessage event contained invalid 'GameType': {onChatMessage.GameType}", nameof(onChatMessage));
+        {
+            logger.LogWarning("OnChatMessage event contained invalid 'GameType': {GameType}. Payload: {Payload}", onChatMessage.GameType, myQueueItem);
+            return;
+        }
 
         var onChatMessageTelemetry = new EventTelemetry("OnChatMessage")
         {
@@ -138,19 +174,25 @@ public class PlayerEventsIngest(
 
         var playerContext = await GetPlayerContext(gameType, onChatMessage.Guid).ConfigureAwait(false);
 
-        if (playerContext is not null)
+        if (playerContext is null)
         {
-            var chatMessage = new CreateChatMessageDto(onChatMessage.ServerId, playerContext.PlayerId, onChatMessage.Type.ToChatType(), onChatMessage.Username, onChatMessage.Message, onChatMessage.EventGeneratedUtc);
-            await repositoryApiClient.ChatMessages.V1.CreateChatMessage(chatMessage).ConfigureAwait(false);
+            logger.LogWarning("ProcessOnChatMessage :: Player not found, message will retry. Username: '{Username}', Guid: '{Guid}'", onChatMessage.Username, onChatMessage.Guid);
+            throw new InvalidOperationException($"Player not found for Guid '{onChatMessage.Guid}'. Message will retry.");
+        }
 
-            if (await featureManager.IsEnabledAsync("ChatToxicityDetection"))
+        var chatMessage = new CreateChatMessageDto(onChatMessage.ServerId, playerContext.PlayerId, onChatMessage.Type.ToChatType(), onChatMessage.Username, onChatMessage.Message, onChatMessage.EventGeneratedUtc);
+        await repositoryApiClient.ChatMessages.V1.CreateChatMessage(chatMessage).ConfigureAwait(false);
+
+        if (await featureManager.IsEnabledAsync("ChatToxicityDetection"))
+        {
+            try
             {
                 await RunModerationPipeline(onChatMessage, playerContext, gameType).ConfigureAwait(false);
             }
-        }
-        else
-        {
-            logger.LogError($"ProcessOnChatMessage :: NOPLAYER :: Username: '{onChatMessage.Username}', Guid: '{onChatMessage.Guid}', Message: '{onChatMessage.Message}', Timestamp: '{onChatMessage.EventGeneratedUtc}'");
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Moderation pipeline failed for chat message. Processing continues. Guid: {Guid}", onChatMessage.Guid);
+            }
         }
     }
 
@@ -166,21 +208,33 @@ public class PlayerEventsIngest(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "OnMapVote was not in expected format");
-            throw;
+            logger.LogWarning(ex, "OnMapVote was not in expected format. Payload: {Payload}", myQueueItem);
+            return;
         }
 
         if (onMapVote is null)
-            throw new InvalidOperationException("OnMapVote event was null");
+        {
+            logger.LogWarning("OnMapVote deserialized to null. Payload: {Payload}", myQueueItem);
+            return;
+        }
 
         if (string.IsNullOrWhiteSpace(onMapVote.MapName))
-            throw new ArgumentException("OnMapVote event contained null or empty 'MapName'", nameof(onMapVote));
+        {
+            logger.LogWarning("OnMapVote event contained null or empty 'MapName'. Payload: {Payload}", myQueueItem);
+            return;
+        }
 
         if (string.IsNullOrWhiteSpace(onMapVote.Guid))
-            throw new ArgumentException("OnMapVote event contained null or empty 'Guid'", nameof(onMapVote));
+        {
+            logger.LogWarning("OnMapVote event contained null or empty 'Guid'. Payload: {Payload}", myQueueItem);
+            return;
+        }
 
         if (!Enum.TryParse(onMapVote.GameType, out GameType gameType))
-            throw new ArgumentException($"OnMapVote event contained invalid 'GameType': {onMapVote.GameType}", nameof(onMapVote));
+        {
+            logger.LogWarning("OnMapVote event contained invalid 'GameType': {GameType}. Payload: {Payload}", onMapVote.GameType, myQueueItem);
+            return;
+        }
 
         var onMapVoteTelemetry = new EventTelemetry("OnMapVote")
         {
@@ -196,19 +250,18 @@ public class PlayerEventsIngest(
 
         var playerId = await GetPlayerId(gameType, onMapVote.Guid).ConfigureAwait(false);
 
-        if (playerId != Guid.Empty)
+        if (playerId == Guid.Empty)
         {
-            var mapApiResponse = await repositoryApiClient.Maps.V1.GetMap(gameType, onMapVote.MapName).ConfigureAwait(false);
-
-            if (mapApiResponse.IsSuccess && mapApiResponse.Result?.Data != null)
-            {
-                var upsertMapVoteDto = new UpsertMapVoteDto(mapApiResponse.Result.Data.MapId, playerId, onMapVote.ServerId, onMapVote.Like);
-                await repositoryApiClient.Maps.V1.UpsertMapVote(upsertMapVoteDto).ConfigureAwait(false);
-            }
+            logger.LogWarning("ProcessOnMapVote :: Player not found, message will retry. Guid: '{Guid}', MapName: '{MapName}'", onMapVote.Guid, onMapVote.MapName);
+            throw new InvalidOperationException($"Player not found for Guid '{onMapVote.Guid}'. Message will retry.");
         }
-        else
+
+        var mapApiResponse = await repositoryApiClient.Maps.V1.GetMap(gameType, onMapVote.MapName).ConfigureAwait(false);
+
+        if (mapApiResponse.IsSuccess && mapApiResponse.Result?.Data != null)
         {
-            logger.LogError($"ProcessOnMapVote :: NOPLAYER :: Guid: '{onMapVote.Guid}', Map Name: '{onMapVote.MapName}', Like: '{onMapVote.Like}'");
+            var upsertMapVoteDto = new UpsertMapVoteDto(mapApiResponse.Result.Data.MapId, playerId, onMapVote.ServerId, onMapVote.Like);
+            await repositoryApiClient.Maps.V1.UpsertMapVote(upsertMapVoteDto).ConfigureAwait(false);
         }
     }
 

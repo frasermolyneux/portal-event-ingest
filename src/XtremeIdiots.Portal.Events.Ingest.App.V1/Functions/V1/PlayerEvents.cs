@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 using XtremeIdiots.Portal.Events.Abstractions.Models.V1;
 using XtremeIdiots.Portal.Events.Ingest.App.V1.Abstractions;
+using XtremeIdiots.Portal.Repository.Abstractions.Constants.V1;
 
 namespace XtremeIdiots.Portal.Events.Ingest.App.Functions.V1;
 
@@ -28,9 +29,25 @@ public class PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
         }
         catch (Exception ex)
         {
-            logger.LogError($"OnPlayerConnected Raw Input: '{requestBody}'");
-            logger.LogError(ex, "OnPlayerConnected was not in expected format");
-            throw;
+            logger.LogWarning(ex, "OnPlayerConnected was not in expected format. Raw input: {RawInput}", requestBody);
+            var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+            await badRequest.WriteStringAsync("Invalid JSON format").ConfigureAwait(false);
+            return badRequest;
+        }
+
+        var errors = new List<string>();
+        if (string.IsNullOrWhiteSpace(onPlayerConnected?.GameType))
+            errors.Add("'GameType' is required");
+        if (string.IsNullOrWhiteSpace(onPlayerConnected?.Guid))
+            errors.Add("'Guid' is required");
+        if (onPlayerConnected?.GameType != null && !Enum.TryParse<GameType>(onPlayerConnected.GameType, out _))
+            errors.Add($"Invalid 'GameType': {onPlayerConnected.GameType}");
+
+        if (errors.Count > 0)
+        {
+            var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+            await badRequest.WriteStringAsync(string.Join("; ", errors)).ConfigureAwait(false);
+            return badRequest;
         }
 
         await using var sender = serviceBusClientFactory.CreateSender("player_connected_queue");
@@ -52,9 +69,25 @@ public class PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
         }
         catch (Exception ex)
         {
-            logger.LogError($"OnChatMessage Raw Input: '{requestBody}'");
-            logger.LogError(ex, "OnChatMessage was not in expected format");
-            throw;
+            logger.LogWarning(ex, "OnChatMessage was not in expected format. Raw input: {RawInput}", requestBody);
+            var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+            await badRequest.WriteStringAsync("Invalid JSON format").ConfigureAwait(false);
+            return badRequest;
+        }
+
+        var errors = new List<string>();
+        if (string.IsNullOrWhiteSpace(onChatMessage?.GameType))
+            errors.Add("'GameType' is required");
+        if (string.IsNullOrWhiteSpace(onChatMessage?.Guid))
+            errors.Add("'Guid' is required");
+        if (onChatMessage?.GameType != null && !Enum.TryParse<GameType>(onChatMessage.GameType, out _))
+            errors.Add($"Invalid 'GameType': {onChatMessage.GameType}");
+
+        if (errors.Count > 0)
+        {
+            var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+            await badRequest.WriteStringAsync(string.Join("; ", errors)).ConfigureAwait(false);
+            return badRequest;
         }
 
         await using var sender = serviceBusClientFactory.CreateSender("chat_message_queue");
@@ -76,9 +109,27 @@ public class PlayerEvents(IServiceBusClientFactory serviceBusClientFactory)
         }
         catch (Exception ex)
         {
-            logger.LogError($"OnMapVote Raw Input: '{requestBody}'");
-            logger.LogError(ex, "OnMapVote was not in expected format");
-            throw;
+            logger.LogWarning(ex, "OnMapVote was not in expected format. Raw input: {RawInput}", requestBody);
+            var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+            await badRequest.WriteStringAsync("Invalid JSON format").ConfigureAwait(false);
+            return badRequest;
+        }
+
+        var errors = new List<string>();
+        if (string.IsNullOrWhiteSpace(onMapVote?.GameType))
+            errors.Add("'GameType' is required");
+        if (string.IsNullOrWhiteSpace(onMapVote?.Guid))
+            errors.Add("'Guid' is required");
+        if (string.IsNullOrWhiteSpace(onMapVote?.MapName))
+            errors.Add("'MapName' is required");
+        if (onMapVote?.GameType != null && !Enum.TryParse<GameType>(onMapVote.GameType, out _))
+            errors.Add($"Invalid 'GameType': {onMapVote.GameType}");
+
+        if (errors.Count > 0)
+        {
+            var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+            await badRequest.WriteStringAsync(string.Join("; ", errors)).ConfigureAwait(false);
+            return badRequest;
         }
 
         await using var sender = serviceBusClientFactory.CreateSender("map_vote_queue");

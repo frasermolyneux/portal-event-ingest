@@ -10,6 +10,9 @@ public class ServiceBusReceiverWrapper(ServiceBusReceiver receiver) : IServiceBu
     public Task<IReadOnlyList<ServiceBusReceivedMessage>> ReceiveMessagesAsync(int maxMessages, TimeSpan? maxWaitTime = null, CancellationToken cancellationToken = default)
         => _receiver.ReceiveMessagesAsync(maxMessages, maxWaitTime, cancellationToken);
 
+    public Task<IReadOnlyList<ServiceBusReceivedMessage>> PeekMessagesAsync(int maxMessages, long? fromSequenceNumber = null, CancellationToken cancellationToken = default)
+        => _receiver.PeekMessagesAsync(maxMessages, fromSequenceNumber, cancellationToken);
+
     public Task CompleteMessageAsync(ServiceBusReceivedMessage message, CancellationToken cancellationToken = default)
         => _receiver.CompleteMessageAsync(message, cancellationToken);
 
