@@ -183,7 +183,7 @@ public class PlayerEventsIngest(
         var chatMessage = new CreateChatMessageDto(onChatMessage.ServerId, playerContext.PlayerId, onChatMessage.Type.ToChatType(), onChatMessage.Username, onChatMessage.Message, onChatMessage.EventGeneratedUtc);
         await repositoryApiClient.ChatMessages.V1.CreateChatMessage(chatMessage).ConfigureAwait(false);
 
-        if (await featureManager.IsEnabledAsync("ChatToxicityDetection"))
+        if (await featureManager.IsEnabledAsync("EventIngest.ChatToxicityDetection"))
         {
             try
             {

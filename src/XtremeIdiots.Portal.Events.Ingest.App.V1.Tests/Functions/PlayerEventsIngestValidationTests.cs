@@ -249,7 +249,7 @@ public class PlayerEventsIngestValidationTests
             .ReturnsAsync(new ApiResult<PlayerDto>(System.Net.HttpStatusCode.OK, new ApiResponse<PlayerDto>(playerDto)));
         _mockChatMessagesApi.Setup(c => c.CreateChatMessage(It.IsAny<Repository.Abstractions.Models.V1.ChatMessages.CreateChatMessageDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
-        _mockFeatureManager.Setup(f => f.IsEnabledAsync("ChatToxicityDetection")).ReturnsAsync(true);
+        _mockFeatureManager.Setup(f => f.IsEnabledAsync("EventIngest.ChatToxicityDetection")).ReturnsAsync(true);
         _mockWordFilter.Setup(w => w.Check(It.IsAny<string>())).Throws(new Exception("Moderation exploded"));
 
         var payload = JsonConvert.SerializeObject(new OnChatMessage { GameType = "CallOfDuty4", Guid = "abc123", Username = "Test", Message = "hello world", Type = "All", ServerId = Guid.NewGuid(), EventGeneratedUtc = DateTime.UtcNow });

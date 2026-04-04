@@ -135,7 +135,7 @@ public class PlayerEventsIngestModerationTests
         // Arrange
         var playerId = Guid.NewGuid();
         SetupPlayerExists(playerId, DateTime.UtcNow.AddDays(-1));
-        _mockFeatureManager.Setup(f => f.IsEnabledAsync("ChatToxicityDetection")).ReturnsAsync(false);
+        _mockFeatureManager.Setup(f => f.IsEnabledAsync("EventIngest.ChatToxicityDetection")).ReturnsAsync(false);
         _mockChatMessagesApi.Setup(c => c.CreateChatMessage(It.IsAny<CreateChatMessageDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
 
@@ -155,7 +155,7 @@ public class PlayerEventsIngestModerationTests
         // Arrange
         var playerId = Guid.NewGuid();
         SetupPlayerExists(playerId, DateTime.UtcNow.AddDays(-1));
-        _mockFeatureManager.Setup(f => f.IsEnabledAsync("ChatToxicityDetection")).ReturnsAsync(true);
+        _mockFeatureManager.Setup(f => f.IsEnabledAsync("EventIngest.ChatToxicityDetection")).ReturnsAsync(true);
         _mockChatMessagesApi.Setup(c => c.CreateChatMessage(It.IsAny<CreateChatMessageDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
         _mockWordFilter.Setup(w => w.Check(It.IsAny<string>()))
@@ -187,7 +187,7 @@ public class PlayerEventsIngestModerationTests
         // Arrange
         var playerId = Guid.NewGuid();
         SetupPlayerExists(playerId, DateTime.UtcNow.AddDays(-1));
-        _mockFeatureManager.Setup(f => f.IsEnabledAsync("ChatToxicityDetection")).ReturnsAsync(true);
+        _mockFeatureManager.Setup(f => f.IsEnabledAsync("EventIngest.ChatToxicityDetection")).ReturnsAsync(true);
         _mockChatMessagesApi.Setup(c => c.CreateChatMessage(It.IsAny<CreateChatMessageDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
 
@@ -206,7 +206,7 @@ public class PlayerEventsIngestModerationTests
         // Arrange
         var playerId = Guid.NewGuid();
         SetupPlayerExists(playerId, DateTime.UtcNow.AddDays(-1));
-        _mockFeatureManager.Setup(f => f.IsEnabledAsync("ChatToxicityDetection")).ReturnsAsync(true);
+        _mockFeatureManager.Setup(f => f.IsEnabledAsync("EventIngest.ChatToxicityDetection")).ReturnsAsync(true);
         _mockChatMessagesApi.Setup(c => c.CreateChatMessage(It.IsAny<CreateChatMessageDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
 
@@ -225,7 +225,7 @@ public class PlayerEventsIngestModerationTests
         // Arrange
         var playerId = Guid.NewGuid();
         SetupPlayerExists(playerId, DateTime.UtcNow.AddDays(-3)); // 3 days old, within 7-day window
-        _mockFeatureManager.Setup(f => f.IsEnabledAsync("ChatToxicityDetection")).ReturnsAsync(true);
+        _mockFeatureManager.Setup(f => f.IsEnabledAsync("EventIngest.ChatToxicityDetection")).ReturnsAsync(true);
         _mockChatMessagesApi.Setup(c => c.CreateChatMessage(It.IsAny<CreateChatMessageDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
         _mockWordFilter.Setup(w => w.Check(It.IsAny<string>())).Returns((LocalFilterResult?)null);
@@ -247,7 +247,7 @@ public class PlayerEventsIngestModerationTests
         // Arrange
         var playerId = Guid.NewGuid();
         SetupPlayerExists(playerId, DateTime.UtcNow.AddDays(-30)); // 30 days old, outside 7-day window
-        _mockFeatureManager.Setup(f => f.IsEnabledAsync("ChatToxicityDetection")).ReturnsAsync(true);
+        _mockFeatureManager.Setup(f => f.IsEnabledAsync("EventIngest.ChatToxicityDetection")).ReturnsAsync(true);
         _mockChatMessagesApi.Setup(c => c.CreateChatMessage(It.IsAny<CreateChatMessageDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
         _mockWordFilter.Setup(w => w.Check(It.IsAny<string>())).Returns((LocalFilterResult?)null);
@@ -267,7 +267,7 @@ public class PlayerEventsIngestModerationTests
         // Arrange
         var playerId = Guid.NewGuid();
         SetupPlayerExists(playerId, DateTime.UtcNow.AddDays(-30), hasModerateChatTag: true);
-        _mockFeatureManager.Setup(f => f.IsEnabledAsync("ChatToxicityDetection")).ReturnsAsync(true);
+        _mockFeatureManager.Setup(f => f.IsEnabledAsync("EventIngest.ChatToxicityDetection")).ReturnsAsync(true);
         _mockChatMessagesApi.Setup(c => c.CreateChatMessage(It.IsAny<CreateChatMessageDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
         _mockWordFilter.Setup(w => w.Check(It.IsAny<string>())).Returns((LocalFilterResult?)null);
@@ -289,7 +289,7 @@ public class PlayerEventsIngestModerationTests
         // Arrange
         var playerId = Guid.NewGuid();
         SetupPlayerExists(playerId, DateTime.UtcNow.AddDays(-1));
-        _mockFeatureManager.Setup(f => f.IsEnabledAsync("ChatToxicityDetection")).ReturnsAsync(true);
+        _mockFeatureManager.Setup(f => f.IsEnabledAsync("EventIngest.ChatToxicityDetection")).ReturnsAsync(true);
         _mockChatMessagesApi.Setup(c => c.CreateChatMessage(It.IsAny<CreateChatMessageDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
         _mockWordFilter.Setup(w => w.Check(It.IsAny<string>())).Returns((LocalFilterResult?)null);
@@ -321,7 +321,7 @@ public class PlayerEventsIngestModerationTests
         // Arrange
         var playerId = Guid.NewGuid();
         SetupPlayerExists(playerId, DateTime.UtcNow.AddDays(-1));
-        _mockFeatureManager.Setup(f => f.IsEnabledAsync("ChatToxicityDetection")).ReturnsAsync(true);
+        _mockFeatureManager.Setup(f => f.IsEnabledAsync("EventIngest.ChatToxicityDetection")).ReturnsAsync(true);
         _mockChatMessagesApi.Setup(c => c.CreateChatMessage(It.IsAny<CreateChatMessageDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
         _mockWordFilter.Setup(w => w.Check(It.IsAny<string>())).Returns((LocalFilterResult?)null);
@@ -343,7 +343,7 @@ public class PlayerEventsIngestModerationTests
         // Arrange
         var playerId = Guid.NewGuid();
         SetupPlayerExists(playerId, DateTime.UtcNow.AddDays(-1));
-        _mockFeatureManager.Setup(f => f.IsEnabledAsync("ChatToxicityDetection")).ReturnsAsync(true);
+        _mockFeatureManager.Setup(f => f.IsEnabledAsync("EventIngest.ChatToxicityDetection")).ReturnsAsync(true);
         _mockChatMessagesApi.Setup(c => c.CreateChatMessage(It.IsAny<CreateChatMessageDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
         _mockWordFilter.Setup(w => w.Check(It.IsAny<string>())).Returns((LocalFilterResult?)null);
@@ -365,7 +365,7 @@ public class PlayerEventsIngestModerationTests
         // Arrange
         var playerId = Guid.NewGuid();
         SetupPlayerExists(playerId, DateTime.UtcNow.AddDays(-1));
-        _mockFeatureManager.Setup(f => f.IsEnabledAsync("ChatToxicityDetection")).ReturnsAsync(true);
+        _mockFeatureManager.Setup(f => f.IsEnabledAsync("EventIngest.ChatToxicityDetection")).ReturnsAsync(true);
         _mockChatMessagesApi.Setup(c => c.CreateChatMessage(It.IsAny<CreateChatMessageDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
         _mockWordFilter.Setup(w => w.Check(It.IsAny<string>()))

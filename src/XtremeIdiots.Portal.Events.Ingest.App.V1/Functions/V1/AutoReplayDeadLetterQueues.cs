@@ -29,9 +29,9 @@ public class AutoReplayDeadLetterQueues(
     [Function(nameof(AutoReplayDeadLetterQueues))]
     public async Task Run([TimerTrigger("0 */5 * * * *")] TimerInfo timerInfo)
     {
-        if (!await featureManager.IsEnabledAsync("AutoDlqReplay"))
+        if (!await featureManager.IsEnabledAsync("EventIngest.AutoDlqReplay"))
         {
-            logger.LogDebug("AutoDlqReplay feature flag is disabled, skipping");
+            logger.LogDebug("EventIngest.AutoDlqReplay feature flag is disabled, skipping");
             return;
         }
 
@@ -84,21 +84,28 @@ public class AutoReplayDeadLetterQueues(
         {
             foreach (var dlqMessage in dlqMessages)
             {
-                var body = dlqMessage.Body?.ToString() ?? string.Empty;
-                var truncatedBody = body.Length > MaxBodyLogLength ? body[..MaxBodyLogLength] + "..." : body;
+                try
+                {
+                    var body = dlqMessage.Body?.ToString() ?? string.Empty;
+                    var truncatedBody = body.Length > MaxBodyLogLength ? body[..MaxBodyLogLength] + "..." : body;
 
-                logger.LogInformation(
-                    "AutoReplay DLQ [{QueueName}] [{MessageId}]: Reason='{DeadLetterReason}', Body='{TruncatedBody}'",
-                    queueName,
-                    dlqMessage.MessageId,
-                    dlqMessage.DeadLetterReason,
-                    truncatedBody);
+                    logger.LogInformation(
+                        "AutoReplay DLQ [{QueueName}] [{MessageId}]: Reason='{DeadLetterReason}', Body='{TruncatedBody}'",
+                        queueName,
+                        dlqMessage.MessageId,
+                        dlqMessage.DeadLetterReason,
+                        truncatedBody);
 
-                var message = new ServiceBusMessage(dlqMessage);
-                await sender.SendMessageAsync(message).ConfigureAwait(false);
-                await receiver.CompleteMessageAsync(dlqMessage).ConfigureAwait(false);
+                    var message = new ServiceBusMessage(dlqMessage);
+                    await sender.SendMessageAsync(message).ConfigureAwait(false);
+                    await receiver.CompleteMessageAsync(dlqMessage).ConfigureAwait(false);
 
-                replayed++;
+                    replayed++;
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "AutoReplay: Failed to replay message {MessageId} from '{QueueName}' DLQ", dlqMessage.MessageId, queueName);
+                }
 
                 if (replayed >= MaxMessagesPerQueue)
                     break;
