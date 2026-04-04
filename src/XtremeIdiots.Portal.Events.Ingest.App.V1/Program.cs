@@ -42,7 +42,10 @@ var host = new HostBuilder()
                 options.Connect(new Uri(appConfigEndpoint), credential)
                     .Select("RepositoryApi:*", environmentLabel)
                     .Select("ContentSafety:*", environmentLabel)
-                    .Select("FeatureManagement:*", environmentLabel)
+                    .UseFeatureFlags(featureFlagOptions =>
+                    {
+                        featureFlagOptions.Label = environmentLabel;
+                    })
                     .ConfigureRefresh(refresh =>
                     {
                         refresh.Register("Sentinel", environmentLabel, refreshAll: true)
