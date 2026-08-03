@@ -113,9 +113,9 @@ public static class OpenApiDocumentGenerator
                         operation.RequestBody = new OpenApiRequestBody
                         {
                             Required = true,
-                            Content = new Dictionary<string, OpenApiMediaType>
+                            Content = new Dictionary<string, IOpenApiMediaType>
                             {
-                                ["application/json"] = new()
+                                ["application/json"] = new OpenApiMediaType
                                 {
                                     Schema = new OpenApiSchemaReference(schemaName, document)
                                 }

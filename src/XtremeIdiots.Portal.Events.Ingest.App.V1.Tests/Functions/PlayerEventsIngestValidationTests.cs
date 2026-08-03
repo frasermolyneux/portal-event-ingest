@@ -154,12 +154,15 @@ public class PlayerEventsIngestValidationTests
         var apiResponse = new ApiResponse<PlayerDto>(playerDto);
         _mockPlayersApi.Setup(p => p.GetPlayerByGameType(It.IsAny<GameType>(), It.IsAny<string>(), It.IsAny<PlayerEntityOptions>()))
             .ReturnsAsync(new ApiResult<PlayerDto>(System.Net.HttpStatusCode.OK, apiResponse));
-        _mockPlayersApi.Setup(p => p.UpdatePlayer(It.IsAny<EditPlayerDto>()))
+        _mockPlayersApi.Setup(p => p.UpdatePlayerUsername(It.IsAny<UpdatePlayerUsernameDto>()))
+            .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
+        _mockPlayersApi.Setup(p => p.UpdatePlayerIpAddress(It.IsAny<UpdatePlayerIpAddressDto>()))
             .ReturnsAsync(new ApiResult(System.Net.HttpStatusCode.OK));
 
         await _sut.ProcessOnPlayerConnected(payload);
 
-        _mockPlayersApi.Verify(p => p.UpdatePlayer(It.IsAny<EditPlayerDto>()), Times.Once);
+        _mockPlayersApi.Verify(p => p.UpdatePlayerUsername(It.IsAny<UpdatePlayerUsernameDto>()), Times.Once);
+        _mockPlayersApi.Verify(p => p.UpdatePlayerIpAddress(It.IsAny<UpdatePlayerIpAddressDto>()), Times.Once);
     }
 
     [Fact]

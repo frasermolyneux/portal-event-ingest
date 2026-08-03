@@ -110,13 +110,15 @@ public class PlayerEventsIngest(
         var playerId = await GetPlayerId(gameType, onPlayerConnected.Guid).ConfigureAwait(false);
         if (playerId != Guid.Empty)
         {
-            var editPlayerDto = new EditPlayerDto(playerId)
+            if (!string.IsNullOrWhiteSpace(onPlayerConnected.Username))
             {
-                Username = onPlayerConnected.Username,
-                IpAddress = onPlayerConnected.IpAddress
-            };
+                await repositoryApiClient.Players.V1.UpdatePlayerUsername(new UpdatePlayerUsernameDto(playerId, onPlayerConnected.Username)).ConfigureAwait(false);
+            }
 
-            await repositoryApiClient.Players.V1.UpdatePlayer(editPlayerDto).ConfigureAwait(false);
+            if (!string.IsNullOrWhiteSpace(onPlayerConnected.IpAddress))
+            {
+                await repositoryApiClient.Players.V1.UpdatePlayerIpAddress(new UpdatePlayerIpAddressDto(playerId, onPlayerConnected.IpAddress)).ConfigureAwait(false);
+            }
         }
     }
 
